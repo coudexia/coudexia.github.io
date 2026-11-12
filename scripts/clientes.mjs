@@ -54,7 +54,7 @@ const BASES = {
       horario: ['Lunes a sábado de 7 a 20 h'],
       barrios: ['<span>Ramos Mejía</span><span>Haedo</span><span>Morón</span><span>Castelar</span><span>Ituzaingó</span><span>San Justo</span><span>Liniers</span>'],
     },
-    colores: { principal: ['263238'], principalOscuro: ['1a2329'], secundario: ['ffb000'] },
+    colores: { principal: ['1c2226'], secundario: ['ffb800'] },
   },
   depilacion: {
     textos: {
