@@ -6,3 +6,6 @@ dist/
 .DS_Store
 public/clientes/
 ventas/
+
+# Nunca subir códigos de recuperación
+*recovery-codes*
