@@ -1,5 +1,5 @@
 ---
-import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
+import { PLANES, MANTENIMIENTO, LANZAMIENTO, wa } from '../data/coudexia';
 ---
 <section class="seccion" id="precios">
   <div class="wrap">
@@ -8,8 +8,12 @@ import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
         <p class="etiqueta rv">Planes y precios</p>
         <h2 class="rv palabras">Elegí tu plan y arrancamos.</h2>
       </div>
-      <p class="bajada rv">Precios de lanzamiento en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Página Start y Página Business, en 48 h te mostramos un borrador gratis.</p>
+      <p class="bajada rv">Precios en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Página Start y Página Business, en 48 h te mostramos un borrador gratis.</p>
     </div>
+
+    {LANZAMIENTO.cupos > 0 && (
+      <p class="lanza rv"><b>Precio de lanzamiento</b> para los primeros {LANZAMIENTO.cupos} clientes <span aria-hidden="true">·</span> Incluye el primer mes de mantenimiento bonificado</p>
+    )}
 
     <ul class="planes">
       {PLANES.map((p, i) => (
@@ -37,7 +41,7 @@ import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
     <div class="mant rv">
       <div class="mant-cab">
         <p class="mant-tit">Mantenimiento mensual <span>Opcional</span></p>
-        <p class="mant-precio"><b>{MANTENIMIENTO.precio}</b> / mes</p>
+        <p class="mant-precio"><b>{MANTENIMIENTO.precio}</b> / mes <em>{MANTENIMIENTO.bonificado}</em></p>
       </div>
       <ul class="mant-lista">{MANTENIMIENTO.incluye.map((it) => <li>{it}</li>)}</ul>
       <a class="mant-link" href={wa(MANTENIMIENTO.mensaje)} target="_blank" rel="noopener">Consultar <span aria-hidden="true">→</span></a>
@@ -53,6 +57,9 @@ import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
 <style>
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; margin-bottom: clamp(40px, 6vw, 64px); }
   .cabecera h2 { margin-top: 18px; }
+  /* Aviso de lanzamiento: sin precio tachado, el beneficio es real y tiene límite */
+  .lanza { width: fit-content; margin: 0 auto 34px; padding: 10px 20px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .93rem; font-weight: 600; text-align: center; }
+  .lanza b { font-weight: 800; }
   .planes { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
   .plan { position: relative; display: flex; flex-direction: column; padding: 34px 30px 30px; background: var(--papel); border: 1px solid var(--linea); border-radius: 22px; transition: opacity .8s var(--ease), transform .8s var(--ease), box-shadow .4s, border-color .3s; transition-delay: var(--d, 0s), var(--d, 0s), 0s, 0s; }
   .js .plan.rv.in:hover { transform: translateY(-6px); }
@@ -85,6 +92,7 @@ import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
   .mant-tit { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; font-size: 1.1rem; }
   .mant-tit span { padding: 3px 10px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .72rem; letter-spacing: .04em; }
   .mant-precio { margin-top: 4px; color: var(--texto-suave); font-size: .95rem; }
+  .mant-precio em { display: block; font-style: normal; font-size: .82rem; font-weight: 800; color: var(--bordo); }
   .mant-precio b { color: var(--grafito); font-size: 1.5rem; letter-spacing: -.03em; }
   .mant-lista { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: .92rem; color: var(--texto-suave); }
   .mant-lista li { display: flex; gap: 8px; }
@@ -110,6 +118,7 @@ import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
     .planes { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
     .para { min-height: 0; }
     .mant { grid-template-columns: 1fr; }
+    .lanza { border-radius: 18px; }
   }
   @media (max-width: 480px) {
     .plan { padding: 30px 22px 24px; }
