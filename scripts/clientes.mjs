@@ -24,7 +24,7 @@ const BASES = {
       matricula: ['34.812'],
       obrasSociales: ['OSDE, Swiss Medical y Galeno'],
     },
-    colores: { principal: ['2bb5a0'], secundario: ['0e5a8a'], secundarioOscuro: ['0a3d5c'] },
+    colores: { principal: ['1f8a7a'], secundario: ['10292e'] },
   },
   estetica: {
     textos: {

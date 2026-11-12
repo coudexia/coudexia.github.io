@@ -10,7 +10,7 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
         <p class="etiqueta rv">Proyectos</p>
         <h2 class="rv palabras">Webs listas para recorrer, no capturas.</h2>
       </div>
-      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Pasá el mouse para recorrerlos o abrilos completos.</p>
+      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Pasá el mouse para recorrerlos o abrí la vista previa y alterná entre <b>escritorio y celular</b>: cada una está diseñada primero para el teléfono, que es desde donde entra la mayoría de tus clientes.</p>
     </div>
 
     <div class="filtros rv" role="group" aria-label="Filtrar proyectos por plan">
@@ -101,6 +101,7 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
   .proyectos { background: var(--vino); color: var(--marfil); }
   .proyectos .etiqueta { color: var(--rosa); }
   .proyectos .bajada { color: #D9C3CC; }
+  .proyectos .bajada b { color: var(--marfil); }
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 40px; }
   .cabecera h2 { margin-top: 18px; }
 

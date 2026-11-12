@@ -1,0 +1,26 @@
+/* Base compartida por las demos rediseñadas: franja de demo, aviso de contacto ficticio y apariciones.
+   Cada demo define en su :root  --fx (acento) y --fx-tinta (texto oscuro). */
+
+/* Franja "Proyecto demo" (se oculta cuando la demo se ve dentro de la vista previa de Coudexia) */
+.demo-ribbon { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 90; display: flex; gap: 10px; align-items: center; background: #1b171ae8; color: #f4efec; font: 600 .76rem/1 system-ui, sans-serif; padding: 9px 14px; border-radius: 999px; box-shadow: 0 8px 24px #0005; backdrop-filter: blur(8px); white-space: nowrap; }
+.demo-ribbon a { color: #E9C9D5; text-decoration: none; }
+.demo-ribbon a:hover { text-decoration: underline; }
+.embed .demo-ribbon { display: none; }
+@media (max-width: 640px) {
+  .demo-ribbon { position: static; transform: none; justify-content: center; flex-wrap: wrap; gap: 2px 10px; border-radius: 0; box-shadow: none; white-space: normal; text-align: center; padding: 8px 12px; font-size: .72rem; }
+}
+
+/* Aviso al tocar un contacto de la demo */
+.fx-toast { position: fixed; left: 16px; right: 16px; bottom: 84px; margin: 0 auto; width: fit-content; max-width: 420px; z-index: 200; padding: 14px 18px; border-radius: 14px; background: #1b171af2; color: #f4efec; font: 500 .9rem/1.45 system-ui, sans-serif; text-align: center; box-shadow: 0 16px 40px #0006; opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .3s, transform .35s cubic-bezier(.2, .8, .2, 1); }
+.fx-toast.ver { opacity: 1; transform: none; }
+.fx-toast b { color: var(--fx, #E9C9D5); filter: brightness(1.4); }
+
+/* Apariciones al hacer scroll: solo si hay JS */
+.js-on .rv { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2, .8, .2, 1), transform .9s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 80ms); }
+.js-on .rv.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .js-on .rv { opacity: 1; transform: none; }
+}
