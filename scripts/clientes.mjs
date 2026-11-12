@@ -34,7 +34,7 @@ const BASES = {
       direccion: ['Gurruchaga 1840'],
       horario: ['Martes a sábado de 10 a 20 h'],
     },
-    colores: { principal: ['c7857a'], principalOscuro: ['b3695d'] },
+    colores: { principal: ['a9604f'] },
   },
   'servicio-tecnico': {
     textos: {
