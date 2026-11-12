@@ -68,12 +68,12 @@ export const SERVICIOS = [
 
 // Proyectos demostrativos: marcas y datos ficticios. "img" = nombre de las capturas en /public/proyectos/
 export const PROYECTOS = [
-  { nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'odontologo', desc: 'Consultorio odontológico con tratamientos, preguntas frecuentes, galería, reseñas de ejemplo y turnos por WhatsApp.' },
-  { nombre: 'Lúa Studio', tipo: 'Desarrollo a medida · Armado de turno', plan: 'A medida', demo: 'estetica-integral', desc: 'Catálogo de servicios con filtros: la clienta arma su turno, ve el total y la duración, y lo reserva por WhatsApp.' },
-  { nombre: 'Rumbo Fletes', tipo: 'Landing page · Cotizador', plan: 'Página Start', demo: 'fletes', desc: 'Una página con cotizador: origen, destino y carga llegan armados por WhatsApp. Barra fija para llamar.' },
-  { nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'estetica', desc: 'Identidad editorial para un centro de estética: precios por categoría, packs, galería, equipo y reservas.' },
-  { nombre: 'HidroClima', tipo: 'Landing page · Urgencias', plan: 'Página Start', demo: 'servicio-tecnico', desc: 'Pensada para urgencias desde el celular: servicios, zonas con mapa y botones para llamar o escribir.' },
-  { nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'depilacion', desc: 'Precios por zona, packs con ahorro, preguntas frecuentes y reserva de evaluación con mapa.' },
+  { nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
+  { nombre: 'Lúa Studio', tipo: 'Desarrollo a medida · Armado de turno', plan: 'A medida', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
+  { nombre: 'Rumbo Fletes', tipo: 'Landing page · Cotizador', plan: 'Página Start', demo: 'fletes', desc: 'Cotizador en dos pasos dentro de la portada: origen, destino, carga y vehículo llegan armados por WhatsApp.' },
+  { nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
+  { nombre: 'HidroClima', tipo: 'Landing page · Urgencias', plan: 'Página Start', demo: 'servicio-tecnico', desc: 'Pensada para urgencias desde el celular: elegís el problema y se abre WhatsApp con el mensaje listo.' },
+  { nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'depilacion', desc: 'Armado de zonas con total por sesión, packs con ahorro, preguntas frecuentes y reserva de evaluación.' },
 ];
 
 // Precios en pesos argentinos. Para ocultar un monto, poné desde: ''.

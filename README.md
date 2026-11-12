@@ -17,7 +17,7 @@ Publicada en https://coudexia.github.io/ con GitHub Pages: cada push a `main` se
   `public/apple-touch-icon.png` y `public/og.png` (imagen al compartir el link).
 
 ## Proyectos demostrativos
-Cada demo es una carpeta en `public/demos/<nombre>/` (HTML/CSS sin build, efectos en `public/demos/_fx/`).
+Cada demo es una carpeta en `public/demos/<nombre>/` (HTML/CSS sin build). Comparten `public/demos/_fx/base.css` y `base.js` (franja de demo, aviso en contactos ficticios, apariciones, menú, galería y formularios a WhatsApp).
 Marcas y datos ficticios; fotos de Unsplash. Las capturas de las tarjetas están en `public/proyectos/`
 (`<demo>-desk.webp` 960×600 y `<demo>-cel.webp` 390×844): si cambiás una demo, actualizá su captura.
 

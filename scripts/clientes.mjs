@@ -74,7 +74,7 @@ const BASES = {
       direccion: ['Av. Corrientes 5120'],
       horario: ['Lunes a sábado de 10 a 20 h'],
     },
-    colores: { principal: ['c2376b'], principalOscuro: ['8b274d'] },
+    colores: { principal: ['c2376b'] },
   },
 };
 
