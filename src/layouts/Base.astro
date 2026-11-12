@@ -1,0 +1,103 @@
+---
+const { title, description } = Astro.props;
+const abs = (p: string) => new URL(p, Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#F7F4F1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Coudexia" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={abs('/og.png')} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="coudexia. Sitios web, landing pages y tiendas online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={abs('/og.png')} />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --vino: #501B35;
+    --bordo: #782D4D;
+    --bordo-hover: #8E3A5C;
+    --rosa: #E9C9D5;
+    --marfil: #F7F4F1;
+    --grafito: #242126;
+    --texto-suave: #5D5459;
+    --linea: #E3DAD6;
+    --linea-oscura: #6B3A52;
+    --papel: #FFFFFF;
+    --radio: 14px;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: Manrope, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--marfil);
+    color: var(--grafito);
+    line-height: 1.6;
+    font-size: 1.0625rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--bordo); outline-offset: 3px; border-radius: 6px; }
+  h1, h2, h3 { line-height: 1.08; letter-spacing: -0.035em; font-weight: 800; text-wrap: balance; }
+  h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); }
+  p { text-wrap: pretty; }
+
+  .wrap { width: min(1180px, 100% - 40px); margin-inline: auto; }
+  .seccion { padding: clamp(72px, 10vw, 128px) 0; }
+  .etiqueta { display: inline-flex; align-items: center; gap: 10px; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--bordo); }
+  .etiqueta::before { content: ""; width: 22px; height: 2px; background: currentColor; }
+  .bajada { color: var(--texto-suave); font-size: 1.125rem; max-width: 560px; }
+
+  /* Botones */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease); }
+  .btn:active { transform: scale(.98); }
+  .btn-principal { background: var(--bordo); color: var(--marfil); }
+  .btn-principal:hover { background: var(--bordo-hover); }
+  .btn-borde { border-color: var(--grafito); color: var(--grafito); }
+  .btn-borde:hover { background: var(--grafito); color: var(--marfil); }
+  .btn-claro { background: var(--marfil); color: var(--vino); }
+  .btn-claro:hover { background: var(--rosa); }
+  .btn .flecha { transition: transform .2s var(--ease); }
+  .btn:hover .flecha { transform: translateX(3px); }
+
+  .saltar { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--grafito); color: var(--marfil); padding: 10px 16px; border-radius: 8px; }
+  .saltar:focus { top: 12px; }
+
+  /* Aparición al hacer scroll (solo con JS y sin "reducir movimiento") */
+  .js .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .js .rv.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+    .js .rv { opacity: 1; transform: none; }
+  }
+</style>

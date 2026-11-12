@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /clientes/
+Sitemap: https://coudexia.github.io/sitemap.xml

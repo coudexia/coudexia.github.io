@@ -1,0 +1,142 @@
+---
+import { PROYECTOS } from '../data/coudexia';
+const filtros = ['Todos', ...['Web Start', 'Web Business', 'A medida'].filter((f) => PROYECTOS.some((p) => p.plan === f))];
+const url = (demo: string) => `/demos/${demo}/index.html`;
+---
+<section class="seccion proyectos" id="proyectos">
+  <div class="wrap">
+    <div class="cabecera">
+      <div>
+        <p class="etiqueta rv">Proyectos</p>
+        <h2 class="rv">Webs listas para recorrer, no capturas.</h2>
+      </div>
+      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Abrí cualquiera y navegalo completo.</p>
+    </div>
+
+    <div class="filtros rv" role="group" aria-label="Filtrar proyectos por plan">
+      {filtros.map((f, i) => <button type="button" class="filtro" data-filtro={f} aria-pressed={i === 0 ? 'true' : 'false'}>{f}</button>)}
+    </div>
+
+    <ul class="grilla">
+      {PROYECTOS.map((p, i) => (
+        <li class="proyecto rv" data-plan={p.plan}>
+          <button type="button" class="mock" data-url={url(p.demo)} data-nombre={p.nombre} aria-label={`Ver vista previa de ${p.nombre}`}>
+            <img class="desk" src={`/proyectos/${p.demo}-desk.webp`} alt={`${p.nombre} en escritorio`} width="960" height="600" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+            <img class="cel" src={`/proyectos/${p.demo}-cel.webp`} alt={`${p.nombre} en celular`} width="390" height="844" loading="lazy" decoding="async" />
+            <span class="ver">Vista previa <span aria-hidden="true">↗</span></span>
+          </button>
+          <div class="info">
+            <p class="tipo">{p.tipo}</p>
+            <h3>{p.nombre}</h3>
+            <p class="desc">{p.desc}</p>
+            <p class="pie"><span class="demo">Proyecto demostrativo</span><a href={url(p.demo)} target="_blank" rel="noopener">Abrir sitio <span aria-hidden="true">→</span></a></p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <dialog class="visor" aria-labelledby="visor-titulo">
+    <div class="visor-barra">
+      <p id="visor-titulo" class="visor-titulo"></p>
+      <div class="dispositivos" role="group" aria-label="Ver en">
+        <button type="button" data-disp="desk" aria-pressed="true">Escritorio</button>
+        <button type="button" data-disp="cel" aria-pressed="false">Celular</button>
+      </div>
+      <a class="visor-abrir" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+      <button type="button" class="cerrar" aria-label="Cerrar vista previa">✕</button>
+    </div>
+    <div class="pantalla"><iframe title="Vista previa del proyecto"></iframe></div>
+  </dialog>
+</section>
+
+<script>
+  // Filtro por plan
+  const botones = document.querySelectorAll<HTMLButtonElement>('.filtro');
+  const items = document.querySelectorAll<HTMLElement>('.proyecto');
+  botones.forEach((b) => b.addEventListener('click', () => {
+    botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((it) => { it.hidden = b.dataset.filtro !== 'Todos' && it.dataset.plan !== b.dataset.filtro; });
+  }));
+
+  // Visor con el sitio en vivo
+  const visor = document.querySelector<HTMLDialogElement>('.visor')!;
+  const frame = visor.querySelector('iframe')!;
+  const titulo = visor.querySelector('.visor-titulo')!;
+  const abrir = visor.querySelector<HTMLAnchorElement>('.visor-abrir')!;
+  const disps = visor.querySelectorAll<HTMLButtonElement>('[data-disp]');
+  const dispositivo = (d: string) => {
+    visor.dataset.disp = d;
+    disps.forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.disp === d)));
+  };
+  disps.forEach((b) => b.addEventListener('click', () => dispositivo(b.dataset.disp!)));
+  document.querySelectorAll<HTMLButtonElement>('.mock').forEach((m) => m.addEventListener('click', () => {
+    frame.src = m.dataset.url!;
+    abrir.href = m.dataset.url!;
+    titulo.textContent = `${m.dataset.nombre} · proyecto demostrativo`;
+    dispositivo(matchMedia('(max-width: 700px)').matches ? 'cel' : 'desk');
+    visor.showModal();
+    document.body.style.overflow = 'hidden';
+  }));
+  visor.querySelector('.cerrar')!.addEventListener('click', () => visor.close());
+  visor.addEventListener('click', (e) => { if (e.target === visor) visor.close(); });
+  visor.addEventListener('close', () => { frame.src = 'about:blank'; document.body.style.overflow = ''; });
+</script>
+
+<style>
+  .proyectos { background: var(--vino); color: var(--marfil); }
+  .proyectos .etiqueta { color: var(--rosa); }
+  .proyectos .bajada { color: #D9C3CC; }
+  .cabecera { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 40px; }
+  .cabecera h2 { margin-top: 18px; }
+
+  .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+  .filtro { min-height: 42px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--linea-oscura); background: transparent; color: var(--marfil); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  .filtro:hover { border-color: var(--rosa); }
+  .filtro[aria-pressed="true"] { background: var(--marfil); color: var(--vino); border-color: var(--marfil); }
+  .proyectos :focus-visible { outline-color: var(--rosa); }
+
+  .grilla { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 5vw, 64px) clamp(24px, 3vw, 40px); }
+  .proyecto[hidden] { display: none; }
+  .mock { position: relative; display: block; width: 100%; padding: 7% 18% 7% 6%; border: 0; border-radius: 20px; background: #5E2441; cursor: pointer; overflow: hidden; text-align: left; }
+  .desk { border-radius: 8px; box-shadow: 0 24px 48px -18px #12030bcc; transition: transform .5s var(--ease); }
+  .cel { position: absolute; right: 5%; bottom: -18%; width: 24%; border-radius: 14px; border: 4px solid var(--grafito); box-shadow: 0 20px 40px -12px #12030bcc; transition: transform .5s var(--ease); }
+  .mock:hover .desk { transform: translateY(-4px); }
+  .mock:hover .cel { transform: translateY(-10px); }
+  .ver { position: absolute; left: 6%; bottom: 14px; padding: 7px 14px; border-radius: 999px; background: var(--marfil); color: var(--vino); font-size: .82rem; font-weight: 700; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s var(--ease); }
+  .mock:hover .ver, .mock:focus-visible .ver { opacity: 1; transform: none; }
+  @media (hover: none) { .ver { opacity: 1; transform: none; } }
+
+  .info { padding-top: 22px; }
+  .tipo { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
+  .info h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin: 8px 0 10px; }
+  .desc { color: #D9C3CC; max-width: 520px; }
+  .pie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 16px; font-size: .9rem; }
+  .demo { padding: 4px 10px; border: 1px solid var(--linea-oscura); border-radius: 999px; font-size: .78rem; color: #D9C3CC; }
+  .pie a { font-weight: 700; text-decoration: none; border-bottom: 1.5px solid var(--rosa); }
+  .pie a:hover { color: var(--rosa); }
+
+  /* Visor */
+  .visor { width: min(1240px, 100% - 24px); height: min(860px, 100dvh - 24px); max-width: none; max-height: none; margin: auto; border: 0; border-radius: 18px; background: var(--grafito); color: var(--marfil); overflow: hidden; }
+  .visor::backdrop { background: #1a0610cc; }
+  .visor[open] { display: flex; flex-direction: column; }
+  .visor-barra { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; padding: 12px 14px 12px 20px; }
+  .visor-titulo { font-weight: 700; margin-right: auto; }
+  .dispositivos { display: flex; padding: 3px; border-radius: 999px; background: #3a3539; }
+  .dispositivos button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--marfil); font-weight: 600; font-size: .85rem; cursor: pointer; }
+  .dispositivos button[aria-pressed="true"] { background: var(--marfil); color: var(--grafito); }
+  .visor-abrir { font-size: .88rem; font-weight: 600; color: var(--rosa); }
+  .cerrar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #4a4448; background: transparent; color: var(--marfil); cursor: pointer; font-size: 1rem; }
+  .cerrar:hover { background: #3a3539; }
+  .pantalla { flex: 1; display: grid; place-items: center; padding: 0 12px 12px; min-height: 0; }
+  .pantalla iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; background: #fff; transition: width .3s var(--ease); }
+  .visor[data-disp="cel"] iframe { width: min(390px, 100%); }
+
+  @media (max-width: 860px) {
+    .cabecera, .grilla { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .dispositivos { display: none; }
+    .visor { width: 100%; height: 100dvh; border-radius: 0; }
+  }
+</style>

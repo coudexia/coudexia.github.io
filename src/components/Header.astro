@@ -1,0 +1,79 @@
+---
+import Logo from './Logo.astro';
+const links = [
+  ['#inicio', 'Inicio'],
+  ['#servicios', 'Servicios'],
+  ['#proyectos', 'Proyectos'],
+  ['#precios', 'Precios'],
+  ['#contacto', 'Contacto'],
+];
+---
+<header class="header">
+  <div class="wrap barra">
+    <a class="marca" href="#inicio" aria-label="Coudexia, ir al inicio"><Logo /></a>
+    <nav id="menu" class="menu" aria-label="Principal">
+      <ul>
+        {links.map(([href, t]) => <li><a href={href}>{t}</a></li>)}
+      </ul>
+      <a class="btn btn-principal cta-menu" href="#contacto">Solicitar presupuesto</a>
+    </nav>
+    <a class="btn btn-principal cta" href="#contacto">Solicitar presupuesto</a>
+    <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.header')!;
+  const boton = header.querySelector<HTMLButtonElement>('.hamburguesa')!;
+  const abrir = (si: boolean) => {
+    header.classList.toggle('abierto', si);
+    boton.setAttribute('aria-expanded', String(si));
+    boton.setAttribute('aria-label', si ? 'Cerrar menú' : 'Abrir menú');
+    document.body.style.overflow = si ? 'hidden' : '';
+  };
+  boton.addEventListener('click', () => abrir(!header.classList.contains('abierto')));
+  header.querySelectorAll('.menu a').forEach((a) => a.addEventListener('click', () => abrir(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
+  matchMedia('(min-width: 961px)').addEventListener('change', () => abrir(false));
+
+  const sombra = () => header.classList.toggle('scroll', scrollY > 8);
+  addEventListener('scroll', sombra, { passive: true }); sombra();
+
+  // Link activo según la sección visible
+  const links = [...header.querySelectorAll<HTMLAnchorElement>('.menu ul a')];
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) links.forEach((a) => a.toggleAttribute('aria-current', a.hash === `#${e.target.id}`));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+</script>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--marfil) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .3s; }
+  .header.scroll { border-color: var(--linea); }
+  .barra { display: flex; align-items: center; gap: 28px; height: 76px; }
+  .marca { font-size: 1.6rem; text-decoration: none; display: inline-flex; margin-right: auto; }
+  .menu { display: flex; align-items: center; }
+  .menu ul { display: flex; gap: 30px; list-style: none; }
+  .menu ul a { position: relative; text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--texto-suave); padding: 6px 0; transition: color .2s; }
+  .menu ul a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--bordo); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+  .menu ul a:hover, .menu ul a[aria-current] { color: var(--grafito); }
+  .menu ul a:hover::after, .menu ul a[aria-current]::after { transform: scaleX(1); }
+  .cta { min-height: 44px; padding: 0 20px; font-size: .92rem; }
+  .cta-menu, .hamburguesa { display: none; }
+
+  @media (max-width: 960px) {
+    .cta { display: none; }
+    .hamburguesa { display: grid; place-content: center; gap: 6px; width: 46px; height: 46px; border: 1.5px solid var(--grafito); border-radius: 999px; background: transparent; cursor: pointer; }
+    .hamburguesa span { display: block; width: 18px; height: 2px; background: var(--grafito); transition: transform .3s var(--ease); }
+    .abierto .hamburguesa span:first-child { transform: translateY(4px) rotate(45deg); }
+    .abierto .hamburguesa span:last-child { transform: translateY(-4px) rotate(-45deg); }
+    .menu { position: fixed; inset: 76px 0 0; height: calc(100dvh - 76px); flex-direction: column; align-items: stretch; justify-content: space-between; padding: 24px 20px 32px; background: var(--marfil); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .25s, transform .25s var(--ease), visibility 0s .25s; }
+    .abierto .menu { visibility: visible; opacity: 1; transform: none; transition: opacity .25s, transform .25s var(--ease); }
+    .menu ul { flex-direction: column; gap: 0; }
+    .menu ul a { display: block; padding: 18px 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; color: var(--grafito); border-bottom: 1px solid var(--linea); }
+    .menu ul a::after { display: none; }
+    .cta-menu { display: flex; }
+  }
+</style>

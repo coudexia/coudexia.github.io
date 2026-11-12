@@ -1,0 +1,60 @@
+---
+import Logo from './Logo.astro';
+import { CONTACTO, wa } from '../data/coudexia';
+const nav = [['#servicios', 'Servicios'], ['#proyectos', 'Proyectos'], ['#precios', 'Precios'], ['#proceso', 'Proceso'], ['#preguntas', 'Preguntas frecuentes'], ['#contacto', 'Contacto']];
+const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin]].filter(([, u]) => u);
+---
+<footer class="footer">
+  <div class="wrap grilla">
+    <div class="marca">
+      <a href="#inicio" class="logo-link" aria-label="Coudexia, volver al inicio"><Logo claro /></a>
+      <p>Diseño y desarrollo de sitios web, landing pages y tiendas online.</p>
+    </div>
+    <nav aria-label="Secundaria">
+      <h3>Navegación</h3>
+      <ul>{nav.map(([h, t]) => <li><a href={h}>{t}</a></li>)}</ul>
+    </nav>
+    <div>
+      <h3>Contacto</h3>
+      <ul>
+        <li><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href={`mailto:${CONTACTO.email}`}>Email</a></li>
+        {redes.map(([n, u]) => <li><a href={u} target="_blank" rel="noopener">{n}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <p>© {new Date().getFullYear()} Coudexia · {CONTACTO.ciudad}</p>
+    <p>Los proyectos de esta página son demostrativos: marcas y datos ficticios. Fotos de Unsplash.</p>
+  </div>
+</footer>
+
+<a class="wa-flotante" href={wa()} target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" fill="currentColor"><path d="M16.04 3C8.86 3 3.03 8.82 3.03 16c0 2.3.6 4.53 1.74 6.5L3 29l6.68-1.75A12.95 12.95 0 0 0 16.04 29C23.2 29 29 23.18 29 16S23.2 3 16.04 3Zm0 23.66c-1.96 0-3.88-.53-5.56-1.52l-.4-.24-3.96 1.04 1.06-3.86-.26-.4A10.6 10.6 0 0 1 5.38 16c0-5.88 4.78-10.66 10.66-10.66S26.7 10.12 26.7 16s-4.78 10.66-10.66 10.66Zm5.85-7.98c-.32-.16-1.89-.93-2.18-1.04-.3-.1-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.18.21-.32.32-.53.1-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66s1.14 3.08 1.3 3.3c.16.2 2.25 3.43 5.45 4.81.76.33 1.35.52 1.81.67.76.24 1.46.2 2.01.12.61-.09 1.89-.77 2.15-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37Z"/></svg>
+</a>
+
+<script>
+  // El botón flotante aparece después del hero, para no competir con sus CTA
+  const b = document.querySelector<HTMLElement>('.wa-flotante')!;
+  const ver = () => b.classList.toggle('visible', scrollY > innerHeight * .7);
+  addEventListener('scroll', ver, { passive: true }); ver();
+</script>
+
+<style>
+  .footer { background: var(--grafito); color: var(--marfil); padding: 72px 0 32px; }
+  .grilla { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr)); gap: 40px; }
+  .logo-link { font-size: 2.4rem; text-decoration: none; display: inline-flex; }
+  .marca p { margin-top: 16px; color: #B5ABB0; max-width: 340px; }
+  h3 { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--rosa); margin-bottom: 14px; }
+  ul { list-style: none; display: grid; gap: 8px; }
+  ul a { text-decoration: none; color: #DDD5D8; }
+  ul a:hover { color: var(--marfil); text-decoration: underline; text-underline-offset: 4px; }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid #3A3539; font-size: .85rem; color: #A39AA0; }
+  .footer :focus-visible { outline-color: var(--rosa); }
+
+  .wa-flotante { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #25D366; color: #fff; box-shadow: 0 10px 24px -6px #0006; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, transform .3s var(--ease), visibility 0s .3s; }
+  .wa-flotante.visible { opacity: 1; visibility: visible; transform: none; transition: opacity .3s, transform .3s var(--ease); }
+  .wa-flotante:hover { transform: scale(1.06); }
+
+  @media (max-width: 760px) { .grilla { grid-template-columns: 1fr 1fr; } .marca { grid-column: 1 / -1; } }
+</style>

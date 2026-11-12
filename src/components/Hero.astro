@@ -1,0 +1,77 @@
+---
+import { PLANES } from '../data/coudexia';
+const desde = PLANES[0].desde;
+---
+<section class="hero" id="inicio">
+  <div class="wrap grilla">
+    <div class="texto">
+      <p class="etiqueta rv">Diseño · Desarrollo · Tiendas online</p>
+      <h1 class="rv">Tu próximo proyecto digital empieza <em>acá.</em></h1>
+      <p class="bajada rv">Diseñamos y desarrollamos sitios web y tiendas online para negocios que quieren crecer, destacarse y vender más.</p>
+      <div class="acciones rv">
+        <a class="btn btn-principal" href="#contacto">Solicitar presupuesto</a>
+        <a class="btn btn-borde" href="#proyectos">Ver proyectos <span class="flecha" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="escena rv" aria-hidden="true">
+      <div class="navegador">
+        <div class="barra-nav"><i></i><i></i><i></i><span>prisma-dental · demo</span></div>
+        <img src="/proyectos/odontologo-desk.webp" alt="" width="960" height="600" fetchpriority="high" />
+      </div>
+      <div class="celular">
+        <img src="/proyectos/estetica-integral-cel.webp" alt="" width="390" height="844" fetchpriority="high" />
+      </div>
+      <span class="rotulo">Proyectos demostrativos</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <ul class="datos rv">
+      <li><b>48 h</b><span>Borrador gratis de tu web, sin compromiso</span></li>
+      <li><b>Tuya</b><span>La web y el dominio quedan a tu nombre</span></li>
+      {desde && <li><b>{desde}</b><span>Precio desde, en pesos argentinos</span></li>}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .grilla { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  h1 { font-size: clamp(2.6rem, 6.4vw, 5.1rem); margin: 22px 0 24px; }
+  h1 em { font-style: normal; color: var(--bordo); }
+  .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+  /* Composición: bloque vino con un navegador y un celular superpuestos */
+  .escena { position: relative; aspect-ratio: 1 / .92; background: var(--vino); border-radius: 28px; overflow: hidden; }
+  .escena::before { content: ""; position: absolute; inset: auto -12% -38% auto; width: 70%; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--linea-oscura); }
+  .escena::after { content: ""; position: absolute; inset: auto -2% -24% auto; width: 46%; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--linea-oscura); }
+  .navegador { position: absolute; left: 7%; top: 10%; width: 82%; background: var(--marfil); border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px -20px #1a0610aa; z-index: 1; }
+  .barra-nav { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; background: #EDE6E1; }
+  .barra-nav i { width: 9px; height: 9px; border-radius: 50%; background: #D4C8C3; }
+  .barra-nav i:first-child { background: var(--bordo); }
+  .barra-nav span { margin-left: 10px; font-size: .7rem; color: var(--texto-suave); }
+  .celular { position: absolute; right: 6%; bottom: 7%; width: 27%; padding: 6px; background: var(--grafito); border-radius: 26px; box-shadow: 0 30px 50px -16px #1a0610cc; z-index: 2; }
+  .celular img { border-radius: 20px; aspect-ratio: 390 / 760; object-fit: cover; object-position: top; }
+  .rotulo { position: absolute; left: 7%; bottom: 7%; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rosa); }
+
+  .datos { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(48px, 7vw, 88px); border-top: 1px solid var(--linea); }
+  .datos li { padding: 26px 24px 0 0; display: grid; gap: 4px; }
+  .datos li + li { padding-left: 24px; border-left: 1px solid var(--linea); }
+  .datos b { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -.03em; color: var(--vino); }
+  .datos span { color: var(--texto-suave); font-size: .95rem; }
+
+  @media (max-width: 960px) {
+    .grilla { grid-template-columns: 1fr; }
+    .escena { aspect-ratio: 1 / .85; }
+  }
+  @media (max-width: 640px) {
+    .datos { grid-template-columns: 1fr; }
+    .datos li, .datos li + li { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--linea); }
+    .escena { border-radius: 20px; aspect-ratio: 1 / 1; }
+    .navegador { width: 88%; left: 6%; top: 8%; }
+    .celular { width: 34%; border-radius: 20px; padding: 4px; }
+    .celular img { border-radius: 16px; }
+    .rotulo { bottom: 6%; font-size: .62rem; max-width: 50%; }
+  }
+</style>

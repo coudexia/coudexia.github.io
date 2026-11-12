@@ -1,0 +1,38 @@
+---
+import { PROCESO } from '../data/coudexia';
+---
+<section class="seccion proceso" id="proceso">
+  <div class="wrap grilla">
+    <div class="cabecera">
+      <p class="etiqueta rv">Cómo trabajamos</p>
+      <h2 class="rv">Un proceso simple, sin sorpresas.</h2>
+      <p class="bajada rv">Sabés en qué etapa está tu proyecto y qué sigue en cada momento.</p>
+    </div>
+    <ol class="pasos">
+      {PROCESO.map((p, i) => (
+        <li class="paso rv">
+          <span class="num" aria-hidden="true">{i + 1}</span>
+          <div><h3>{p.t}</h3><p>{p.d}</p></div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .proceso { background: var(--papel); border-block: 1px solid var(--linea); }
+  .grilla { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px clamp(40px, 7vw, 96px); align-items: start; }
+  .cabecera { display: grid; gap: 18px; position: sticky; top: 120px; }
+  .pasos { list-style: none; counter-reset: paso; }
+  .paso { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 26px 0; border-top: 1px solid var(--linea); }
+  .paso:last-child { border-bottom: 1px solid var(--linea); }
+  .num { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--rosa); color: var(--vino); font-weight: 800; }
+  h3 { font-size: 1.3rem; letter-spacing: -.02em; margin: 8px 0 6px; }
+  p { color: var(--texto-suave); }
+
+  @media (max-width: 860px) {
+    .grilla { grid-template-columns: 1fr; }
+    .cabecera { position: static; }
+    .paso { grid-template-columns: 48px 1fr; gap: 14px; }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+import { PLANES, wa } from '../data/coudexia';
+---
+<section class="seccion" id="precios">
+  <div class="wrap">
+    <div class="cabecera">
+      <p class="etiqueta rv">Planes y precios</p>
+      <h2 class="rv">Precios claros desde el primer mensaje.</h2>
+      <p class="bajada rv">Precios de lanzamiento en pesos argentinos. Te pasamos el presupuesto final por escrito antes de empezar.</p>
+    </div>
+
+    <ul class="planes">
+      {PLANES.map((p) => (
+        <li class:list={['plan rv', { destacado: p.destacado }]}>
+          {p.destacado && <span class="sello">Recomendado</span>}
+          <h3>{p.nombre}</h3>
+          <p class="para">{p.para}</p>
+          <p class="precio">
+            {p.desde ? <><small>Desde</small><b>{p.desde}</b></> : <b class="consultar">A consultar</b>}
+          </p>
+          {p.nota && <p class="nota">{p.nota}</p>}
+          <ul class="incluye">{p.incluye.map((it) => <li>{it}</li>)}</ul>
+          <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero {p.nombre}</a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="medida rv">
+      <div>
+        <h3>¿Tu proyecto no entra en un plan?</h3>
+        <p>Integraciones, automatizaciones, sistemas de reservas o una web a medida: contanos qué necesitás y te armamos un presupuesto personalizado.</p>
+      </div>
+      <a class="btn btn-borde" href="#contacto">Pedir presupuesto a medida <span class="flecha" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cabecera { display: grid; gap: 18px; max-width: 720px; margin-bottom: clamp(40px, 6vw, 64px); }
+  .planes { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .plan { position: relative; display: flex; flex-direction: column; padding: 34px 30px 30px; background: var(--papel); border: 1px solid var(--linea); border-radius: 22px; }
+  .destacado { background: var(--vino); color: var(--marfil); border-color: var(--vino); }
+  .sello { position: absolute; top: -13px; left: 30px; padding: 5px 12px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .75rem; font-weight: 800; letter-spacing: .04em; }
+  h3 { font-size: 1.6rem; }
+  .para { margin-top: 10px; color: var(--texto-suave); font-size: .97rem; min-height: 3.2em; }
+  .destacado .para, .destacado .nota { color: #D9C3CC; }
+  .precio { display: grid; margin: 26px 0 4px; padding-top: 22px; border-top: 1px solid var(--linea); }
+  .destacado .precio { border-color: var(--linea-oscura); }
+  .precio small { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--bordo); }
+  .destacado .precio small { color: var(--rosa); }
+  .precio b { font-size: clamp(2.2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
+  .nota { font-size: .85rem; color: var(--texto-suave); }
+  .incluye { list-style: none; display: grid; gap: 11px; margin: 24px 0 30px; font-size: .96rem; }
+  .incluye li { display: flex; gap: 10px; }
+  .incluye li::before { content: "✓"; flex: none; font-weight: 800; color: var(--bordo); }
+  .destacado .incluye li::before { color: var(--rosa); }
+  .plan .btn { margin-top: auto; width: 100%; }
+
+  .medida { display: flex; align-items: center; justify-content: space-between; gap: 24px 48px; margin-top: 20px; padding: 32px; border: 1.5px dashed var(--bordo); border-radius: 22px; }
+  .medida h3 { font-size: 1.4rem; margin-bottom: 6px; }
+  .medida p { color: var(--texto-suave); max-width: 620px; }
+  .medida .btn { flex: none; }
+
+  @media (max-width: 960px) {
+    .planes { grid-template-columns: 1fr; max-width: 520px; }
+    .para { min-height: 0; }
+    .medida { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 480px) {
+    .plan, .medida { padding: 30px 22px 24px; }
+    .medida .btn { width: 100%; }
+  }
+</style>

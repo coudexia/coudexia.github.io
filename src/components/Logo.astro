@@ -1,0 +1,15 @@
+---
+// Logo en curvas: las letras toman el color del texto y la "x" y el punto, el acento.
+import svg from '../assets/logo.svg?raw';
+const { claro = false } = Astro.props;
+---
+<span class:list={['logo', { claro }]} set:html={svg} />
+
+<style>
+  .logo { display: inline-flex; }
+  .logo :global(svg) { height: 1em; width: auto; }
+  .logo :global(.l) { fill: var(--grafito); }
+  .logo :global(.a) { fill: var(--bordo); }
+  .claro :global(.l) { fill: var(--marfil); }
+  .claro :global(.a) { fill: var(--rosa); }
+</style>

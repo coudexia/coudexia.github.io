@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Servicios from '../components/Servicios.astro';
+import Proyectos from '../components/Proyectos.astro';
+import Precios from '../components/Precios.astro';
+import Proceso from '../components/Proceso.astro';
+import Faq from '../components/Faq.astro';
+import Contacto from '../components/Contacto.astro';
+import Footer from '../components/Footer.astro';
+import { SITIO, CONTACTO } from '../data/coudexia';
+
+// Datos de la empresa para Google
+const ld = {
+  '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'Coudexia',
+  description: SITIO.descripcion, url: 'https://coudexia.github.io/', image: 'https://coudexia.github.io/og.png',
+  telephone: CONTACTO.telefono, email: CONTACTO.email, areaServed: 'AR',
+  address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+};
+---
+<Base title={SITIO.titulo} description={SITIO.descripcion}>
+  <Header />
+  <main id="contenido">
+    <Hero />
+    <Servicios />
+    <Proyectos />
+    <Precios />
+    <Proceso />
+    <Faq />
+    <Contacto />
+  </main>
+  <Footer />
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <script>
+    // Aparición suave al hacer scroll
+    document.documentElement.classList.add('js');
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.rv').forEach((el) => io.observe(el));
+  </script>
+</Base>

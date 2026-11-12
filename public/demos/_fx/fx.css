@@ -1,0 +1,86 @@
+/* Efectos interactivos compartidos por las demos.
+   Cada demo define su color con --fx (y opcionalmente --fx-sombra) en :root. */
+
+/* (sin valores por defecto en :root: este archivo carga después y pisaría el color de cada demo) */
+
+/* Barra de progreso de lectura */
+.fx-progreso { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100; background: var(--fx); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+
+/* Tarjetas con brillo que sigue al mouse */
+.fx-g { position: relative; isolation: isolate; transition: opacity .6s, transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s !important; }
+.fx-luz { position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s; background: radial-gradient(300px circle at var(--x, 50%) var(--y, 0%), color-mix(in srgb, var(--fx) 18%, transparent), transparent 70%); }
+.fx-g:hover .fx-luz { opacity: 1; }
+.fx-g.on:hover, .fx-g:not(.reveal):hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px); box-shadow: var(--fx-sombra, 0 18px 40px color-mix(in srgb, var(--fx) 22%, #0000)), 0 0 0 1px color-mix(in srgb, var(--fx) 45%, transparent); border-color: color-mix(in srgb, var(--fx) 60%, transparent); }
+
+/* Íconos que reaccionan */
+.fx-ico { display: inline-block; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.fx-g:hover .fx-ico { transform: rotate(-10deg) scale(1.2); }
+
+/* Etiquetas y chips */
+.fx-chip { display: inline-block; transition: transform .25s cubic-bezier(.2,.8,.2,1), background .25s, color .25s, border-color .25s, box-shadow .25s; cursor: default; }
+.fx-chip:hover { transform: translateY(-3px); background: var(--fx) !important; border-color: var(--fx) !important; color: #fff !important; box-shadow: 0 8px 18px color-mix(in srgb, var(--fx) 35%, transparent); }
+
+/* Botones con reflejo de luz */
+.btn { position: relative; overflow: hidden; }
+.btn::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 30%, #ffffff66 50%, transparent 70%); transform: translateX(-120%); transition: transform .6s; }
+.btn:hover::after { transform: translateX(120%); }
+.btn:hover { transform: translateY(-3px); }
+
+/* Luz que sigue al cursor en la portada */
+.fx-hero { position: relative; isolation: isolate; }
+.fx-hero > .fx-luz-hero { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .5s; background: radial-gradient(520px circle at var(--x, 50%) var(--y, 50%), #ffffff26, transparent 65%); }
+.fx-hero:hover > .fx-luz-hero { opacity: 1; }
+.fx-hero > :not(.fx-luz-hero) { position: relative; z-index: 1; }
+
+/* Botón flotante de WhatsApp con pulso */
+.wa { animation: fx-pulso 2.4s infinite; }
+@keyframes fx-pulso { 0% { box-shadow: 0 0 0 0 #25d36688, 0 6px 18px #0004; } 70% { box-shadow: 0 0 0 14px #25d36600, 0 6px 18px #0004; } 100% { box-shadow: 0 0 0 0 #25d36600, 0 6px 18px #0004; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-g, .fx-ico, .fx-chip, .btn, .btn::after, .wa { transition: none !important; animation: none !important; }
+  .fx-g:hover, .fx-chip:hover, .btn:hover { transform: none !important; }
+}
+.ph > .fx-luz { z-index: 1; background: radial-gradient(300px circle at var(--x, 50%) var(--y, 0%), #ffffff40, transparent 70%); }
+
+/* Franja de demo: en pantallas chicas puede ocupar dos líneas */
+@media (max-width: 640px) { .demo-ribbon { white-space: normal !important; flex-wrap: wrap; justify-content: center; gap: 2px 10px !important; font-size: .74rem !important; padding: 8px 12px !important; text-align: center; } }
+/* Si la página tiene barra fija inferior, que no tape el pie */
+@media (max-width: 640px) { body:has(> .bar) { padding-bottom: 64px; } }
+/* Títulos largos en celulares muy chicos */
+h1 { overflow-wrap: break-word; }
+
+/* Aviso al tocar un contacto de la demo */
+.fx-toast { position: fixed; left: 16px; right: 16px; margin: 0 auto; width: fit-content; bottom: 90px; z-index: 200; max-width: 420px; transform: translateY(20px); opacity: 0; pointer-events: none; background: #0b0f14f2; color: #e8eef5; font: 500 .9rem/1.45 system-ui, sans-serif; padding: 14px 18px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--fx) 60%, transparent); box-shadow: 0 14px 34px #0006; transition: opacity .3s, transform .3s; text-align: center; }
+.fx-toast.ver { opacity: 1; transform: none; }
+.fx-toast b { color: var(--fx); }
+
+/* Dónde nos encontramos */
+.ubicacion { padding: 64px 0; }
+.ubi-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 22px; align-items: stretch; margin-top: 24px; }
+@media (max-width: 760px) { .ubi-grid { grid-template-columns: 1fr; } }
+.ubi-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 26px; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--fx) 30%, transparent); background: color-mix(in srgb, var(--fx) 7%, transparent); }
+.ubi-pin { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--fx); box-shadow: 0 8px 22px color-mix(in srgb, var(--fx) 45%, transparent); animation: fx-pin 2.6s ease-in-out infinite; }
+.ubi-pin svg { width: 28px; height: 28px; }
+.ubi-pin:hover { animation: fx-salto .6s; }
+@keyframes fx-pin { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes fx-salto { 30% { transform: translateY(-14px) scale(1.08); } 60% { transform: translateY(0) scale(.96); } }
+.ubi-dir { font-weight: 700; font-size: 1.08rem; }
+.ubi-hor { opacity: .75; }
+.ubi-btn { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: 6px; padding: 11px 20px; border-radius: 999px; font-weight: 700; font-family: system-ui, sans-serif; color: #fff; background: var(--fx); transition: transform .25s, box-shadow .25s; }
+.ubi-btn svg { width: 18px; height: 18px; }
+.ubi-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 24px color-mix(in srgb, var(--fx) 45%, transparent); }
+.ubi-mapa { min-height: 320px; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px #0002; }
+.ubi-mapa iframe { width: 100%; height: 100%; min-height: 320px; border: 0; display: block; }
+
+/* Seguinos en redes */
+.redes { padding: 56px 0; text-align: center; }
+.redes h2 { text-align: center; }
+.redes-sub { opacity: .75; margin: 6px auto 22px; max-width: 480px; font-family: system-ui, sans-serif; }
+.ig-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 999px; color: #fff; font: 700 1rem system-ui, sans-serif; background: linear-gradient(45deg, #f9ce34, #ee2a7b 45%, #6228d7); box-shadow: 0 10px 26px #ee2a7b44; transition: transform .25s, box-shadow .25s; }
+.ig-btn svg { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.ig-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 32px #ee2a7b66; }
+.ig-btn:hover svg { transform: rotate(-12deg) scale(1.15); }
+.ig-pie { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 600; opacity: .9; transition: opacity .2s, transform .2s; }
+.ig-pie svg { width: 20px; height: 20px; }
+.ig-pie:hover { opacity: 1; transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .ubi-pin, .ubi-pin:hover { animation: none; } }

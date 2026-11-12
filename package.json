@@ -1,0 +1,16 @@
+{
+  "name": "coudexia",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "clientes": "node scripts/clientes.mjs",
+    "prebuild": "node scripts/clientes.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  }
+}
