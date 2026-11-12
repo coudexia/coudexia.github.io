@@ -25,7 +25,7 @@ const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin
   </div>
   <div class="wrap gigante" aria-hidden="true"><Logo claro /></div>
   <div class="wrap legal">
-    <p>© {new Date().getFullYear()} Coudexia · {CONTACTO.ciudad}</p>
+    <p>© {new Date().getFullYear()} Coudexia{CONTACTO.titular && <> · {CONTACTO.titular}</>}{CONTACTO.cuit && <> · CUIT {CONTACTO.cuit}</>} · {CONTACTO.ciudad} · <a href="/privacidad/">Política de privacidad</a></p>
     <p>Los proyectos de esta página son demostrativos: marcas y datos ficticios. Fotos de Unsplash.</p>
   </div>
 </footer>
@@ -57,6 +57,8 @@ const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin
   .gigante :global(.l) { fill: #342E33; }
   .gigante :global(.a) { fill: var(--bordo); }
   .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; border-top: 1px solid #3A3539; font-size: .85rem; color: #A39AA0; }
+  .legal a { color: inherit; text-underline-offset: 3px; }
+  .legal a:hover { color: var(--marfil); }
   .footer :focus-visible { outline-color: var(--rosa); }
 
   .wa-flotante { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #25D366; color: #fff; box-shadow: 0 10px 24px -6px #0006; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, transform .3s var(--ease), visibility 0s .3s; }

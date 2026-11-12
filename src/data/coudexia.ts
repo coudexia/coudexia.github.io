@@ -6,6 +6,8 @@ export const CONTACTO = {
   telefono: '+54 11 6610-3318',
   email: 'coudexia@gmail.com',
   ciudad: 'Buenos Aires, Argentina',
+  titular: '', // nombre completo o razón social, ej: 'Juan Pérez'. Aparece en el pie y en la política de privacidad
+  cuit: '',    // ej: '20-12345678-9'. Cuando estés inscripto en ARCA
   instagram: '', // ej: 'https://instagram.com/coudexia'
   linkedin: '',  // ej: 'https://www.linkedin.com/company/coudexia'
 };

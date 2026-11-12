@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { CONTACTO } from '../data/coudexia';
+
+// Cambiá esta fecha cada vez que edites el texto
+const actualizada = '12 de noviembre de 2026';
+const responsable = CONTACTO.titular ? `${CONTACTO.titular} (Coudexia)` : 'Coudexia';
+---
+<Base title="Política de privacidad · Coudexia" description="Qué datos usa el sitio de Coudexia, para qué y cómo ejercer tus derechos.">
+  <main id="contenido" class="doc">
+    <a href="/" class="logo-link" aria-label="Coudexia, ir al inicio"><Logo /></a>
+    <h1>Política de privacidad</h1>
+    <p class="fecha">Última actualización: {actualizada}</p>
+
+    <h2>Lo importante, en corto</h2>
+    <ul>
+      <li>Este sitio no guarda tus datos, no usa cookies y no tiene herramientas de estadísticas ni publicidad.</li>
+      <li>El formulario de contacto no envía nada por sí solo: arma un mensaje y abre tu WhatsApp o tu correo. Solo nos llega si vos decidís enviarlo.</li>
+      <li>Usamos lo que nos escribís únicamente para responderte y preparar tu propuesta. No vendemos ni compartimos tus datos.</li>
+    </ul>
+
+    <h2>Quién es el responsable</h2>
+    <p>{responsable}{CONTACTO.cuit && <>, CUIT {CONTACTO.cuit}</>}, con domicilio en {CONTACTO.ciudad}. Podés escribirnos a <a href={`mailto:${CONTACTO.email}`}>{CONTACTO.email}</a>.</p>
+
+    <h2>Qué datos recibimos y para qué</h2>
+    <p>Cuando nos escribís por WhatsApp o por correo recibimos lo que vos nos mandás: tu nombre, tu número o tu email y la descripción de tu proyecto. Los usamos para responderte, armar el presupuesto y, si avanzamos, llevar adelante el trabajo. Los guardamos en nuestras cuentas de WhatsApp y Gmail mientras dure la conversación o el proyecto.</p>
+
+    <h2>Servicios de terceros</h2>
+    <p>Para funcionar, el sitio usa servicios de otras empresas que pueden registrar datos técnicos de tu visita, como tu dirección IP, según sus propias políticas:</p>
+    <ul>
+      <li><b>GitHub Pages</b>, donde está alojado el sitio.</li>
+      <li><b>Google Fonts</b>, que entrega las tipografías.</li>
+      <li><b>WhatsApp</b> (Meta) y <b>Gmail</b> (Google), si elegís escribirnos por ahí.</li>
+      <li>En las demos: imágenes de <b>Unsplash</b>, mapas de <b>Google Maps</b> y, en una de ellas, el calendario de <b>Cal.com</b>.</li>
+    </ul>
+
+    <h2>Tus derechos</h2>
+    <p>Podés pedirnos en cualquier momento ver, corregir o borrar los datos que nos hayas enviado, escribiendo a <a href={`mailto:${CONTACTO.email}`}>{CONTACTO.email}</a>. Te respondemos dentro de los plazos que fija la Ley 25.326 de Protección de Datos Personales.</p>
+    <p class="leyenda">El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley N° 25.326. La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley N° 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.</p>
+
+    <h2>Cambios</h2>
+    <p>Si cambiamos algo de esta política, lo publicamos en esta misma página con la nueva fecha.</p>
+
+    <a class="btn btn-principal volver" href="/">Volver al inicio</a>
+  </main>
+</Base>
+<style>
+  .doc { width: min(720px, 100% - 40px); margin: 0 auto; padding: clamp(40px, 8vw, 88px) 0; }
+  .logo-link { font-size: 1.8rem; display: inline-flex; margin-bottom: 40px; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.2rem); }
+  .fecha { margin-top: 10px; color: var(--texto-suave); font-size: .92rem; }
+  h2 { font-size: 1.3rem; margin: 40px 0 12px; letter-spacing: -.02em; }
+  p, li { color: var(--texto-suave); }
+  p + p { margin-top: 12px; }
+  ul { display: grid; gap: 8px; padding-left: 1.2em; }
+  li::marker { color: var(--bordo); }
+  b { color: var(--grafito); }
+  a:not(.btn) { color: var(--bordo); text-underline-offset: 3px; }
+  .leyenda { margin-top: 16px; padding: 16px 18px; border-left: 3px solid var(--rosa); background: var(--papel); font-size: .88rem; }
+  .volver { margin-top: 48px; }
+</style>
