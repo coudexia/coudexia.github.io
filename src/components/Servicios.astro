@@ -29,7 +29,14 @@ import { SERVICIOS } from '../data/coudexia';
 </section>
 
 <style>
-  .cabecera { display: grid; gap: 18px; max-width: 760px; margin-bottom: clamp(40px, 6vw, 72px); }
+  .cabecera { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 72px); }
+  .cabecera > * { max-width: 760px; }
+  /* En pantallas grandes el título queda fijo mientras los servicios pasan por debajo.
+     Baja un poco cuando el menú del sitio está visible para no quedar tapado. */
+  @media (min-width: 861px) and (min-height: 720px) {
+    .cabecera { position: sticky; top: 0; z-index: 2; margin-bottom: 0; padding: 28px 0 clamp(32px, 4vw, 48px); background: var(--marfil); transition: top .45s var(--ease); }
+    :global(html:has(.header:not(.oculto))) .cabecera { top: 76px; }
+  }
   .lista { list-style: none; border-top: 1px solid var(--grafito); }
   .servicio { position: relative; isolation: isolate; display: grid; grid-template-columns: 80px minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); padding: clamp(32px, 4vw, 48px) clamp(0px, 2vw, 28px); border-bottom: 1px solid var(--linea); }
   /* Fondo vino que sube al pasar el mouse */

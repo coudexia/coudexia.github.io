@@ -85,7 +85,7 @@ export const PLANES = [
     para: 'Para negocios que quieren comenzar a vender online con Tiendanube o Shopify.',
     desde: '$490.000',
     nota: 'El plan mensual de la plataforma se contrata aparte, a tu nombre.',
-    incluye: ['Armado de tu tienda en Tiendanube o Shopify', 'Diseño adaptado a tu marca', 'Categorías y navegación organizadas', 'Carga inicial de productos', 'Configuración de medios de pago y envío', 'Te enseñamos a cargar productos y gestionar pedidos'],
+    incluye: ['Armado de tu tienda en Tiendanube o Shopify', 'Diseño adaptado a tu marca', 'Categorías y navegación organizadas', 'Carga inicial de productos', 'Configuración de medios de pago y envío'],
     mensaje: 'Hola Coudexia! Me interesa el plan Página E-commerce para mi tienda online.',
   },
 ];
