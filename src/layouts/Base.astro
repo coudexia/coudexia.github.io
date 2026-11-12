@@ -117,8 +117,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: .01ms !important; }
-    /* Las cintas del hero siguen desfilando (lento, ver Hero.astro); el resto se queda quieto */
-    *:not(.pista, .carril), *::before, *::after { animation: none !important; }
+    /* La cinta de rubros sigue desfilando (lento, ver Hero.astro); el resto se queda quieto */
+    *:not(.pista), *::before, *::after { animation: none !important; }
     .js .rv, .js .palabras .w > span { opacity: 1; transform: none; }
   }
 </style>

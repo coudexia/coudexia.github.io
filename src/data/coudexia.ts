@@ -22,19 +22,6 @@ export const wa = (texto = 'Hola Coudexia! Quiero consultar por una web.') =>
 // Rubros que se muestran en la cinta debajo del hero
 export const RUBROS = ['Consultorios', 'Centros de estética', 'Comercios', 'Servicios técnicos', 'Fletes y mudanzas', 'Profesionales', 'Marcas', 'Tiendas online'];
 
-// Ejemplos que desfilan debajo de la cinta: con "demo" muestran la captura y linkean al proyecto demostrativo
-export const EJEMPLOS = [
-  { rubro: 'Consultorio odontológico', que: 'Turnos online y obras sociales', demo: 'odontologo' },
-  { rubro: 'Tienda online', que: 'Tiendanube o Shopify con pagos y envíos', mini: 'tienda' },
-  { rubro: 'Uñas, pestañas y cejas', que: 'Armado de turno con total y duración', demo: 'estetica-integral' },
-  { rubro: 'Plomería y climatización', que: 'Urgencias: llamada o WhatsApp en un toque', demo: 'servicio-tecnico' },
-  { rubro: 'Comercio de barrio', que: 'Catálogo con pedidos por WhatsApp', mini: 'catalogo' },
-  { rubro: 'Centro de estética', que: 'Lista de precios, packs y reservas', demo: 'estetica' },
-  { rubro: 'Fletes y mudanzas', que: 'Cotizador que llega armado', demo: 'fletes' },
-  { rubro: 'Estudio profesional', que: 'Servicios, equipo y consultas', mini: 'estudio' },
-  { rubro: 'Depilación láser', que: 'Precios por zona y packs con ahorro', demo: 'depilacion' },
-];
-
 // Opciones del formulario "Tenés una idea"
 export const IDEAS = ['Integración o automatización', 'Sistema de turnos o reservas', 'Cotizador o calculadora', 'Web o sistema a medida', 'Otra idea'];
 export const PLAZOS = ['Lo antes posible', 'En el próximo mes', 'En 2 o 3 meses', 'Sin apuro, estoy averiguando'];

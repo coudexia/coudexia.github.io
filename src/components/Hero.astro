@@ -1,5 +1,5 @@
 ---
-import { PLANES, RUBROS, EJEMPLOS } from '../data/coudexia';
+import { PLANES, RUBROS } from '../data/coudexia';
 const desde = PLANES[0].desde;
 const titulo = 'Tu próximo proyecto digital empieza'.split(' ');
 // Pares de demos que van rotando en la composición: [escritorio, celular, nombre en la barra]
@@ -51,33 +51,6 @@ const escenas = [
     <div class="pista" aria-hidden="true">
       {[0, 1].map(() => <ul>{RUBROS.map((r) => <li>{r}</li>)}</ul>)}
     </div>
-  </div>
-
-  <div class="ejemplos" aria-label="Ejemplos de lo que podemos hacer">
-    <p class="wrap ejemplos-titulo"><span>Algunas ideas de lo que podemos hacer para tu rubro</span></p>
-    <div class="ventana"><div class="carril">
-      {[0, 1].map((vuelta) => (
-        <ul class="tanda" aria-hidden={vuelta === 1 ? 'true' : undefined}>
-          {EJEMPLOS.map((e) => {
-            const Tag = e.demo ? 'a' : 'div';
-            return (
-              <li>
-                <Tag class="ej" {...(e.demo ? { href: `/demos/${e.demo}/index.html`, target: '_blank', rel: 'noopener', tabindex: vuelta ? -1 : undefined } : {})}>
-                  {e.demo
-                    ? <img src={`/proyectos/${e.demo}-cel.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" />
-                    : <span class:list={['mini', e.mini]} aria-hidden="true"><i></i><i></i><i></i><i></i></span>}
-                  <span class="ej-txt">
-                    <b>{e.rubro}</b>
-                    <span>{e.que}</span>
-                    <small>{e.demo ? 'Ver demo ↗' : 'Lo armamos a medida'}</small>
-                  </span>
-                </Tag>
-              </li>
-            );
-          })}
-        </ul>
-      ))}
-    </div></div>
   </div>
 </section>
 
@@ -163,35 +136,10 @@ const escenas = [
   /* Cinta de rubros */
   .cinta { margin-top: clamp(48px, 7vw, 80px); border-block: 1px solid var(--linea); overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
   .pista { display: flex; width: max-content; animation: desliza 38s linear infinite; }
-  .cinta:hover .pista { animation-play-state: paused; }
   .pista ul { display: flex; list-style: none; }
   .pista li { display: flex; align-items: center; gap: 28px; padding: 20px 28px 20px 0; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
   .pista li::after { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--bordo); rotate: 45deg; }
   @keyframes desliza { to { transform: translateX(-50%); } }
-
-  /* Carril de ejemplos: desfila lento en sentido contrario a la cinta */
-  .ejemplos { padding: 28px 0 0; }
-  /* La máscara hace que las tarjetas entren y salgan de la pantalla en vez de cortarse en seco */
-  .ventana { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .ejemplos-titulo { font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 16px; }
-  .carril { display: flex; width: max-content; padding: 6px 0 28px; animation: desliza 90s linear infinite reverse; }
-  .carril:hover, .carril:focus-within { animation-play-state: paused; }
-  .tanda { display: flex; gap: 14px; padding-right: 14px; list-style: none; }
-  .ej { display: flex; align-items: stretch; gap: 14px; width: 300px; height: 112px; padding: 10px 16px 10px 10px; border: 1px solid var(--linea); border-radius: 18px; background: var(--papel); text-decoration: none; transition: border-color .3s, transform .4s var(--ease), box-shadow .4s; }
-  a.ej:hover { border-color: #D8C6CD; transform: translateY(-4px); box-shadow: 0 18px 30px -20px #501B3566; }
-  .ej img, .mini { flex: none; width: 58px; height: 100%; border-radius: 10px; object-fit: cover; object-position: top; }
-  .ej-txt { display: grid; align-content: center; gap: 2px; min-width: 0; }
-  .ej-txt b { font-size: .98rem; letter-spacing: -.01em; }
-  .ej-txt span { font-size: .84rem; color: var(--texto-suave); line-height: 1.35; }
-  .ej-txt small { margin-top: 4px; font-size: .74rem; font-weight: 800; color: var(--bordo); }
-  /* Mini interfaces para los rubros que todavía no tienen demo */
-  .mini { display: grid; gap: 4px; padding: 7px; background: var(--vino); }
-  .mini i { border-radius: 3px; background: #6E3352; }
-  .mini i:first-child { background: var(--rosa); }
-  .tienda { grid-template-columns: 1fr 1fr; grid-template-rows: 14px 1fr 1fr; }
-  .tienda i:first-child { grid-column: 1 / -1; }
-  .catalogo { grid-template-rows: 14px repeat(3, 1fr); }
-  .estudio { grid-template-rows: 1fr 8px 8px 8px; }
 
   @media (max-width: 960px) {
     .grilla { grid-template-columns: 1fr; }
@@ -206,8 +154,7 @@ const escenas = [
     .puntos { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    /* Con "reducir movimiento" siguen desfilando, más lento; se frenan al pasar el mouse o con el teclado */
+    /* Con "reducir movimiento" la cinta sigue desfilando, más lento */
     .pista { animation-duration: 70s; }
-    .carril { animation-duration: 160s; }
   }
 </style>
