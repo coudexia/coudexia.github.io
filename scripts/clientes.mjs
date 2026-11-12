@@ -38,14 +38,13 @@ const BASES = {
   },
   'servicio-tecnico': {
     textos: {
-      logo: ['HidroClima</div>'],
-      nombre: ['HidroClima Servicios'],
+      nombre: ['HidroClima Servicios', 'HidroClima'],
       zona: ['Zona Norte'],
       horario: ['Lunes a sábado de 8 a 20 h, urgencias las 24 h.'],
       matricula: ['18.437'],
       barrios: ['<span>Vicente López</span><span>Olivos</span><span>Martínez</span><span>San Isidro</span><span>Núñez</span>'],
     },
-    colores: { principal: ['0b64b0'], principalOscuro: ['084a85'], secundario: ['ff9f1c'] },
+    colores: { principal: ['0a5bd3'], secundario: ['ff7a00'] },
   },
   fletes: {
     textos: {
@@ -121,7 +120,6 @@ function generar(archivo) {
     if (crudo == null || crudo === '') { if (campo !== 'ciudad') sinCambiar.push(campo); continue; }
     let nuevo;
     if (campo === 'barrios') nuevo = [].concat(crudo).map((b) => `<span>${escapar(b)}</span>`).join('');
-    else if (campo === 'logo' && datos.demo === 'servicio-tecnico') nuevo = `${escapar(crudo)}</div>`;
     else if (campo === 'ciudad') nuevo = `, ${escapar(crudo)}`;
     else nuevo = escapar(crudo);
     for (const o of originales) {
