@@ -1,5 +1,5 @@
 ---
-import { PLANES, wa } from '../data/coudexia';
+import { PLANES, MANTENIMIENTO, wa } from '../data/coudexia';
 ---
 <section class="seccion" id="precios">
   <div class="wrap">
@@ -18,7 +18,7 @@ import { PLANES, wa } from '../data/coudexia';
           <p class="nombre">{p.nombre}</p>
           <p class="para">{p.para}</p>
           <p class="precio">
-            {p.desde ? <><small>Desde</small><b>{p.desde}</b></> : <b class="consultar">A consultar</b>}
+            {p.desde ? <><small>Desde</small><b>{p.desde}</b><span class="unico">Pago único</span></> : <b class="consultar">A consultar</b>}
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">{p.incluye.map((it) => <li>{it}</li>)}</ul>
@@ -28,10 +28,20 @@ import { PLANES, wa } from '../data/coudexia';
     </ul>
 
     <ul class="condiciones rv">
+      <li>Pago único, sin abonos mensuales obligatorios</li>
       <li>50% al confirmar y 50% en la entrega</li>
       <li>Transferencia o Mercado Pago</li>
       <li>Dominio y web a tu nombre</li>
     </ul>
+
+    <div class="mant rv">
+      <div class="mant-cab">
+        <p class="mant-tit">Mantenimiento mensual <span>Opcional</span></p>
+        <p class="mant-precio"><b>{MANTENIMIENTO.precio}</b> / mes</p>
+      </div>
+      <ul class="mant-lista">{MANTENIMIENTO.incluye.map((it) => <li>{it}</li>)}</ul>
+      <a class="mant-link" href={wa(MANTENIMIENTO.mensaje)} target="_blank" rel="noopener">Consultar <span aria-hidden="true">→</span></a>
+    </div>
 
     <a class="idea rv" href="#contacto">
       <span class="idea-txt"><b>¿Tenés una idea que no está en las opciones?</b> Contanosla y te armamos el presupuesto.</span>
@@ -57,6 +67,8 @@ import { PLANES, wa } from '../data/coudexia';
   .precio small { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--bordo); }
   .destacado .precio small { color: var(--rosa); }
   .precio b { font-size: clamp(2.2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
+  .unico { margin-top: 4px; font-size: .85rem; font-weight: 600; color: var(--texto-suave); }
+  .destacado .unico { color: #D9C3CC; }
   .nota { font-size: .85rem; color: var(--texto-suave); }
   .incluye { list-style: none; display: grid; gap: 11px; margin: 24px 0 30px; font-size: .96rem; }
   .incluye li { display: flex; gap: 10px; }
@@ -67,6 +79,19 @@ import { PLANES, wa } from '../data/coudexia';
   .condiciones { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; margin-top: 28px; color: var(--texto-suave); font-size: .92rem; font-weight: 600; }
   .condiciones li { display: flex; align-items: center; gap: 10px; }
   .condiciones li::before { content: ""; width: 7px; height: 7px; border-radius: 2px; rotate: 45deg; background: var(--bordo); }
+
+  /* Mantenimiento opcional: discreto, separado de los planes */
+  .mant { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px 40px; margin-top: 40px; padding: 26px clamp(22px, 4vw, 36px); border: 1px solid var(--linea); border-radius: 22px; background: var(--papel); }
+  .mant-tit { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; font-size: 1.1rem; }
+  .mant-tit span { padding: 3px 10px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .72rem; letter-spacing: .04em; }
+  .mant-precio { margin-top: 4px; color: var(--texto-suave); font-size: .95rem; }
+  .mant-precio b { color: var(--grafito); font-size: 1.5rem; letter-spacing: -.03em; }
+  .mant-lista { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: .92rem; color: var(--texto-suave); }
+  .mant-lista li { display: flex; gap: 8px; }
+  .mant-lista li::before { content: "✓"; font-weight: 800; color: var(--bordo); }
+  .mant-link { font-weight: 800; color: var(--bordo); text-decoration: none; white-space: nowrap; }
+  .mant-link span { display: inline-block; transition: transform .3s var(--ease); }
+  .mant-link:hover span { transform: translateX(4px); }
 
   /* Acceso al formulario de ideas a medida */
   .idea { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 40px; padding: clamp(24px, 4vw, 36px) clamp(22px, 4vw, 40px); border: 1.5px solid var(--grafito); border-radius: 22px; text-decoration: none; font-size: clamp(1.05rem, 2vw, 1.3rem); }
@@ -84,6 +109,7 @@ import { PLANES, wa } from '../data/coudexia';
     .cabecera { grid-template-columns: 1fr; }
     .planes { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
     .para { min-height: 0; }
+    .mant { grid-template-columns: 1fr; }
   }
   @media (max-width: 480px) {
     .plan { padding: 30px 22px 24px; }

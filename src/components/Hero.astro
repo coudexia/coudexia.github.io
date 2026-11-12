@@ -55,7 +55,7 @@ const escenas = [
 
   <div class="ejemplos" aria-label="Ejemplos de lo que podemos hacer">
     <p class="wrap ejemplos-titulo"><span>Algunas ideas de lo que podemos hacer para tu rubro</span></p>
-    <div class="carril">
+    <div class="ventana"><div class="carril">
       {[0, 1].map((vuelta) => (
         <ul class="tanda" aria-hidden={vuelta === 1 ? 'true' : undefined}>
           {EJEMPLOS.map((e) => {
@@ -77,7 +77,7 @@ const escenas = [
           })}
         </ul>
       ))}
-    </div>
+    </div></div>
   </div>
 </section>
 
@@ -170,9 +170,11 @@ const escenas = [
   @keyframes desliza { to { transform: translateX(-50%); } }
 
   /* Carril de ejemplos: desfila lento en sentido contrario a la cinta */
-  .ejemplos { padding: 28px 0 8px; }
+  .ejemplos { padding: 28px 0 0; }
+  /* La máscara hace que las tarjetas entren y salgan de la pantalla en vez de cortarse en seco */
+  .ventana { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
   .ejemplos-titulo { font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 16px; }
-  .carril { display: flex; width: max-content; animation: desliza 90s linear infinite reverse; }
+  .carril { display: flex; width: max-content; padding: 6px 0 28px; animation: desliza 90s linear infinite reverse; }
   .carril:hover, .carril:focus-within { animation-play-state: paused; }
   .tanda { display: flex; gap: 14px; padding-right: 14px; list-style: none; }
   .ej { display: flex; align-items: stretch; gap: 14px; width: 300px; height: 112px; padding: 10px 16px 10px 10px; border: 1px solid var(--linea); border-radius: 18px; background: var(--papel); text-decoration: none; transition: border-color .3s, transform .4s var(--ease), box-shadow .4s; }
@@ -204,7 +206,8 @@ const escenas = [
     .puntos { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pista { animation: none; flex-wrap: wrap; }
-    .carril { animation: none; overflow-x: auto; width: auto; }
+    /* Con "reducir movimiento" siguen desfilando, más lento; se frenan al pasar el mouse o con el teclado */
+    .pista { animation-duration: 70s; }
+    .carril { animation-duration: 160s; }
   }
 </style>

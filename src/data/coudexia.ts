@@ -103,6 +103,13 @@ export const PLANES = [
   },
 ];
 
+// Mantenimiento mensual opcional, aparte del pago único de cada plan
+export const MANTENIMIENTO = {
+  precio: 'USD 25',
+  incluye: ['Cambios de textos, fotos y precios', 'Secciones o promociones nuevas chicas', 'Revisión de que todo funcione', 'Soporte por WhatsApp'],
+  mensaje: 'Hola Coudexia! Quiero consultar por el mantenimiento mensual.',
+};
+
 export const PROCESO = [
   { t: 'Consulta inicial', d: 'Nos contás qué hace tu negocio y qué necesitás. Por WhatsApp o en una llamada corta.' },
   { t: 'Relevamiento y propuesta', d: 'Definimos secciones, contenidos y alcance. En las páginas Start y Business te mostramos un borrador gratis en 48 h.' },
@@ -115,7 +122,7 @@ export const FAQ = [
   { p: '¿Cuánto tiempo lleva tener mi web?', r: 'El borrador de una Página Start o Business está en 48 h hábiles desde que nos pasás tus datos. El tiempo total depende de cuándo tengamos tus textos y fotos: en la propuesta te damos una fecha concreta.' },
   { p: '¿Cómo se paga?', r: '50% al confirmar el proyecto y 50% en la entrega, por transferencia o Mercado Pago. El borrador es gratis y no te compromete a nada.' },
   { p: '¿Qué pasa con el dominio y el hosting?', r: 'El dominio (por ejemplo, tunegocio.com.ar) se registra a tu nombre y su costo anual lo pagás vos; te ayudamos a registrarlo y conectarlo. El hosting lo definimos en la propuesta según el tipo de sitio.' },
-  { p: '¿Ofrecen mantenimiento?', r: 'Sí. Después de la entrega podés pedirnos cambios cuando los necesites, y si preferís despreocuparte, acordamos un mantenimiento mensual. Lo cotizamos según lo que haga falta.' },
+  { p: '¿Ofrecen mantenimiento?', r: 'Sí, y es opcional: el plan es un pago único. Si preferís despreocuparte, el mantenimiento mensual cuesta USD 25 e incluye cambios de textos, fotos y precios, secciones o promociones nuevas chicas y soporte por WhatsApp. Si no lo contratás, podés pedirnos cambios puntuales cuando los necesites.' },
   { p: '¿Cómo funcionan las tiendas online?', r: 'Armamos tu tienda en Tiendanube o Shopify: diseño, categorías, productos, pagos y envíos. La cuenta y el plan mensual de la plataforma quedan a tu nombre y se pagan aparte, directamente a la plataforma.' },
   { p: '¿Puedo pedir cambios después?', r: 'Sí. Los cambios de la etapa de revisión están incluidos. Las modificaciones posteriores, como sumar una sección o actualizar precios, se cotizan según el trabajo.' },
 ];
