@@ -5,7 +5,7 @@ import { SERVICIOS } from '../data/coudexia';
   <div class="wrap">
     <div class="cabecera">
       <p class="etiqueta rv">Servicios</p>
-      <h2 class="rv">Tres formas de llevar tu negocio a internet.</h2>
+      <h2 class="rv palabras">Tres formas de llevar tu negocio a internet.</h2>
       <p class="bajada rv">Cada proyecto arranca por lo que necesitás resolver, no por una plantilla.</p>
     </div>
 
@@ -18,7 +18,10 @@ import { SERVICIOS } from '../data/coudexia';
             <p class="problema">{s.problema}</p>
             <p class="ideal"><b>Ideal para:</b> {s.ideal}</p>
           </div>
-          <ul class="items">{s.items.map((it) => <li>{it}</li>)}</ul>
+          <div class="lado">
+            <ul class="items">{s.items.map((it) => <li>{it}</li>)}</ul>
+            <a class="ir" href={s.cta[1]}>{s.cta[0]} <span aria-hidden="true">→</span></a>
+          </div>
         </li>
       ))}
     </ol>
@@ -28,19 +31,32 @@ import { SERVICIOS } from '../data/coudexia';
 <style>
   .cabecera { display: grid; gap: 18px; max-width: 760px; margin-bottom: clamp(40px, 6vw, 72px); }
   .lista { list-style: none; border-top: 1px solid var(--grafito); }
-  .servicio { display: grid; grid-template-columns: 80px minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); padding: clamp(32px, 4vw, 48px) 0; border-bottom: 1px solid var(--linea); transition: background-color .3s; }
-  .num { font-size: .9rem; font-weight: 800; color: var(--bordo); padding-top: 8px; }
-  h3 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin-bottom: 14px; }
-  .problema { color: var(--texto-suave); max-width: 560px; }
-  .ideal { margin-top: 16px; font-size: .95rem; max-width: 560px; }
-  .ideal b { color: var(--vino); }
-  .items { list-style: none; display: grid; gap: 10px; align-content: start; padding-top: 8px; }
-  .items li { display: flex; gap: 12px; align-items: baseline; font-weight: 600; font-size: .98rem; }
-  .items li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--rosa); transform: translateY(-1px); }
+  .servicio { position: relative; isolation: isolate; display: grid; grid-template-columns: 80px minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); padding: clamp(32px, 4vw, 48px) clamp(0px, 2vw, 28px); border-bottom: 1px solid var(--linea); }
+  /* Fondo vino que sube al pasar el mouse */
+  .servicio::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--vino); border-radius: 18px; transform: scaleY(0); transform-origin: bottom; transition: transform .55s var(--ease); }
+  .num { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1.5px var(--bordo); transition: color .4s, -webkit-text-stroke-color .4s; }
+  h3 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin-bottom: 14px; transition: color .3s, transform .5s var(--ease); }
+  .problema { color: var(--texto-suave); max-width: 560px; transition: color .3s; }
+  .ideal { margin-top: 16px; font-size: .95rem; max-width: 560px; transition: color .3s; }
+  .ideal b { color: var(--vino); transition: color .3s; }
+  .lado { display: grid; gap: 22px; align-content: start; padding-top: 6px; }
+  .items { list-style: none; display: grid; gap: 10px; }
+  .items li { display: flex; gap: 12px; align-items: baseline; font-weight: 600; font-size: .98rem; transition: color .3s; }
+  .items li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--rosa); transform: translateY(-1px) rotate(45deg); }
+  .ir { justify-self: start; font-weight: 800; font-size: .95rem; color: var(--bordo); text-decoration: none; border-bottom: 2px solid currentColor; padding-bottom: 2px; transition: color .3s; }
+  .ir span { display: inline-block; transition: transform .3s var(--ease); }
+  .ir:hover span { transform: translateX(4px); }
+
+  @media (hover: hover) {
+    .servicio:hover::before { transform: none; }
+    .servicio:hover .num { color: var(--rosa); -webkit-text-stroke-color: var(--rosa); }
+    .servicio:hover h3 { color: var(--marfil); transform: translateX(6px); }
+    .servicio:hover :is(.problema, .ideal) { color: #D9C3CC; }
+    .servicio:hover :is(.ideal b, .ir) { color: var(--rosa); }
+    .servicio:hover .items li { color: var(--marfil); }
+  }
 
   @media (max-width: 860px) {
-    .servicio { grid-template-columns: 1fr; gap: 14px; }
-    .num { padding: 0; }
-    .items { padding-top: 6px; }
+    .servicio { grid-template-columns: 1fr; gap: 14px; padding-inline: 0; }
   }
 </style>

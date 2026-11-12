@@ -4,7 +4,7 @@
 export const CONTACTO = {
   whatsapp: '5491166103318', // código de país + 9 + número, sin espacios
   telefono: '+54 11 6610-3318',
-  email: 'flavio.lovera@hotmail.com',
+  email: 'coudexia@gmail.com',
   ciudad: 'Buenos Aires, Argentina',
   instagram: '', // ej: 'https://instagram.com/coudexia'
   linkedin: '',  // ej: 'https://www.linkedin.com/company/coudexia'
@@ -19,6 +19,13 @@ export const SITIO = {
 export const wa = (texto = 'Hola Coudexia! Quiero consultar por una web.') =>
   `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent(texto)}`;
 
+// Rubros que se muestran en la cinta debajo del hero
+export const RUBROS = ['Consultorios', 'Centros de estética', 'Comercios', 'Servicios técnicos', 'Fletes y mudanzas', 'Profesionales', 'Marcas', 'Tiendas online'];
+
+// Opciones del formulario "Tenés una idea"
+export const IDEAS = ['Integración o automatización', 'Sistema de turnos o reservas', 'Cotizador o calculadora', 'Web o sistema a medida', 'Otra idea'];
+export const PLAZOS = ['Lo antes posible', 'En el próximo mes', 'En 2 o 3 meses', 'Sin apuro, estoy averiguando'];
+
 export const SERVICIOS = [
   {
     id: 'webs',
@@ -26,6 +33,7 @@ export const SERVICIOS = [
     problema: 'Tus clientes te buscan en Google o te piden "pasame tu web" y no tenés dónde mandarlos, o tu sitio actual no se entiende desde el celular.',
     ideal: 'Profesionales, consultorios, comercios y servicios que necesitan mostrar lo que hacen y recibir consultas.',
     items: ['Páginas de aterrizaje', 'Sitios institucionales', 'Sitios profesionales multipágina', 'Diseño responsive'],
+    cta: ['Ver Web Start y Web Business', '#precios'],
   },
   {
     id: 'tiendas',
@@ -33,6 +41,7 @@ export const SERVICIOS = [
     problema: 'Vendés por Instagram o WhatsApp y respondés precios uno por uno. Una tienda ordena el catálogo y cobra sola.',
     ideal: 'Marcas y comercios que quieren vender online con pagos y envíos resueltos.',
     items: ['Implementación en Tiendanube', 'Implementación en Shopify', 'Configuración visual y comercial', 'Organización de productos, categorías y navegación'],
+    cta: ['Ver Web Commerce', '#precios'],
   },
   {
     id: 'medida',
@@ -40,6 +49,7 @@ export const SERVICIOS = [
     problema: 'Necesitás algo que una plantilla no resuelve: un cotizador, reservas, un cálculo o conectar herramientas que ya usás.',
     ideal: 'Negocios con un proceso propio que quieren ahorrar tiempo o dar una mejor experiencia.',
     items: ['Funcionalidades específicas', 'Integraciones', 'Automatizaciones', 'Proyectos web a medida'],
+    cta: ['Contanos tu idea', '#contacto'],
   },
 ];
 

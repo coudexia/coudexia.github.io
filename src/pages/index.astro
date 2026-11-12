@@ -5,6 +5,7 @@ import Hero from '../components/Hero.astro';
 import Servicios from '../components/Servicios.astro';
 import Proyectos from '../components/Proyectos.astro';
 import Precios from '../components/Precios.astro';
+import Incluye from '../components/Incluye.astro';
 import Proceso from '../components/Proceso.astro';
 import Faq from '../components/Faq.astro';
 import Contacto from '../components/Contacto.astro';
@@ -24,8 +25,9 @@ const ld = {
   <main id="contenido">
     <Hero />
     <Servicios />
-    <Proyectos />
     <Precios />
+    <Proyectos />
+    <Incluye />
     <Proceso />
     <Faq />
     <Contacto />
@@ -33,6 +35,10 @@ const ld = {
   <Footer />
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <script>
+    // Títulos que entran palabra por palabra: se envuelve cada palabra (el texto sigue siendo el mismo para lectores de pantalla)
+    document.querySelectorAll('.palabras').forEach((h) => {
+      h.innerHTML = (h.textContent ?? '').trim().split(/\s+/).map((w, i) => `<span class="w"><span style="--i:${i}">${w}</span></span>`).join(' ');
+    });
     // Aparición suave al hacer scroll
     document.documentElement.classList.add('js');
     const io = new IntersectionObserver((es) => es.forEach((e) => {

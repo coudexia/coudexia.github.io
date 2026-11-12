@@ -1,46 +1,52 @@
 ---
-import { CONTACTO, PLANES, wa } from '../data/coudexia';
-const tipos = [...PLANES.map((p) => `${p.nombre}`), 'Desarrollo a medida', 'Todavía no sé'];
-const tel = CONTACTO.telefono.replace(/[^+\d]/g, '');
+import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
 ---
 <section class="seccion contacto" id="contacto">
   <div class="wrap grilla">
     <div class="texto">
-      <p class="etiqueta rv">Contacto</p>
-      <h2 class="rv">Empecemos tu proyecto.</h2>
-      <p class="bajada rv">Contanos qué necesitás y te respondemos con una propuesta. Si es una web Start o Business, en 48 h tenés un borrador gratis para ver cómo quedaría.</p>
+      <p class="etiqueta rv">Proyectos a medida</p>
+      <h2 class="rv palabras">¿Tenés una idea que no está en las opciones?</h2>
+      <p class="bajada rv">Contanosla y te armamos el presupuesto. Integraciones, sistemas de turnos, cotizadores o una web pensada desde cero: si se puede resolver en la web, lo charlamos.</p>
       <ul class="canales rv">
-        <li><a href={wa()} target="_blank" rel="noopener"><small>WhatsApp</small>{CONTACTO.telefono}</a></li>
-        <li><a href={`mailto:${CONTACTO.email}`}><small>Email</small>{CONTACTO.email}</a></li>
+        <li><a href={wa()} target="_blank" rel="noopener"><small>WhatsApp</small>{CONTACTO.telefono}<span class="ir" aria-hidden="true">↗</span></a></li>
+        <li><a href={`mailto:${CONTACTO.email}`}><small>Email</small>{CONTACTO.email}<span class="ir" aria-hidden="true">↗</span></a></li>
         {CONTACTO.ciudad && <li><span><small>Ubicación</small>{CONTACTO.ciudad} · trabajamos de forma remota</span></li>}
       </ul>
     </div>
 
-    <form class="form rv" novalidate data-wa={CONTACTO.whatsapp}>
-      <h3>Solicitar presupuesto</h3>
+    <form class="form rv" novalidate data-wa={CONTACTO.whatsapp} data-email={CONTACTO.email}>
+      <p class="form-titulo">Contanos tu idea</p>
       <div class="campo">
         <label for="f-nombre">Tu nombre</label>
         <input id="f-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
         <p class="error" id="e-nombre" aria-live="polite"></p>
       </div>
-      <div class="campo">
-        <label for="f-negocio">Tu negocio o rubro <span>(opcional)</span></label>
-        <input id="f-negocio" name="negocio" autocomplete="organization" placeholder="Consultorio odontológico en Belgrano" />
-      </div>
-      <div class="campo">
-        <label for="f-tipo">¿Qué necesitás?</label>
-        <select id="f-tipo" name="tipo" required aria-describedby="e-tipo">
-          <option value="">Elegí una opción</option>
-          {tipos.map((t) => <option>{t}</option>)}
-        </select>
+      <fieldset class="campo">
+        <legend>¿Qué tipo de idea es?</legend>
+        <div class="opciones">
+          {IDEAS.map((t, i) => (
+            <label class="opcion"><input type="radio" name="tipo" value={t} required={i === 0} /><span>{t}</span></label>
+          ))}
+        </div>
         <p class="error" id="e-tipo" aria-live="polite"></p>
+      </fieldset>
+      <div class="campo">
+        <label for="f-idea">Contanos qué querés lograr</label>
+        <textarea id="f-idea" name="idea" rows="4" required aria-describedby="e-idea" placeholder="Por ejemplo: que mis clientes reserven turno y les llegue un recordatorio por WhatsApp."></textarea>
+        <p class="error" id="e-idea" aria-live="polite"></p>
       </div>
       <div class="campo">
-        <label for="f-mensaje">Contanos un poco más <span>(opcional)</span></label>
-        <textarea id="f-mensaje" name="mensaje" rows="3" placeholder="Qué querés mostrar, si ya tenés dominio, fecha que te gustaría tenerla…"></textarea>
+        <label for="f-plazo">¿Para cuándo la necesitás? <span>(opcional)</span></label>
+        <select id="f-plazo" name="plazo">
+          <option value="">Elegí una opción</option>
+          {PLAZOS.map((t) => <option>{t}</option>)}
+        </select>
       </div>
-      <button class="btn btn-principal" type="submit">Enviar por WhatsApp</button>
-      <p class="aviso" aria-live="polite">Se abre WhatsApp con tu consulta armada, lista para enviar.</p>
+      <div class="botones">
+        <button class="btn btn-principal" type="submit" value="wa">Enviar por WhatsApp</button>
+        <button class="btn btn-borde" type="submit" value="email">Prefiero por email</button>
+      </div>
+      <p class="aviso" aria-live="polite">Se abre tu WhatsApp o tu correo con la idea ya escrita, lista para enviar.</p>
     </form>
   </div>
 </section>
@@ -48,31 +54,40 @@ const tel = CONTACTO.telefono.replace(/[^+\d]/g, '');
 <script>
   const form = document.querySelector<HTMLFormElement>('.form')!;
   const aviso = form.querySelector<HTMLElement>('.aviso')!;
-  const campos = ['nombre', 'tipo'] as const;
-  const mensajes = { nombre: 'Escribí tu nombre para saber cómo llamarte.', tipo: 'Elegí qué necesitás, aunque sea "Todavía no sé".' };
-  const marcar = (n: (typeof campos)[number], ok: boolean) => {
-    const el = form.elements.namedItem(n) as HTMLInputElement;
+  const mensajes: Record<string, string> = {
+    nombre: 'Escribí tu nombre para saber cómo llamarte.',
+    tipo: 'Elegí la opción que más se parezca, aunque sea "Otra idea".',
+    idea: 'Contanos en una o dos líneas qué querés lograr.',
+  };
+  const marcar = (n: string, ok: boolean) => {
+    const el = form.querySelector<HTMLElement>(n === 'tipo' ? '.opciones' : `[name="${n}"]`)!;
     el.setAttribute('aria-invalid', String(!ok));
     form.querySelector(`#e-${n}`)!.textContent = ok ? '' : mensajes[n];
     return ok;
   };
-  campos.forEach((n) => (form.elements.namedItem(n) as HTMLElement).addEventListener('input', () => marcar(n, true)));
+  Object.keys(mensajes).forEach((n) => form.querySelectorAll(`[name="${n}"]`).forEach((el) => el.addEventListener('input', () => marcar(n, true))));
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    const via = (e.submitter as HTMLButtonElement | null)?.value ?? 'wa';
     const d = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const validos = campos.map((n) => marcar(n, !!d[n]?.trim()));
-    if (validos.includes(false)) { (form.querySelector('[aria-invalid="true"]') as HTMLElement).focus(); return; }
-    const texto = [
+    const validos = Object.keys(mensajes).map((n) => marcar(n, !!d[n]?.trim()));
+    if (validos.includes(false)) {
+      const malo = form.querySelector<HTMLElement>('[aria-invalid="true"]')!;
+      (malo.matches('.opciones') ? malo.querySelector('input')! : malo).focus();
+      return;
+    }
+    const lineas = [
       `Hola Coudexia! Soy ${d.nombre.trim()}.`,
-      d.negocio?.trim() && `Mi negocio: ${d.negocio.trim()}.`,
-      `Necesito: ${d.tipo}.`,
-      d.mensaje?.trim(),
-    ].filter(Boolean).join('\n');
-    const url = `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(texto)}`;
-    // Link real en pestaña nueva (window.open con noopener devuelve null y no sirve para detectar bloqueos)
-    Object.assign(document.createElement('a'), { href: url, target: '_blank', rel: 'noopener' }).click();
-    aviso.innerHTML = `Listo: se abrió WhatsApp con tu consulta. Si no se abrió, <a href="${url}" target="_blank" rel="noopener">tocá acá</a>.`;
+      `Tengo una idea para presupuestar: ${d.tipo}.`,
+      d.idea.trim(),
+      d.plazo && `La necesito: ${d.plazo.toLowerCase()}.`,
+    ].filter(Boolean) as string[];
+    const url = via === 'email'
+      ? `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Idea para presupuestar: ${d.tipo}`)}&body=${encodeURIComponent(lineas.join('\n\n'))}`
+      : `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(lineas.join('\n'))}`;
+    Object.assign(document.createElement('a'), { href: url, target: via === 'email' ? '_self' : '_blank', rel: 'noopener' }).click();
+    aviso.innerHTML = `Listo: se abrió ${via === 'email' ? 'tu correo' : 'WhatsApp'} con tu idea. Si no se abrió, <a href="${url}" target="_blank" rel="noopener">tocá acá</a>.`;
   });
 </script>
 
@@ -80,31 +95,50 @@ const tel = CONTACTO.telefono.replace(/[^+\d]/g, '');
   .contacto { background: var(--vino); color: var(--marfil); }
   .contacto .etiqueta { color: var(--rosa); }
   .contacto .bajada { color: #D9C3CC; }
-  .grilla { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px clamp(40px, 7vw, 96px); align-items: start; }
-  .texto { display: grid; gap: 20px; }
-  h2 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); }
+  .grilla { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px clamp(40px, 7vw, 96px); align-items: start; }
+  .texto { display: grid; gap: 20px; position: sticky; top: 110px; }
+  h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
   .canales { list-style: none; margin-top: 16px; border-top: 1px solid var(--linea-oscura); }
   .canales li { border-bottom: 1px solid var(--linea-oscura); }
-  .canales a, .canales span { display: grid; gap: 2px; padding: 16px 0; text-decoration: none; font-weight: 700; font-size: 1.05rem; overflow-wrap: anywhere; }
-  .canales a:hover { color: var(--rosa); }
+  .canales a, .canales span { position: relative; display: grid; gap: 2px; padding: 16px 40px 16px 0; text-decoration: none; font-weight: 700; font-size: 1.05rem; overflow-wrap: anywhere; transition: color .25s, padding-left .4s var(--ease); }
+  .canales a:hover { color: var(--rosa); padding-left: 8px; }
   .canales small { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--rosa); font-weight: 700; }
+  .canales .ir { position: absolute; right: 4px; top: 50%; translate: 0 -50%; padding: 0; font-size: 1.2rem; transition: transform .3s var(--ease); }
+  .canales a:hover .ir { transform: translate(3px, -3px); }
 
-  .form { display: grid; gap: 18px; padding: clamp(26px, 4vw, 40px); background: var(--marfil); color: var(--grafito); border-radius: 24px; }
-  .form h3 { font-size: 1.6rem; }
-  .campo { display: grid; gap: 7px; }
-  label { font-weight: 700; font-size: .92rem; }
+  .form { display: grid; gap: 20px; padding: clamp(26px, 4vw, 40px); background: var(--marfil); color: var(--grafito); border-radius: 26px; box-shadow: 0 40px 80px -40px #12030b; }
+  .form-titulo { font-size: 1.6rem; font-weight: 800; letter-spacing: -.03em; }
+  .campo { display: grid; gap: 8px; border: 0; min-width: 0; }
+  label, legend { font-weight: 700; font-size: .92rem; }
+  legend { margin-bottom: 8px; }
   label span { font-weight: 500; color: var(--texto-suave); }
-  input, select, textarea { width: 100%; min-height: 50px; padding: 12px 14px; border: 1.5px solid var(--linea); border-radius: 12px; background: var(--papel); font-size: 1rem; transition: border-color .2s; }
-  textarea { resize: vertical; min-height: 96px; }
+  input:not([type="radio"]), select, textarea { width: 100%; min-height: 50px; padding: 12px 14px; border: 1.5px solid var(--linea); border-radius: 12px; background: var(--papel); font-size: 1rem; transition: border-color .2s, box-shadow .2s; }
+  textarea { resize: vertical; min-height: 110px; }
   input::placeholder, textarea::placeholder { color: #9A8F94; }
   input:hover, select:hover, textarea:hover { border-color: #C9BDB8; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--bordo); box-shadow: 0 0 0 3px #782D4D22; }
-  [aria-invalid="true"] { border-color: #B3261E; }
-  .error { min-height: 0; font-size: .86rem; font-weight: 600; color: #B3261E; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--bordo); box-shadow: 0 0 0 4px #782D4D1f; }
+
+  /* Tipo de idea como chips seleccionables */
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; border-radius: 14px; }
+  .opcion { position: relative; cursor: pointer; }
+  .opcion input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .opcion span { display: inline-flex; align-items: center; min-height: 42px; padding: 0 16px; border: 1.5px solid var(--linea); border-radius: 999px; background: var(--papel); font-weight: 600; font-size: .9rem; color: var(--grafito); transition: background-color .2s, border-color .2s, color .2s, transform .2s var(--ease); }
+  .opcion:hover span { border-color: var(--bordo); }
+  .opcion input:checked + span { background: var(--bordo); border-color: var(--bordo); color: var(--marfil); }
+  .opcion input:active + span { transform: scale(.96); }
+  .opcion input:focus-visible + span { outline: 2px solid var(--bordo); outline-offset: 2px; }
+
+  [aria-invalid="true"]:not(.opciones) { border-color: #B3261E; }
+  .opciones[aria-invalid="true"] { outline: 1.5px dashed #B3261E; outline-offset: 6px; }
+  .error { font-size: .86rem; font-weight: 600; color: #B3261E; }
   .error:empty { display: none; }
-  .form .btn { width: 100%; margin-top: 4px; }
+  .botones { display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; margin-top: 4px; }
   .aviso { font-size: .86rem; color: var(--texto-suave); text-align: center; }
   .aviso :global(a) { color: var(--bordo); font-weight: 700; }
 
-  @media (max-width: 860px) { .grilla { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) {
+    .grilla { grid-template-columns: 1fr; }
+    .texto { position: static; }
+  }
+  @media (max-width: 480px) { .botones { grid-template-columns: 1fr; } }
 </style>

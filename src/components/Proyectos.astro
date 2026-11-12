@@ -8,9 +8,9 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
     <div class="cabecera">
       <div>
         <p class="etiqueta rv">Proyectos</p>
-        <h2 class="rv">Webs listas para recorrer, no capturas.</h2>
+        <h2 class="rv palabras">Webs listas para recorrer, no capturas.</h2>
       </div>
-      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Abrí cualquiera y navegalo completo.</p>
+      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Pasá el mouse para recorrerlos o abrilos completos.</p>
     </div>
 
     <div class="filtros rv" role="group" aria-label="Filtrar proyectos por plan">
@@ -19,17 +19,20 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
 
     <ul class="grilla">
       {PROYECTOS.map((p, i) => (
-        <li class="proyecto rv" data-plan={p.plan}>
-          <button type="button" class="mock" data-url={url(p.demo)} data-nombre={p.nombre} aria-label={`Ver vista previa de ${p.nombre}`}>
-            <img class="desk" src={`/proyectos/${p.demo}-desk.webp`} alt={`${p.nombre} en escritorio`} width="960" height="600" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+        <li class="proyecto rv" data-plan={p.plan} style={`--d:${(i % 2) * .12}s`}>
+          <button type="button" class="mock" data-url={url(p.demo)} data-nombre={p.nombre} aria-label={`Ver vista previa en vivo de ${p.nombre}`}>
+            <span class="ventana">
+              <span class="barra-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img class="full" src={`/proyectos/${p.demo}-full.webp`} alt={`Página de ${p.nombre} en escritorio`} width="800" height="1750" loading="lazy" decoding="async" />
+            </span>
             <img class="cel" src={`/proyectos/${p.demo}-cel.webp`} alt={`${p.nombre} en celular`} width="390" height="844" loading="lazy" decoding="async" />
-            <span class="ver">Vista previa <span aria-hidden="true">↗</span></span>
+            <span class="ver"><span class="vivo" aria-hidden="true"></span>Vista previa en vivo</span>
           </button>
           <div class="info">
-            <p class="tipo">{p.tipo}</p>
+            <p class="tipo"><span>{p.tipo}</span><span class="demo">Demo</span></p>
             <h3>{p.nombre}</h3>
             <p class="desc">{p.desc}</p>
-            <p class="pie"><span class="demo">Proyecto demostrativo</span><a href={url(p.demo)} target="_blank" rel="noopener">Abrir sitio <span aria-hidden="true">→</span></a></p>
+            <a class="abrir" href={url(p.demo)} target="_blank" rel="noopener">Abrir sitio completo <span aria-hidden="true">↗</span></a>
           </div>
         </li>
       ))}
@@ -51,13 +54,24 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
 </section>
 
 <script>
-  // Filtro por plan
+  // Filtro por plan, con salida y entrada suaves
   const botones = document.querySelectorAll<HTMLButtonElement>('.filtro');
-  const items = document.querySelectorAll<HTMLElement>('.proyecto');
+  const items = [...document.querySelectorAll<HTMLElement>('.proyecto')];
   botones.forEach((b) => b.addEventListener('click', () => {
     botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    items.forEach((it) => { it.hidden = b.dataset.filtro !== 'Todos' && it.dataset.plan !== b.dataset.filtro; });
+    const mostrar = (it: HTMLElement) => b.dataset.filtro === 'Todos' || it.dataset.plan === b.dataset.filtro;
+    items.forEach((it) => it.classList.add('saliendo'));
+    setTimeout(() => items.forEach((it) => {
+      it.hidden = !mostrar(it);
+      requestAnimationFrame(() => it.classList.remove('saliendo'));
+    }), 220);
   }));
+
+  // En pantallas táctiles, la captura se recorre sola cuando la tarjeta aparece
+  if (matchMedia('(hover: none)').matches) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('recorre', e.isIntersecting)), { threshold: .6 });
+    document.querySelectorAll('.mock').forEach((m) => io.observe(m));
+  }
 
   // Visor con el sitio en vivo
   const visor = document.querySelector<HTMLDialogElement>('.visor')!;
@@ -90,46 +104,59 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 40px; }
   .cabecera h2 { margin-top: 18px; }
 
-  .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
-  .filtro { min-height: 42px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--linea-oscura); background: transparent; color: var(--marfil); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .filtro { min-height: 42px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--linea-oscura); background: transparent; color: var(--marfil); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background-color .25s, color .25s, border-color .25s, transform .2s var(--ease); }
   .filtro:hover { border-color: var(--rosa); }
+  .filtro:active { transform: scale(.96); }
   .filtro[aria-pressed="true"] { background: var(--marfil); color: var(--vino); border-color: var(--marfil); }
   .proyectos :focus-visible { outline-color: var(--rosa); }
 
-  .grilla { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 5vw, 64px) clamp(24px, 3vw, 40px); }
+  .grilla { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(48px, 6vw, 80px) clamp(24px, 3vw, 40px); }
   .proyecto[hidden] { display: none; }
-  .mock { position: relative; display: block; width: 100%; padding: 7% 18% 7% 6%; border: 0; border-radius: 20px; background: #5E2441; cursor: pointer; overflow: hidden; text-align: left; }
-  .desk { border-radius: 8px; box-shadow: 0 24px 48px -18px #12030bcc; transition: transform .5s var(--ease); }
-  .cel { position: absolute; right: 5%; bottom: -18%; width: 24%; border-radius: 14px; border: 4px solid var(--grafito); box-shadow: 0 20px 40px -12px #12030bcc; transition: transform .5s var(--ease); }
-  .mock:hover .desk { transform: translateY(-4px); }
-  .mock:hover .cel { transform: translateY(-10px); }
-  .ver { position: absolute; left: 6%; bottom: 14px; padding: 7px 14px; border-radius: 999px; background: var(--marfil); color: var(--vino); font-size: .82rem; font-weight: 700; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s var(--ease); }
+  .proyecto.saliendo { opacity: 0 !important; transform: translateY(12px) !important; transition-duration: .2s !important; transition-delay: 0s !important; }
+  /* Las tarjetas de la derecha bajan un poco: ritmo editorial */
+  @media (min-width: 861px) { .proyecto:nth-child(even) { margin-top: 72px; } }
+
+  .mock { position: relative; display: block; width: 100%; padding: 7% 17% 0 6%; border: 0; border-radius: 22px; background: #5E2441; cursor: pointer; overflow: hidden; text-align: left; font: inherit; color: inherit; aspect-ratio: 1 / .8; }
+  .ventana { display: block; height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; background: var(--marfil); box-shadow: 0 24px 48px -18px #12030bcc; transition: transform .6s var(--ease); }
+  .barra-mini { display: flex; gap: 5px; height: 22px; align-items: center; padding: 0 10px; background: #EDE6E1; }
+  .barra-mini i { width: 7px; height: 7px; border-radius: 50%; background: #D4C8C3; }
+  /* La captura de página completa se recorre de arriba hacia abajo */
+  .full { width: 100%; height: calc(100% - 22px); object-fit: cover; object-position: top; transition: object-position 6s cubic-bezier(.45, 0, .3, 1); }
+  .mock:hover .full, .mock:focus-visible .full, .mock.recorre .full { object-position: bottom; }
+  .cel { position: absolute; right: 4%; bottom: -14%; width: 23%; border-radius: 16px; border: 4px solid var(--grafito); box-shadow: 0 20px 40px -12px #12030bcc; transition: transform .6s var(--ease); }
+  .mock:hover .ventana { transform: translateY(-6px); }
+  .mock:hover .cel { transform: translateY(-16px) rotate(-3deg); }
+  .ver { position: absolute; left: 6%; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--marfil); color: var(--vino); font-size: .82rem; font-weight: 800; box-shadow: 0 10px 24px -10px #12030bcc; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .4s var(--ease); }
+  .vivo { width: 7px; height: 7px; border-radius: 50%; background: #2BB673; }
   .mock:hover .ver, .mock:focus-visible .ver { opacity: 1; transform: none; }
   @media (hover: none) { .ver { opacity: 1; transform: none; } }
 
-  .info { padding-top: 22px; }
-  .tipo { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
-  .info h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin: 8px 0 10px; }
+  .info { padding-top: 24px; }
+  .tipo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
+  .demo { padding: 3px 9px; border: 1px solid var(--linea-oscura); border-radius: 999px; font-size: .68rem; color: #D9C3CC; letter-spacing: .08em; }
+  .info h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: 10px 0 10px; }
   .desc { color: #D9C3CC; max-width: 520px; }
-  .pie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 16px; font-size: .9rem; }
-  .demo { padding: 4px 10px; border: 1px solid var(--linea-oscura); border-radius: 999px; font-size: .78rem; color: #D9C3CC; }
-  .pie a { font-weight: 700; text-decoration: none; border-bottom: 1.5px solid var(--rosa); }
-  .pie a:hover { color: var(--rosa); }
+  .abrir { display: inline-flex; gap: 8px; margin-top: 18px; font-weight: 800; font-size: .95rem; text-decoration: none; border-bottom: 2px solid var(--rosa); padding-bottom: 2px; transition: color .25s; }
+  .abrir span { transition: transform .3s var(--ease); }
+  .abrir:hover { color: var(--rosa); }
+  .abrir:hover span { transform: translate(3px, -3px); }
 
   /* Visor */
   .visor { width: min(1240px, 100% - 24px); height: min(860px, 100dvh - 24px); max-width: none; max-height: none; margin: auto; border: 0; border-radius: 18px; background: var(--grafito); color: var(--marfil); overflow: hidden; }
-  .visor::backdrop { background: #1a0610cc; }
-  .visor[open] { display: flex; flex-direction: column; }
+  .visor::backdrop { background: #1a0610cc; backdrop-filter: blur(4px); }
+  .visor[open] { display: flex; flex-direction: column; animation: abre .45s var(--ease); }
+  @keyframes abre { from { opacity: 0; transform: translateY(16px) scale(.98); } }
   .visor-barra { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; padding: 12px 14px 12px 20px; }
   .visor-titulo { font-weight: 700; margin-right: auto; }
   .dispositivos { display: flex; padding: 3px; border-radius: 999px; background: #3a3539; }
-  .dispositivos button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--marfil); font-weight: 600; font-size: .85rem; cursor: pointer; }
+  .dispositivos button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--marfil); font-weight: 600; font-size: .85rem; cursor: pointer; transition: background-color .25s, color .25s; }
   .dispositivos button[aria-pressed="true"] { background: var(--marfil); color: var(--grafito); }
   .visor-abrir { font-size: .88rem; font-weight: 600; color: var(--rosa); }
-  .cerrar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #4a4448; background: transparent; color: var(--marfil); cursor: pointer; font-size: 1rem; }
-  .cerrar:hover { background: #3a3539; }
+  .cerrar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #4a4448; background: transparent; color: var(--marfil); cursor: pointer; font-size: 1rem; transition: background-color .2s, transform .3s var(--ease); }
+  .cerrar:hover { background: #3a3539; transform: rotate(90deg); }
   .pantalla { flex: 1; display: grid; place-items: center; padding: 0 12px 12px; min-height: 0; }
-  .pantalla iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; background: #fff; transition: width .3s var(--ease); }
+  .pantalla iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; background: #fff; transition: width .45s var(--ease); }
   .visor[data-disp="cel"] iframe { width: min(390px, 100%); }
 
   @media (max-width: 860px) {
@@ -139,4 +166,5 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
     .dispositivos { display: none; }
     .visor { width: 100%; height: 100dvh; border-radius: 0; }
   }
+  @media (prefers-reduced-motion: reduce) { .full { transition: none; } }
 </style>

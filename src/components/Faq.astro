@@ -1,13 +1,14 @@
 ---
-import { FAQ } from '../data/coudexia';
+import { FAQ, wa } from '../data/coudexia';
 // Datos estructurados para que Google pueda mostrar las preguntas
 const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.p, acceptedAnswer: { '@type': 'Answer', text: f.r } })) };
 ---
-<section class="seccion" id="preguntas">
+<section class="seccion faq" id="preguntas">
   <div class="wrap grilla">
     <div class="cabecera">
       <p class="etiqueta rv">Preguntas frecuentes</p>
-      <h2 class="rv">Lo que suelen preguntarnos.</h2>
+      <h2 class="rv palabras">Lo que suelen preguntarnos.</h2>
+      <p class="bajada rv">¿Te queda otra duda? <a href={wa('Hola Coudexia! Tengo una consulta.')} target="_blank" rel="noopener">Escribinos por WhatsApp</a> y te respondemos.</p>
     </div>
     <div class="lista">
       {FAQ.map((f, i) => (
@@ -24,11 +25,18 @@ const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: F
 <style>
   .grilla { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 32px clamp(40px, 7vw, 96px); align-items: start; }
   .cabecera { display: grid; gap: 18px; }
-  .lista { border-top: 1px solid var(--grafito); }
+  .bajada a { color: var(--bordo); font-weight: 700; }
+  .faq { background: var(--papel); border-top: 1px solid var(--linea); }
+  .lista { border-top: 1px solid var(--grafito); interpolate-size: allow-keywords; }
+  /* Apertura suave donde el navegador lo soporta; en el resto abre al instante */
+  .item::details-content { block-size: 0; overflow: hidden; transition: block-size .45s var(--ease), content-visibility .45s allow-discrete; }
+  .item[open]::details-content { block-size: auto; }
   .item { border-bottom: 1px solid var(--linea); }
   summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; cursor: pointer; list-style: none; }
   summary::-webkit-details-marker { display: none; }
-  summary:hover { color: var(--bordo); }
+  summary { transition: color .2s, padding-left .4s var(--ease); }
+  summary:hover { color: var(--bordo); padding-left: 6px; }
+  [open] summary { color: var(--bordo); }
   summary i { position: relative; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid currentColor; }
   summary i::before, summary i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%); transition: transform .3s var(--ease); }
   summary i::after { transform: translate(-50%, -50%) rotate(90deg); }

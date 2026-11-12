@@ -3,8 +3,8 @@ import Logo from './Logo.astro';
 const links = [
   ['#inicio', 'Inicio'],
   ['#servicios', 'Servicios'],
-  ['#proyectos', 'Proyectos'],
   ['#precios', 'Precios'],
+  ['#proyectos', 'Proyectos'],
   ['#contacto', 'Contacto'],
 ];
 ---
@@ -13,11 +13,11 @@ const links = [
     <a class="marca" href="#inicio" aria-label="Coudexia, ir al inicio"><Logo /></a>
     <nav id="menu" class="menu" aria-label="Principal">
       <ul>
-        {links.map(([href, t]) => <li><a href={href}>{t}</a></li>)}
+        {links.map(([href, t], i) => <li style={`--i:${i}`}><a href={href}>{t}</a></li>)}
       </ul>
-      <a class="btn btn-principal cta-menu" href="#contacto">Solicitar presupuesto</a>
+      <a class="btn btn-principal cta-menu" href="#precios">Ver planes y precios</a>
     </nav>
-    <a class="btn btn-principal cta" href="#contacto">Solicitar presupuesto</a>
+    <a class="btn btn-principal cta" href="#precios">Ver planes</a>
     <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span>
     </button>
@@ -38,8 +38,18 @@ const links = [
   addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
   matchMedia('(min-width: 961px)').addEventListener('change', () => abrir(false));
 
-  const sombra = () => header.classList.toggle('scroll', scrollY > 8);
-  addEventListener('scroll', sombra, { passive: true }); sombra();
+  // Se esconde al bajar y vuelve al subir, para dejar más lugar al contenido
+  let ultimo = scrollY;
+  const alScroll = () => {
+    const y = scrollY;
+    header.classList.toggle('scroll', y > 8);
+    if (!header.classList.contains('abierto') && Math.abs(y - ultimo) > 6) {
+      header.classList.toggle('oculto', y > ultimo && y > 320);
+      ultimo = y;
+    }
+  };
+  addEventListener('scroll', alScroll, { passive: true }); alScroll();
+  header.addEventListener('focusin', () => header.classList.remove('oculto'));
 
   // Link activo según la sección visible
   const links = [...header.querySelectorAll<HTMLAnchorElement>('.menu ul a')];
@@ -50,16 +60,17 @@ const links = [
 </script>
 
 <style>
-  .header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--marfil) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .3s; }
+  .header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--marfil) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: border-color .3s, transform .45s var(--ease); }
   .header.scroll { border-color: var(--linea); }
+  .header.oculto { transform: translateY(-100%); }
   .barra { display: flex; align-items: center; gap: 28px; height: 76px; }
-  .marca { font-size: 1.6rem; text-decoration: none; display: inline-flex; margin-right: auto; }
+  .marca { font-size: 1.6rem; text-decoration: none; display: inline-flex; margin-right: auto; transition: opacity .2s; }
+  .marca:hover { opacity: .8; }
   .menu { display: flex; align-items: center; }
-  .menu ul { display: flex; gap: 30px; list-style: none; }
-  .menu ul a { position: relative; text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--texto-suave); padding: 6px 0; transition: color .2s; }
-  .menu ul a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--bordo); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
-  .menu ul a:hover, .menu ul a[aria-current] { color: var(--grafito); }
-  .menu ul a:hover::after, .menu ul a[aria-current]::after { transform: scaleX(1); }
+  .menu ul { display: flex; gap: 6px; list-style: none; padding: 5px; border-radius: 999px; background: #EFE9E5; }
+  .menu ul a { position: relative; display: block; text-decoration: none; font-weight: 600; font-size: .92rem; color: var(--texto-suave); padding: 7px 15px; border-radius: 999px; transition: color .2s, background-color .25s; }
+  .menu ul a:hover { color: var(--grafito); }
+  .menu ul a[aria-current] { color: var(--marfil); background: var(--grafito); }
   .cta { min-height: 44px; padding: 0 20px; font-size: .92rem; }
   .cta-menu, .hamburguesa { display: none; }
 
@@ -69,11 +80,14 @@ const links = [
     .hamburguesa span { display: block; width: 18px; height: 2px; background: var(--grafito); transition: transform .3s var(--ease); }
     .abierto .hamburguesa span:first-child { transform: translateY(4px) rotate(45deg); }
     .abierto .hamburguesa span:last-child { transform: translateY(-4px) rotate(-45deg); }
-    .menu { position: fixed; inset: 76px 0 0; height: calc(100dvh - 76px); flex-direction: column; align-items: stretch; justify-content: space-between; padding: 24px 20px 32px; background: var(--marfil); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .25s, transform .25s var(--ease), visibility 0s .25s; }
-    .abierto .menu { visibility: visible; opacity: 1; transform: none; transition: opacity .25s, transform .25s var(--ease); }
-    .menu ul { flex-direction: column; gap: 0; }
-    .menu ul a { display: block; padding: 18px 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; color: var(--grafito); border-bottom: 1px solid var(--linea); }
-    .menu ul a::after { display: none; }
+    .menu { position: fixed; inset: 76px 0 0; height: calc(100dvh - 76px); flex-direction: column; align-items: stretch; justify-content: space-between; padding: 24px 20px 32px; background: var(--marfil); visibility: hidden; opacity: 0; transition: opacity .25s, visibility 0s .25s; }
+    .abierto .menu { visibility: visible; opacity: 1; transition: opacity .25s; }
+    .menu ul { flex-direction: column; gap: 0; padding: 0; background: none; border-radius: 0; }
+    .menu ul li { opacity: 0; transform: translateY(14px); transition: opacity .4s, transform .5s var(--ease); }
+    .abierto .menu ul li { opacity: 1; transform: none; transition-delay: calc(var(--i) * 50ms + 60ms); }
+    .menu ul a, .menu ul a[aria-current] { padding: 18px 0; border-radius: 0; font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; color: var(--grafito); background: none; border-bottom: 1px solid var(--linea); }
+    .menu ul a[aria-current] { color: var(--bordo); }
     .cta-menu { display: flex; }
   }
+  @media (prefers-reduced-motion: reduce) { .header.oculto { transform: none; } }
 </style>

@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { CONTACTO, wa } from '../data/coudexia';
-const nav = [['#servicios', 'Servicios'], ['#proyectos', 'Proyectos'], ['#precios', 'Precios'], ['#proceso', 'Proceso'], ['#preguntas', 'Preguntas frecuentes'], ['#contacto', 'Contacto']];
+const nav = [['#servicios', 'Servicios'], ['#precios', 'Planes y precios'], ['#proyectos', 'Proyectos'], ['#incluye', 'Qué incluye'], ['#proceso', 'Proceso'], ['#preguntas', 'Preguntas frecuentes'], ['#contacto', 'Proyectos a medida']];
 const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin]].filter(([, u]) => u);
 ---
 <footer class="footer">
@@ -18,11 +18,12 @@ const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin
       <h3>Contacto</h3>
       <ul>
         <li><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href={`mailto:${CONTACTO.email}`}>Email</a></li>
+        <li><a href={`mailto:${CONTACTO.email}`}>{CONTACTO.email}</a></li>
         {redes.map(([n, u]) => <li><a href={u} target="_blank" rel="noopener">{n}</a></li>)}
       </ul>
     </div>
   </div>
+  <div class="wrap gigante" aria-hidden="true"><Logo claro /></div>
   <div class="wrap legal">
     <p>© {new Date().getFullYear()} Coudexia · {CONTACTO.ciudad}</p>
     <p>Los proyectos de esta página son demostrativos: marcas y datos ficticios. Fotos de Unsplash.</p>
@@ -49,7 +50,13 @@ const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin
   ul { list-style: none; display: grid; gap: 8px; }
   ul a { text-decoration: none; color: #DDD5D8; }
   ul a:hover { color: var(--marfil); text-decoration: underline; text-underline-offset: 4px; }
-  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid #3A3539; font-size: .85rem; color: #A39AA0; }
+  /* Logo gigante de cierre */
+  .gigante { margin-top: 72px; padding-bottom: 28px; line-height: 0; }
+  .gigante :global(.logo) { display: block; width: 100%; }
+  .gigante :global(svg) { width: 100%; height: auto; }
+  .gigante :global(.l) { fill: #342E33; }
+  .gigante :global(.a) { fill: var(--bordo); }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; border-top: 1px solid #3A3539; font-size: .85rem; color: #A39AA0; }
   .footer :focus-visible { outline-color: var(--rosa); }
 
   .wa-flotante { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #25D366; color: #fff; box-shadow: 0 10px 24px -6px #0006; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, transform .3s var(--ease), visibility 0s .3s; }

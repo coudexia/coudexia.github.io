@@ -1,28 +1,44 @@
 ---
-import { PLANES } from '../data/coudexia';
+import { PLANES, RUBROS } from '../data/coudexia';
 const desde = PLANES[0].desde;
+const titulo = 'Tu próximo proyecto digital empieza'.split(' ');
+// Pares de demos que van rotando en la composición: [escritorio, celular, nombre en la barra]
+const escenas = [
+  ['odontologo', 'estetica-integral', 'prisma-dental'],
+  ['estetica', 'servicio-tecnico', 'nacar-estetica'],
+  ['fletes', 'depilacion', 'rumbo-fletes'],
+];
 ---
 <section class="hero" id="inicio">
   <div class="wrap grilla">
     <div class="texto">
-      <p class="etiqueta rv">Diseño · Desarrollo · Tiendas online</p>
-      <h1 class="rv">Tu próximo proyecto digital empieza <em>acá.</em></h1>
-      <p class="bajada rv">Diseñamos y desarrollamos sitios web y tiendas online para negocios que quieren crecer, destacarse y vender más.</p>
-      <div class="acciones rv">
-        <a class="btn btn-principal" href="#contacto">Solicitar presupuesto</a>
+      <p class="etiqueta entra" style="--d:.05s"><span class="punto" aria-hidden="true"></span>Diseño · Desarrollo · Tiendas online</p>
+      <h1 aria-label="Tu próximo proyecto digital empieza acá.">
+        {titulo.map((w, i) => <><span class="w" aria-hidden="true"><span style={`--i:${i}`}>{w}</span></span>{' '}</>)}
+        <span class="w" aria-hidden="true"><em style={`--i:${titulo.length}`}>acá.</em></span>
+      </h1>
+      <p class="bajada entra" style="--d:.55s">Diseñamos y desarrollamos sitios web y tiendas online para negocios que quieren crecer, destacarse y vender más.</p>
+      <div class="acciones entra" style="--d:.65s">
+        <a class="btn btn-principal" href="#precios">Ver planes y precios</a>
         <a class="btn btn-borde" href="#proyectos">Ver proyectos <span class="flecha" aria-hidden="true">→</span></a>
       </div>
     </div>
 
-    <div class="escena rv" aria-hidden="true">
-      <div class="navegador">
-        <div class="barra-nav"><i></i><i></i><i></i><span>prisma-dental · demo</span></div>
-        <img src="/proyectos/odontologo-desk.webp" alt="" width="960" height="600" fetchpriority="high" />
+    <div class="escena entra" style="--d:.35s" aria-hidden="true">
+      <div class="aro a1"></div><div class="aro a2"></div>
+      <div class="capa navegador" data-prof="10">
+        <div class="barra-nav"><i></i><i></i><i></i><span class="url">{escenas[0][2]} · demo</span></div>
+        <div class="pantalla">
+          {escenas.map(([desk], i) => <img class:list={['slide', { on: i === 0 }]} src={`/proyectos/${desk}-desk.webp`} alt="" width="960" height="600" fetchpriority={i === 0 ? 'high' : 'low'} loading={i === 0 ? 'eager' : 'lazy'} />)}
+        </div>
       </div>
-      <div class="celular">
-        <img src="/proyectos/estetica-integral-cel.webp" alt="" width="390" height="844" fetchpriority="high" />
+      <div class="capa celular" data-prof="-18">
+        <div class="pantalla">
+          {escenas.map(([, cel], i) => <img class:list={['slide', { on: i === 0 }]} src={`/proyectos/${cel}-cel.webp`} alt="" width="390" height="844" loading={i === 0 ? 'eager' : 'lazy'} />)}
+        </div>
       </div>
-      <span class="rotulo">Proyectos demostrativos</span>
+      <div class="capa chip" data-prof="-28"><span class="vivo"></span>Demos navegables</div>
+      <div class="puntos">{escenas.map((_, i) => <i class:list={{ on: i === 0 }}></i>)}</div>
     </div>
   </div>
 
@@ -33,33 +49,102 @@ const desde = PLANES[0].desde;
       {desde && <li><b>{desde}</b><span>Precio desde, en pesos argentinos</span></li>}
     </ul>
   </div>
+
+  <div class="cinta" aria-label={`Webs para ${RUBROS.join(', ')}`}>
+    <div class="pista" aria-hidden="true">
+      {[0, 1].map(() => <ul>{RUBROS.map((r) => <li>{r}</li>)}</ul>)}
+    </div>
+  </div>
 </section>
 
+<script>
+  const escena = document.querySelector<HTMLElement>('.escena')!;
+  const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const urls = ['prisma-dental', 'nacar-estetica', 'rumbo-fletes'];
+
+  // Rotación de demos cada 4 s mientras la escena está a la vista
+  if (!calmo) {
+    let i = 0, timer = 0;
+    const capas = [...escena.querySelectorAll('.pantalla')].map((p) => [...p.querySelectorAll('.slide')]);
+    const puntos = [...escena.querySelectorAll('.puntos i')];
+    const url = escena.querySelector('.url')!;
+    const paso = () => {
+      i = (i + 1) % urls.length;
+      capas.forEach((s) => s.forEach((img, j) => img.classList.toggle('on', j === i)));
+      puntos.forEach((p, j) => p.classList.toggle('on', j === i));
+      url.textContent = `${urls[i]} · demo`;
+    };
+    new IntersectionObserver(([e]) => {
+      clearInterval(timer);
+      if (e.isIntersecting) timer = window.setInterval(paso, 4000);
+    }).observe(escena);
+
+    // Profundidad: las capas se mueven distinto según el mouse
+    if (matchMedia('(pointer: fine)').matches) {
+      const capasProf = [...escena.querySelectorAll<HTMLElement>('[data-prof]')];
+      escena.addEventListener('pointermove', (e) => {
+        const r = escena.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        capasProf.forEach((c) => { const p = Number(c.dataset.prof); c.style.translate = `${x * p}px ${y * p}px`; });
+      });
+      escena.addEventListener('pointerleave', () => capasProf.forEach((c) => (c.style.translate = '')));
+    }
+  }
+</script>
+
 <style>
-  .hero { padding: clamp(40px, 6vw, 72px) 0 0; }
+  .hero { padding: clamp(40px, 6vw, 72px) 0 0; overflow: hidden; }
   .grilla { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--bordo); box-shadow: 0 0 0 0 #782D4D66; animation: latido 2.4s infinite; }
+  .etiqueta:has(.punto)::before { display: none; }
+  @keyframes latido { 70% { box-shadow: 0 0 0 9px #782D4D00; } 100% { box-shadow: 0 0 0 0 #782D4D00; } }
   h1 { font-size: clamp(2.6rem, 6.4vw, 5.1rem); margin: 22px 0 24px; }
+  h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+  h1 .w > * { display: inline-block; animation: sube 1s var(--ease) both; animation-delay: calc(.1s + var(--i) * 60ms); }
   h1 em { font-style: normal; color: var(--bordo); }
+  @keyframes sube { from { transform: translateY(105%); } }
+  .entra { animation: aparece .9s var(--ease) both; animation-delay: var(--d); }
+  @keyframes aparece { from { opacity: 0; transform: translateY(18px); } }
   .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 
-  /* Composición: bloque vino con un navegador y un celular superpuestos */
+  /* Composición: bloque vino con navegador, celular y etiqueta en capas */
   .escena { position: relative; aspect-ratio: 1 / .92; background: var(--vino); border-radius: 28px; overflow: hidden; }
-  .escena::before { content: ""; position: absolute; inset: auto -12% -38% auto; width: 70%; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--linea-oscura); }
-  .escena::after { content: ""; position: absolute; inset: auto -2% -24% auto; width: 46%; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--linea-oscura); }
-  .navegador { position: absolute; left: 7%; top: 10%; width: 82%; background: var(--marfil); border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px -20px #1a0610aa; z-index: 1; }
+  .aro { position: absolute; border-radius: 50%; border: 1px solid var(--linea-oscura); aspect-ratio: 1; animation: gira 40s linear infinite; }
+  .a1 { width: 70%; right: -12%; bottom: -38%; }
+  .a2 { width: 46%; right: -2%; bottom: -24%; border-style: dashed; animation-direction: reverse; }
+  @keyframes gira { to { rotate: 360deg; } }
+  .capa { position: absolute; transition: translate .6s var(--ease); }
+  .navegador { left: 7%; top: 10%; width: 82%; background: var(--marfil); border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px -20px #1a0610aa; z-index: 1; }
   .barra-nav { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; background: #EDE6E1; }
   .barra-nav i { width: 9px; height: 9px; border-radius: 50%; background: #D4C8C3; }
   .barra-nav i:first-child { background: var(--bordo); }
-  .barra-nav span { margin-left: 10px; font-size: .7rem; color: var(--texto-suave); }
-  .celular { position: absolute; right: 6%; bottom: 7%; width: 27%; padding: 6px; background: var(--grafito); border-radius: 26px; box-shadow: 0 30px 50px -16px #1a0610cc; z-index: 2; }
-  .celular img { border-radius: 20px; aspect-ratio: 390 / 760; object-fit: cover; object-position: top; }
-  .rotulo { position: absolute; left: 7%; bottom: 7%; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rosa); }
+  .url { margin-left: 10px; font-size: .7rem; color: var(--texto-suave); }
+  .pantalla { position: relative; display: grid; }
+  .slide { grid-area: 1 / 1; opacity: 0; transform: scale(1.03); transition: opacity .9s ease, transform 1.4s var(--ease); }
+  .slide.on { opacity: 1; transform: none; }
+  .celular { right: 6%; bottom: 7%; width: 27%; padding: 6px; background: var(--grafito); border-radius: 26px; box-shadow: 0 30px 50px -16px #1a0610cc; z-index: 2; }
+  .celular .pantalla { border-radius: 20px; overflow: hidden; aspect-ratio: 390 / 760; }
+  .celular .slide { height: 100%; object-fit: cover; object-position: top; }
+  .chip { left: 7%; bottom: 9%; z-index: 3; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: var(--marfil); color: var(--vino); font-size: .78rem; font-weight: 800; box-shadow: 0 14px 30px -12px #1a0610cc; }
+  .vivo { width: 8px; height: 8px; border-radius: 50%; background: #2BB673; box-shadow: 0 0 0 0 #2BB67366; animation: latido 2s infinite; }
+  .puntos { position: absolute; right: 36%; bottom: 11%; display: flex; gap: 6px; z-index: 3; }
+  .puntos i { width: 6px; height: 6px; border-radius: 99px; background: var(--linea-oscura); transition: width .4s var(--ease), background-color .4s; }
+  .puntos i.on { width: 20px; background: var(--rosa); }
 
   .datos { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(48px, 7vw, 88px); border-top: 1px solid var(--linea); }
   .datos li { padding: 26px 24px 0 0; display: grid; gap: 4px; }
   .datos li + li { padding-left: 24px; border-left: 1px solid var(--linea); }
   .datos b { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -.03em; color: var(--vino); }
   .datos span { color: var(--texto-suave); font-size: .95rem; }
+
+  /* Cinta de rubros */
+  .cinta { margin-top: clamp(48px, 7vw, 80px); border-block: 1px solid var(--linea); overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .pista { display: flex; width: max-content; animation: desliza 38s linear infinite; }
+  .cinta:hover .pista { animation-play-state: paused; }
+  .pista ul { display: flex; list-style: none; }
+  .pista li { display: flex; align-items: center; gap: 28px; padding: 20px 28px 20px 0; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
+  .pista li::after { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--bordo); rotate: 45deg; }
+  @keyframes desliza { to { transform: translateX(-50%); } }
 
   @media (max-width: 960px) {
     .grilla { grid-template-columns: 1fr; }
@@ -68,10 +153,14 @@ const desde = PLANES[0].desde;
   @media (max-width: 640px) {
     .datos { grid-template-columns: 1fr; }
     .datos li, .datos li + li { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--linea); }
-    .escena { border-radius: 20px; aspect-ratio: 1 / 1; }
+    .escena { border-radius: 20px; aspect-ratio: 1 / 1.02; }
     .navegador { width: 88%; left: 6%; top: 8%; }
     .celular { width: 34%; border-radius: 20px; padding: 4px; }
-    .celular img { border-radius: 16px; }
-    .rotulo { bottom: 6%; font-size: .62rem; max-width: 50%; }
+    .celular .pantalla { border-radius: 16px; }
+    .chip { bottom: 7%; left: 6%; font-size: .7rem; padding: 7px 11px; }
+    .puntos { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pista { animation: none; flex-wrap: wrap; }
   }
 </style>

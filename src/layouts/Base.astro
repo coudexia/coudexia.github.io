@@ -92,12 +92,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   .saltar:focus { top: 12px; }
 
   /* Aparición al hacer scroll (solo con JS y sin "reducir movimiento") */
-  .js .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .js .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: var(--d, 0s); }
   .js .rv.in { opacity: 1; transform: none; }
+
+  /* Títulos que entran palabra por palabra (el script envuelve cada palabra) */
+  .js .palabras { opacity: 1; transform: none; }
+  .palabras .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+  .palabras .w > span { display: inline-block; }
+  .js .palabras .w > span { transform: translateY(105%); transition: transform .9s var(--ease); transition-delay: calc(var(--i) * 45ms); }
+  .js .palabras.in .w > span { transform: none; }
+
+  /* Botón con relleno que sube al pasar el mouse */
+  .btn { position: relative; isolation: isolate; overflow: hidden; }
+  .btn::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; transform: translateY(101%); transition: transform .4s var(--ease); }
+  .btn-principal::before { background: var(--vino); }
+  .btn-borde::before { background: var(--grafito); }
+  .btn-claro::before { background: var(--rosa); }
+  .btn:hover::before { transform: none; }
+  /* el color de fondo queda fijo: lo que cambia es la capa que sube */
+  .btn-principal:hover { background: var(--bordo); }
+  .btn-borde:hover { background: transparent; }
+  .btn-claro:hover { background: var(--marfil); }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
-    .js .rv { opacity: 1; transform: none; }
+    .js .rv, .js .palabras .w > span { opacity: 1; transform: none; }
   }
 </style>
