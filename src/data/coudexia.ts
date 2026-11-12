@@ -77,7 +77,7 @@ export const PLANES = [
     para: 'Para empresas que necesitan un sitio más completo con varias secciones.',
     desde: '$349.000',
     destacado: true,
-    incluye: ['Sitio de hasta 5 páginas', 'Todo lo de Página Start', 'Servicios, galería, nosotros y contacto', 'Preguntas frecuentes', 'Formulario que llega a tu WhatsApp', 'Borrador gratis en 48 h'],
+    incluye: ['Sitio de hasta 5 páginas', 'Todo lo de Página Start', 'Servicios, galería, nosotros y contacto', 'Preguntas frecuentes', 'Turnos o reservas online, si los necesitás', 'Borrador gratis en 48 h'],
     mensaje: 'Hola Coudexia! Me interesa el plan Página Business.',
   },
   {
@@ -85,21 +85,13 @@ export const PLANES = [
     para: 'Para negocios que quieren comenzar a vender online con Tiendanube o Shopify.',
     desde: '$490.000',
     nota: 'El plan mensual de la plataforma se contrata aparte, a tu nombre.',
-    incluye: ['Armado de tu tienda en Tiendanube o Shopify', 'Diseño adaptado a tu marca', 'Categorías y navegación organizadas', 'Carga inicial de productos', 'Configuración de medios de pago y envío'],
+    incluye: ['Armado de tu tienda en Tiendanube o Shopify', 'Diseño adaptado a tu marca', 'Categorías y navegación organizadas', 'Carga inicial de productos', 'Configuración de medios de pago y envío', 'Te enseñamos a cargar productos y gestionar pedidos'],
     mensaje: 'Hola Coudexia! Me interesa el plan Página E-commerce para mi tienda online.',
   },
 ];
 
 // Precio de lanzamiento: vale para los primeros N clientes. Cuando se cubran, subir los precios de PLANES y poner cupos: 0 para ocultar el aviso.
 export const LANZAMIENTO = { cupos: 10 };
-
-// Mantenimiento mensual opcional, aparte del pago único de cada plan
-export const MANTENIMIENTO = {
-  precio: '$60.000',
-  bonificado: 'Primer mes bonificado',
-  incluye: ['Cambios de textos, fotos y precios', 'Secciones o promociones nuevas chicas', 'Revisión de que todo funcione', 'Soporte por WhatsApp'],
-  mensaje: 'Hola Coudexia! Quiero consultar por el mantenimiento mensual.',
-};
 
 export const PROCESO = [
   { t: 'Consulta inicial', d: 'Nos contás qué hace tu negocio y qué necesitás. Por WhatsApp o en una llamada corta.' },
