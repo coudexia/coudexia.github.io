@@ -28,14 +28,26 @@ import { SERVICIOS } from '../data/coudexia';
   </div>
 </section>
 
+<script>
+  const seccion = document.querySelector<HTMLElement>('#servicios')!;
+  const ultimo = seccion.querySelector<HTMLElement>('.servicio:last-child')!;
+  new ResizeObserver(() => seccion.style.setProperty('--ult', `${ultimo.offsetHeight}px`)).observe(ultimo);
+</script>
+
 <style>
   .cabecera { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 72px); }
   .cabecera > * { max-width: 760px; }
   /* En pantallas grandes el título queda fijo mientras los servicios pasan por debajo.
-     Baja un poco cuando el menú del sitio está visible para no quedar tapado. */
+     - El padding superior deja lugar al menú del sitio (aparezca o no), así nunca lo tapa.
+     - El degradado de abajo disuelve lo que pasa por debajo en vez de cortarlo en seco.
+     - --ult (alto del último servicio, lo mide el script) hace que el título se suelte
+       justo cuando llega el último servicio, y se vayan juntos. */
   @media (min-width: 861px) and (min-height: 720px) {
-    .cabecera { position: sticky; top: 0; z-index: 2; margin-bottom: 0; padding: 28px 0 clamp(32px, 4vw, 48px); background: var(--marfil); transition: top .45s var(--ease); }
-    :global(html:has(.header:not(.oculto))) .cabecera { top: 76px; }
+    .cabecera { position: sticky; top: 0; z-index: 2; margin: -76px 0 0; padding: 104px 0 clamp(32px, 4vw, 48px); background: var(--marfil); }
+    .cabecera::after { content: ""; position: absolute; inset: 100% 0 auto; height: 56px; background: linear-gradient(var(--marfil), transparent); pointer-events: none; }
+    .wrap { display: flow-root; } /* evita que el margen negativo se escape de .wrap */
+    .lista { margin-bottom: calc(var(--ult, 0px) * -1); }
+    #servicios { padding-bottom: calc(clamp(72px, 10vw, 128px) + var(--ult, 0px)); }
   }
   .lista { list-style: none; border-top: 1px solid var(--grafito); }
   .servicio { position: relative; isolation: isolate; display: grid; grid-template-columns: 80px minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); padding: clamp(32px, 4vw, 48px) clamp(0px, 2vw, 28px); border-bottom: 1px solid var(--linea); }
