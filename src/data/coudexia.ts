@@ -33,7 +33,7 @@ export const SERVICIOS = [
     problema: 'Tus clientes te buscan en Google o te piden "pasame tu web" y no tenés dónde mandarlos, o tu sitio actual no se entiende desde el celular.',
     ideal: 'Profesionales, consultorios, comercios y servicios que necesitan mostrar lo que hacen y recibir consultas.',
     items: ['Páginas de aterrizaje', 'Sitios institucionales', 'Sitios profesionales multipágina', 'Diseño responsive'],
-    cta: ['Ver Página Start y Página Business', '#precios'],
+    cta: ['Ver Página Start y Página Business', '#planes'],
   },
   {
     id: 'tiendas',
@@ -41,7 +41,7 @@ export const SERVICIOS = [
     problema: 'Vendés por Instagram o WhatsApp y respondés precios uno por uno. Una tienda ordena el catálogo y cobra sola.',
     ideal: 'Marcas y comercios que quieren vender online con pagos y envíos resueltos.',
     items: ['Implementación en Tiendanube', 'Implementación en Shopify', 'Configuración visual y comercial', 'Organización de productos, categorías y navegación'],
-    cta: ['Ver Página E-commerce', '#precios'],
+    cta: ['Ver Página E-commerce', '#planes'],
   },
   {
     id: 'medida',

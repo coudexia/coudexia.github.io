@@ -11,6 +11,7 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
       <p class="bajada rv">Precios en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Página Start y Página Business, en 48 h te mostramos un borrador gratis.</p>
     </div>
 
+    <div id="planes" class="ancla">
     {LANZAMIENTO.cupos > 0 && (
       <p class="lanza rv"><b>Precio de lanzamiento</b> para los primeros {LANZAMIENTO.cupos} clientes <span aria-hidden="true">·</span> Incluye el primer mes de mantenimiento bonificado</p>
     )}
@@ -33,6 +34,7 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
         </li>
       ))}
     </ul>
+    </div>
 
     <ul class="condiciones rv">
       <li>Pago único, sin abonos mensuales obligatorios</li>
@@ -51,6 +53,8 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
 <style>
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; margin-bottom: clamp(40px, 6vw, 64px); }
   .cabecera h2 { margin-top: 18px; }
+  /* Destino de los links "Ver Página…" de Servicios: deja el aviso y los planes a la vista */
+  .ancla { scroll-margin-top: 24px; }
   /* Aviso de lanzamiento: sin precio tachado, el beneficio es real y tiene límite */
   .lanza { width: fit-content; margin: 0 auto 34px; padding: 10px 20px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .93rem; font-weight: 600; text-align: center; }
   .lanza b { font-weight: 800; }
