@@ -264,7 +264,7 @@ form.consulta .btn { width: 100%; }
 .pie .logo { color: #fff; }
 .pie .logo span { color: var(--brillo); }
 .pie p { margin-top: 12px; max-width: 340px; color: #a9a2c9; }
-.pie h4 { font-family: var(--display); font-size: .95rem; font-weight: 600; color: #fff; margin-bottom: 14px; }
+.pie h3 { line-height: 1.4; letter-spacing: 0; font-family: var(--display); font-size: .95rem; font-weight: 600; color: #fff; margin-bottom: 14px; }
 .pie ul { list-style: none; display: grid; gap: 8px; }
 .pie ul a { text-decoration: none; }
 .pie ul a:hover { color: #fff; }

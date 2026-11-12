@@ -239,7 +239,7 @@ form.consulta .btn { width: 100%; }
 .pie-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr)); gap: 36px; }
 .pie .logo { color: #fff; }
 .pie p { margin-top: 14px; max-width: 340px; color: #b7c6c3; }
-.pie h4 { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: color-mix(in srgb, var(--principal) 50%, #fff); margin-bottom: 14px; }
+.pie h3 { font-family: var(--sans); line-height: 1.4; font-variation-settings: normal; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: color-mix(in srgb, var(--principal) 50%, #fff); margin-bottom: 14px; }
 .pie ul { list-style: none; display: grid; gap: 8px; }
 .pie ul a { text-decoration: none; }
 .pie ul a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }

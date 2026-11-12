@@ -167,7 +167,8 @@ function generar(archivo) {
       if (!cal) s = s.replace(/<!--turnos-->[\s\S]*?<!--\/turnos--><a class="btn borde"/g, '<a class="btn"').replace(/<!--turnos-->[\s\S]*?<!--\/turnos-->/g, '');
       // Franja de borrador + no indexar en Google
       s = s.replace(/<div class="demo-ribbon">[\s\S]*?<\/div>/, `<div class="demo-ribbon">Borrador para ${escapar(datos.nombre)} · <a href="../../">diseñado por Coudexia</a></div>`);
-      s = s.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex">');
+      // Las demos ya traen noindex; solo se agrega si falta
+      if (!s.includes('name="robots"')) s = s.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex">');
     }
     fs.writeFileSync(path.join(SALIDA, slug, archivo), s);
   }
