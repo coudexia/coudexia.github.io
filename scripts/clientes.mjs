@@ -65,7 +65,7 @@ const BASES = {
       direccion: ['Av. Santa Fe 1960'],
       horario: ['Lunes a sábado de 9 a 21 h'],
     },
-    colores: { principal: ['6a4de0'], principalOscuro: ['4c37a3'] },
+    colores: { principal: ['6a4de0'] },
   },
   'estetica-integral': {
     textos: {
