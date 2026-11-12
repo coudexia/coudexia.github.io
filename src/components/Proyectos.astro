@@ -1,6 +1,6 @@
 ---
 import { PROYECTOS } from '../data/coudexia';
-const filtros = ['Todos', ...['Web Start', 'Web Business', 'A medida'].filter((f) => PROYECTOS.some((p) => p.plan === f))];
+const filtros = ['Todos', ...['Página Start', 'Página Business', 'A medida'].filter((f) => PROYECTOS.some((p) => p.plan === f))];
 const url = (demo: string) => `/demos/${demo}/index.html`;
 ---
 <section class="seccion proyectos" id="proyectos">

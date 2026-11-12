@@ -8,7 +8,7 @@ import { PLANES, wa } from '../data/coudexia';
         <p class="etiqueta rv">Planes y precios</p>
         <h2 class="rv palabras">Elegí tu plan y arrancamos.</h2>
       </div>
-      <p class="bajada rv">Precios de lanzamiento en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Web Start y Web Business, en 48 h te mostramos un borrador gratis.</p>
+      <p class="bajada rv">Precios de lanzamiento en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Página Start y Página Business, en 48 h te mostramos un borrador gratis.</p>
     </div>
 
     <ul class="planes">
@@ -22,7 +22,7 @@ import { PLANES, wa } from '../data/coudexia';
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">{p.incluye.map((it) => <li>{it}</li>)}</ul>
-          <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero {p.nombre} <span class="flecha" aria-hidden="true">→</span></a>
+          <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero la {p.nombre} <span class="flecha" aria-hidden="true">→</span></a>
         </li>
       ))}
     </ul>
