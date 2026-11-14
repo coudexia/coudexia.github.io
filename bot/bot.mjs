@@ -58,15 +58,15 @@ const herramientas = [
 const chats = new Map();
 const colas = new Map();
 
-function ejecutar(bloque, chat, id) {
+async function ejecutar(bloque, chat, id) {
   const { name, input } = bloque;
   try {
     if (name === 'ver_horarios_libres') {
-      const libres = horariosLibres(input.fecha);
+      const libres = await horariosLibres(input.fecha);
       return { content: libres.length ? `Libres el ${input.fecha}: ${libres.join(', ')}` : `El ${input.fecha} no hay turnos (cerrado o completo).` };
     }
     if (name === 'reservar_turno') {
-      const t = reservar({ ...input, contacto: id });
+      const t = await reservar({ ...input, contacto: id });
       console.log('[turno]', t);
       return { content: `Reservado: ${t.fecha} ${t.hora}, ${t.nombre}, ${t.motivo}.` };
     }
@@ -77,6 +77,7 @@ function ejecutar(bloque, chat, id) {
     }
     return { content: `Herramienta desconocida: ${name}`, is_error: true };
   } catch (e) {
+    console.error('[error herramienta]', name, e.message);
     return { content: e.message, is_error: true };
   }
 }
@@ -102,7 +103,7 @@ async function atender(id, texto) {
     chat.mensajes.push({ role: 'assistant', content: r.content }); // completo: incluye los bloques de razonamiento
     if (r.stop_reason === 'refusal') { chat.derivado = true; return AVISO_HUMANO; }
     if (r.stop_reason !== 'tool_use') return r.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n').trim() || null;
-    const resultados = r.content.filter((b) => b.type === 'tool_use').map((b) => ({ type: 'tool_result', tool_use_id: b.id, ...ejecutar(b, chat, id) }));
+    const resultados = await Promise.all(r.content.filter((b) => b.type === 'tool_use').map(async (b) => ({ type: 'tool_result', tool_use_id: b.id, ...(await ejecutar(b, chat, id)) })));
     chat.mensajes.push({ role: 'user', content: resultados });
   }
   chat.derivado = true;

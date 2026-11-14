@@ -11,3 +11,8 @@ ventas/
 *recovery-codes*
 
 bot/turnos.json
+# Claves de Google y otros .json privados del bot
+bot/*.json
+!bot/negocio.json
+!bot/package.json
+!bot/package-lock.json
