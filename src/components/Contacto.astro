@@ -4,9 +4,9 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
 <section class="seccion contacto" id="contacto">
   <div class="wrap grilla">
     <div class="texto">
-      <p class="etiqueta rv">Proyectos a medida</p>
-      <h2 class="rv palabras">¿Tenés una idea que no está en las opciones?</h2>
-      <p class="bajada rv">Contanosla y te armamos el presupuesto. Integraciones, sistemas de turnos, cotizadores o una web pensada desde cero: si se puede resolver en la web, lo charlamos.</p>
+      <p class="etiqueta rv">Contacto</p>
+      <h2 class="rv palabras">¿Querés que tu WhatsApp atienda solo?</h2>
+      <p class="bajada rv">Contanos de tu negocio y cómo das turnos hoy. Te respondemos con lo que haríamos en tu caso y cuánto cuesta.</p>
       <ul class="canales rv">
         <li><a href={wa()} target="_blank" rel="noopener"><small>WhatsApp</small>{CONTACTO.telefono}<span class="ir" aria-hidden="true">↗</span></a></li>
         <li><a href={`mailto:${CONTACTO.email}`}><small>Email</small>{CONTACTO.email}<span class="ir" aria-hidden="true">↗</span></a></li>
@@ -15,14 +15,14 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
     </div>
 
     <form class="form rv" novalidate data-wa={CONTACTO.whatsapp} data-email={CONTACTO.email}>
-      <p class="form-titulo">Contanos tu idea</p>
+      <p class="form-titulo">Contanos de tu negocio</p>
       <div class="campo">
         <label for="f-nombre">Tu nombre</label>
         <input id="f-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
         <p class="error" id="e-nombre" aria-live="polite"></p>
       </div>
       <fieldset class="campo">
-        <legend>¿Qué tipo de idea es?</legend>
+        <legend>¿Qué tipo de negocio tenés?</legend>
         <div class="opciones">
           {IDEAS.map((t, i) => (
             <label class="opcion"><input type="radio" name="tipo" value={t} required={i === 0} /><span>{t}</span></label>
@@ -31,12 +31,12 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
         <p class="error" id="e-tipo" aria-live="polite"></p>
       </fieldset>
       <div class="campo">
-        <label for="f-idea">Contanos qué querés lograr</label>
-        <textarea id="f-idea" name="idea" rows="4" required aria-describedby="e-idea" placeholder="Por ejemplo: que mis clientes reserven turno y les llegue un recordatorio por WhatsApp."></textarea>
+        <label for="f-idea">¿Cómo das turnos hoy?</label>
+        <textarea id="f-idea" name="idea" rows="4" required aria-describedby="e-idea" placeholder="Por ejemplo: me escriben por WhatsApp e Instagram y los anoto en una agenda de papel."></textarea>
         <p class="error" id="e-idea" aria-live="polite"></p>
       </div>
       <div class="campo">
-        <label for="f-plazo">¿Para cuándo la necesitás? <span>(opcional)</span></label>
+        <label for="f-plazo">¿Para cuándo lo necesitás? <span>(opcional)</span></label>
         <select id="f-plazo" name="plazo">
           <option value="">Elegí una opción</option>
           {PLAZOS.map((t) => <option>{t}</option>)}
@@ -46,7 +46,7 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
         <button class="btn btn-principal" type="submit" value="wa">Enviar por WhatsApp</button>
         <button class="btn btn-borde" type="submit" value="email">Prefiero por email</button>
       </div>
-      <p class="aviso" aria-live="polite">Se abre tu WhatsApp o tu correo con la idea ya escrita, lista para enviar.</p>
+      <p class="aviso" aria-live="polite">Se abre tu WhatsApp o tu correo con el mensaje ya escrito, listo para enviar.</p>
     </form>
   </div>
 </section>
@@ -56,8 +56,8 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
   const aviso = form.querySelector<HTMLElement>('.aviso')!;
   const mensajes: Record<string, string> = {
     nombre: 'Escribí tu nombre para saber cómo llamarte.',
-    tipo: 'Elegí la opción que más se parezca, aunque sea "Otra idea".',
-    idea: 'Contanos en una o dos líneas qué querés lograr.',
+    tipo: 'Elegí la opción que más se parezca, aunque sea "Otro rubro".',
+    idea: 'Contanos en una o dos líneas cómo das turnos hoy.',
   };
   const marcar = (n: string, ok: boolean) => {
     const el = form.querySelector<HTMLElement>(n === 'tipo' ? '.opciones' : `[name="${n}"]`)!;
@@ -79,15 +79,16 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
     }
     const lineas = [
       `Hola Coudexia! Soy ${d.nombre.trim()}.`,
-      `Tengo una idea para presupuestar: ${d.tipo}.`,
+      `Tengo un negocio de este rubro: ${d.tipo}.`,
+      'Hoy doy turnos así:',
       d.idea.trim(),
-      d.plazo && `La necesito: ${d.plazo.toLowerCase()}.`,
+      d.plazo && `Lo necesito: ${d.plazo.toLowerCase()}.`,
     ].filter(Boolean) as string[];
     const url = via === 'email'
-      ? `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Idea para presupuestar: ${d.tipo}`)}&body=${encodeURIComponent(lineas.join('\n\n'))}`
+      ? `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Consulta por recepcionista IA: ${d.tipo}`)}&body=${encodeURIComponent(lineas.join('\n\n'))}`
       : `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(lineas.join('\n'))}`;
     Object.assign(document.createElement('a'), { href: url, target: via === 'email' ? '_self' : '_blank', rel: 'noopener' }).click();
-    aviso.innerHTML = `Listo: se abrió ${via === 'email' ? 'tu correo' : 'WhatsApp'} con tu idea. Si no se abrió, <a href="${url}" target="_blank" rel="noopener">tocá acá</a>.`;
+    aviso.innerHTML = `Listo: se abrió ${via === 'email' ? 'tu correo' : 'WhatsApp'} con tu mensaje. Si no se abrió, <a href="${url}" target="_blank" rel="noopener">tocá acá</a>.`;
   });
 </script>
 

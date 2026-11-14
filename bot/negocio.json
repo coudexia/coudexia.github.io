@@ -1,0 +1,40 @@
+{
+  "nombre": "Aura Láser",
+  "rubro": "Centro de depilación láser diodo",
+  "direccion": "Av. Santa Fe 1960, Recoleta, CABA",
+  "horario": "Lunes a sábado de 9 a 21 h. Domingos cerrado.",
+  "instagram": "@auralaser.demo",
+  "turnos": "Turnos de 30 minutos. La evaluación es gratis y conviene hacerla antes de la primera sesión.",
+  "zonas_mujeres": {
+    "Bozo (labio superior)": 9000,
+    "Mentón (incluye cuello si querés)": 9000,
+    "Rostro completo (bozo, mentón, patillas y entrecejo)": 18000,
+    "Axilas (la más pedida, 10 min)": 11000,
+    "Cavado completo (incluye tira de cola)": 16000,
+    "Media pierna (rodilla hacia abajo)": 19000,
+    "Piernas completas (incluye pies)": 30000,
+    "Brazos completos (incluye manos)": 17000
+  },
+  "zonas_hombres": {
+    "Barba perfilado (cuello y pómulos)": 14000,
+    "Entrecejo y orejas": 9000,
+    "Pecho y abdomen": 26000,
+    "Espalda completa (incluye hombros)": 28000,
+    "Axilas": 12000,
+    "Piernas completas (incluye pies)": 34000
+  },
+  "precios": "Pesos argentinos, por sesión. Son orientativos: se confirman en la evaluación gratis.",
+  "packs": {
+    "Pack Inicio: 6 sesiones de axilas + cavado completo": "$128.000 (ahorrás $34.000)",
+    "Pack Piernas: 6 sesiones de piernas completas + axilas": "$198.000 (ahorrás $48.000)",
+    "Cuerpo completo: 6 sesiones de todas las zonas, rostro incluido": "$420.000 (ahorrás $150.000)"
+  },
+  "pagos": "Packs hasta en 6 cuotas sin interés.",
+  "preguntas_frecuentes": {
+    "¿Duele?": "Muy poco. El equipo enfría la piel en cada disparo: se siente un leve calor o un pinchazo suave.",
+    "¿Cuántas sesiones necesito?": "Entre 6 y 8 en promedio, según la zona, el tipo de vello y las hormonas. En la evaluación se da un estimado.",
+    "¿Qué hago antes de la sesión?": "Rasurar la zona el día anterior, no usar cera ni pinza durante el tratamiento y venir sin cremas ni desodorante en la zona.",
+    "¿Puedo tomar sol?": "Evitar el sol directo una semana antes y después de cada sesión y usar protector. Si está bronceada, se esperan unos días.",
+    "¿Sirve para vello claro o canoso?": "El láser actúa sobre el pigmento: el vello rubio muy claro o canoso responde poco. Se ve en la evaluación."
+  }
+}

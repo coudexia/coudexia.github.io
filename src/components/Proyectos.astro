@@ -1,6 +1,5 @@
 ---
 import { PROYECTOS } from '../data/coudexia';
-const filtros = ['Todos', ...['Página Start', 'Página Business', 'A medida'].filter((f) => PROYECTOS.some((p) => p.plan === f))];
 const url = (demo: string) => `/demos/${demo}/index.html`;
 ---
 <section class="seccion proyectos" id="proyectos">
@@ -10,16 +9,12 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
         <p class="etiqueta rv">Proyectos</p>
         <h2 class="rv palabras">Webs listas para recorrer, no capturas.</h2>
       </div>
-      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio real de cada rubro. Pasá el mouse para recorrerlos o abrí la vista previa y alterná entre <b>escritorio y celular</b>: cada una está diseñada primero para el teléfono, que es desde donde entra la mayoría de tus clientes.</p>
-    </div>
-
-    <div class="filtros rv" role="group" aria-label="Filtrar proyectos por plan">
-      {filtros.map((f, i) => <button type="button" class="filtro" data-filtro={f} aria-pressed={i === 0 ? 'true' : 'false'}>{f}</button>)}
+      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio con turnos. Pasá el mouse para recorrerlos o abrí la vista previa y alterná entre <b>escritorio y celular</b>: cada una está diseñada primero para el teléfono, que es desde donde entra la mayoría de tus clientes.</p>
     </div>
 
     <ul class="grilla">
       {PROYECTOS.map((p, i) => (
-        <li class="proyecto rv" data-plan={p.plan} style={`--d:${(i % 2) * .12}s`}>
+        <li class="proyecto rv" style={`--d:${(i % 2) * .12}s`}>
           <button type="button" class="mock" data-url={url(p.demo)} data-nombre={p.nombre} aria-label={`Ver vista previa en vivo de ${p.nombre}`}>
             <span class="ventana">
               <span class="barra-mini" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -54,19 +49,6 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
 </section>
 
 <script>
-  // Filtro por plan, con salida y entrada suaves
-  const botones = document.querySelectorAll<HTMLButtonElement>('.filtro');
-  const items = [...document.querySelectorAll<HTMLElement>('.proyecto')];
-  botones.forEach((b) => b.addEventListener('click', () => {
-    botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    const mostrar = (it: HTMLElement) => b.dataset.filtro === 'Todos' || it.dataset.plan === b.dataset.filtro;
-    items.forEach((it) => it.classList.add('saliendo'));
-    setTimeout(() => items.forEach((it) => {
-      it.hidden = !mostrar(it);
-      requestAnimationFrame(() => it.classList.remove('saliendo'));
-    }), 220);
-  }));
-
   // En pantallas táctiles, la captura se recorre sola cuando la tarjeta aparece
   if (matchMedia('(hover: none)').matches) {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('recorre', e.isIntersecting)), { threshold: .6 });
@@ -105,16 +87,9 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 40px; }
   .cabecera h2 { margin-top: 18px; }
 
-  .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-  .filtro { min-height: 42px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--linea-oscura); background: transparent; color: var(--marfil); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background-color .25s, color .25s, border-color .25s, transform .2s var(--ease); }
-  .filtro:hover { border-color: var(--rosa); }
-  .filtro:active { transform: scale(.96); }
-  .filtro[aria-pressed="true"] { background: var(--marfil); color: var(--vino); border-color: var(--marfil); }
   .proyectos :focus-visible { outline-color: var(--rosa); }
 
   .grilla { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(48px, 6vw, 80px) clamp(24px, 3vw, 40px); }
-  .proyecto[hidden] { display: none; }
-  .proyecto.saliendo { opacity: 0 !important; transform: translateY(12px) !important; transition-duration: .2s !important; transition-delay: 0s !important; }
   /* Las tarjetas de la derecha bajan un poco: ritmo editorial */
   @media (min-width: 861px) { .proyecto:nth-child(even) { margin-top: 72px; } }
 

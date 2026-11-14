@@ -13,8 +13,8 @@ export const CONTACTO = {
 };
 
 export const SITIO = {
-  titulo: 'Coudexia · Diseño y desarrollo de sitios web y tiendas online',
-  descripcion: 'Diseñamos y desarrollamos sitios web, landing pages y tiendas online en Tiendanube y Shopify para negocios que quieren crecer. Borrador gratis en 48 h.',
+  titulo: 'Coudexia · Web + recepcionista con IA para WhatsApp',
+  descripcion: 'Tu web y una recepcionista con IA que responde por WhatsApp y agenda turnos sola, las 24 h. Para centros de estética, consultorios y negocios con turnos.',
 };
 
 // Link de WhatsApp con mensaje armado
@@ -22,73 +22,77 @@ export const wa = (texto = 'Hola Coudexia! Quiero consultar por una web.') =>
   `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent(texto)}`;
 
 // Rubros que se muestran en la cinta debajo del hero
-export const RUBROS = ['Consultorios', 'Centros de estética', 'Comercios', 'Servicios técnicos', 'Fletes y mudanzas', 'Profesionales', 'Marcas', 'Tiendas online'];
+export const RUBROS = ['Centros de estética', 'Depilación láser', 'Consultorios', 'Odontología', 'Barberías', 'Peluquerías', 'Kinesiología', 'Gimnasios y estudios'];
 
-// Opciones del formulario "Tenés una idea"
-export const IDEAS = ['Integración o automatización', 'Sistema de turnos o reservas', 'Cotizador o calculadora', 'Web o sistema a medida', 'Otra idea'];
+// Opciones del formulario de contacto
+export const IDEAS = ['Estética o depilación', 'Consultorio', 'Barbería o peluquería', 'Gimnasio o estudio', 'Otro rubro'];
 export const PLAZOS = ['Lo antes posible', 'En el próximo mes', 'En 2 o 3 meses', 'Sin apuro, estoy averiguando'];
 
 export const SERVICIOS = [
   {
-    id: 'webs',
-    titulo: 'Landing pages y sitios web',
-    problema: 'Tus clientes te buscan en Google o te piden "pasame tu web" y no tenés dónde mandarlos, o tu sitio actual no se entiende desde el celular.',
-    ideal: 'Profesionales, consultorios, comercios y servicios que necesitan mostrar lo que hacen y recibir consultas.',
-    items: ['Páginas de aterrizaje', 'Sitios institucionales', 'Sitios profesionales multipágina', 'Diseño responsive'],
-    cta: ['Ver Página Start y Página Business', '#planes'],
+    id: 'bot',
+    titulo: 'Recepcionista con IA en tu WhatsApp',
+    problema: 'Te escriben a toda hora para preguntar precios y turnos, y cada mensaje que tardás en contestar es una clienta que se va a otro lado.',
+    ideal: 'Centros de estética, consultorios, barberías y cualquier negocio que da turnos por WhatsApp.',
+    items: ['Responde precios, servicios y dudas al instante', 'Consulta tu agenda y reserva el turno', 'Te pasa la charla cuando hace falta una persona', 'Atiende las 24 h, también los fines de semana'],
+    cta: ['Ver cómo responde', '#inicio'],
   },
   {
-    id: 'tiendas',
-    titulo: 'Tiendas online',
-    problema: 'Vendés por Instagram o WhatsApp y respondés precios uno por uno. Una tienda ordena el catálogo y cobra sola.',
-    ideal: 'Marcas y comercios que quieren vender online con pagos y envíos resueltos.',
-    items: ['Implementación en Tiendanube', 'Implementación en Shopify', 'Configuración visual y comercial', 'Organización de productos, categorías y navegación'],
-    cta: ['Ver Página E-commerce', '#planes'],
+    id: 'web',
+    titulo: 'Web profesional con tus precios',
+    problema: 'Te piden "pasame tu web" o te buscan en Google y no tenés dónde mandarlos, o tu Instagram no alcanza para mostrar servicios y precios claros.',
+    ideal: 'Negocios que quieren verse profesionales y que cada visita termine en un mensaje o un turno.',
+    items: ['Diseño a medida de tu marca', 'Carta de servicios y precios', 'Pensada primero para el celular', 'Botón directo a tu WhatsApp'],
+    cta: ['Ver webs de ejemplo', '#proyectos'],
   },
   {
-    id: 'medida',
-    titulo: 'Desarrollo y soluciones a medida',
-    problema: 'Necesitás algo que una plantilla no resuelve: un cotizador, reservas, un cálculo o conectar herramientas que ya usás.',
-    ideal: 'Negocios con un proceso propio que quieren ahorrar tiempo o dar una mejor experiencia.',
-    items: ['Funcionalidades específicas', 'Integraciones', 'Automatizaciones', 'Proyectos web a medida'],
-    cta: ['Contanos tu idea', '#contacto'],
+    id: 'mantenimiento',
+    titulo: 'Lo mantenemos por vos',
+    problema: 'Cambiás un precio o sumás una promo y nos escribís: actualizamos la web y lo que sabe tu recepcionista. Vos te ocupás de tu negocio.',
+    ideal: 'Dueños que no quieren pelearse con la tecnología.',
+    items: ['Cambios de precios, servicios y promos', 'Ajustes del bot según las consultas reales', 'Soporte por WhatsApp', 'Hosting incluido'],
+    cta: ['Ver planes', '#planes'],
   },
 ];
 
 // Proyectos demostrativos: marcas y datos ficticios. "img" = nombre de las capturas en /public/proyectos/
 export const PROYECTOS = [
-  { nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
-  { nombre: 'Lúa Studio', tipo: 'Desarrollo a medida · Armado de turno', plan: 'A medida', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
-  { nombre: 'Rumbo Fletes', tipo: 'Landing page · Cotizador', plan: 'Página Start', demo: 'fletes', desc: 'Cotizador en dos pasos dentro de la portada: origen, destino, carga y vehículo llegan armados por WhatsApp.' },
-  { nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
-  { nombre: 'HidroClima', tipo: 'Landing page · Urgencias', plan: 'Página Start', demo: 'servicio-tecnico', desc: 'Pensada para urgencias desde el celular: elegís el problema y se abre WhatsApp con el mensaje listo.' },
-  { nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', plan: 'Página Business', demo: 'depilacion', desc: 'Armado de zonas con total por sesión, packs con ahorro, preguntas frecuentes y reserva de evaluación.' },
+  { nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
+  { nombre: 'Lúa Studio', tipo: 'Sitio profesional · Armado de turno', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
+  { nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
+  { nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', demo: 'depilacion', desc: 'Armado de zonas con total por sesión, packs con ahorro, preguntas frecuentes y reserva de evaluación.' },
 ];
 
-// Precios en pesos argentinos. Para ocultar un monto, poné desde: ''.
+// Pesos por dólar para mostrar el equivalente en USD al lado de cada precio
+export const DOLAR = 1500;
+
+// Precios en pesos argentinos. "mensual" vacío = pago único; "desde" vacío = solo mensual, sin instalación.
 export const PLANES = [
   {
-    nombre: 'Página Start',
-    para: 'Para negocios que necesitan presencia digital y una página profesional.',
-    desde: '$189.000',
-    incluye: ['Landing de una página', 'Diseño a medida de tu marca', 'Adaptada a celular, tablet y escritorio', 'Botón de WhatsApp y formulario de consulta', 'Ubicación con Google Maps', 'SEO básico para Google', 'Borrador gratis en 48 h'],
-    mensaje: 'Hola Coudexia! Me interesa el plan Página Start.',
+    nombre: 'Recepcionista IA',
+    para: 'Para negocios que ya tienen web y quieren que su WhatsApp atienda y agende solo.',
+    desde: '',
+    mensual: '$45.000',
+    incluye: ['Recepcionista con IA en tu WhatsApp', 'Responde precios, servicios y dudas al instante', 'Consulta tu agenda y reserva turnos sola', 'Te pasa la charla cuando hace falta una persona', 'Ajustes y soporte por WhatsApp incluidos'],
+    mensaje: 'Hola Coudexia! Me interesa el plan Recepcionista IA para mi WhatsApp.',
   },
   {
-    nombre: 'Página Business',
-    para: 'Para empresas que necesitan un sitio más completo con varias secciones.',
+    nombre: 'Web + Recepcionista IA',
+    para: 'Para negocios con turnos que quieren responder al instante y llenar la agenda.',
     desde: '$349.000',
+    mensual: '$90.000',
     destacado: true,
-    incluye: ['Sitio de hasta 5 páginas', 'Todo lo de Página Start', 'Servicios, galería, nosotros y contacto', 'Preguntas frecuentes', 'Turnos o reservas online, si los necesitás', 'Borrador gratis en 48 h'],
-    mensaje: 'Hola Coudexia! Me interesa el plan Página Business.',
+    incluye: ['Web de hasta 5 páginas con tus servicios y precios', 'Recepcionista con IA en tu WhatsApp', 'Consulta tu agenda y reserva turnos sola', 'Te pasa la charla cuando hace falta una persona', 'Mantenimiento y soporte incluidos en el mensual'],
+    mensaje: 'Hola Coudexia! Me interesa el plan Web + Recepcionista IA.',
   },
   {
-    nombre: 'Página E-commerce',
-    para: 'Para negocios que quieren comenzar a vender online con Tiendanube o Shopify.',
-    desde: '$490.000',
-    nota: 'El plan mensual de la plataforma se contrata aparte, a tu nombre.',
-    incluye: ['Armado de tu tienda en Tiendanube o Shopify', 'Diseño adaptado a tu marca', 'Categorías y navegación organizadas', 'Carga inicial de productos', 'Configuración de medios de pago y envío'],
-    mensaje: 'Hola Coudexia! Me interesa el plan Página E-commerce para mi tienda online.',
+    nombre: 'Página Web',
+    para: 'Para negocios que por ahora solo necesitan una web profesional.',
+    desde: '$189.000',
+    mensual: '',
+    nota: 'Podés sumar la recepcionista cuando quieras.',
+    incluye: ['Landing de una página', 'Diseño a medida de tu marca', 'Adaptada a celular, tablet y escritorio', 'Botón de WhatsApp y formulario de consulta', 'Ubicación con Google Maps', 'SEO básico para Google'],
+    mensaje: 'Hola Coudexia! Me interesa el plan Página Web.',
   },
 ];
 
@@ -96,18 +100,19 @@ export const PLANES = [
 export const LANZAMIENTO = { cupos: 10 };
 
 export const PROCESO = [
-  { t: 'Consulta inicial', d: 'Nos contás qué hace tu negocio y qué necesitás. Por WhatsApp o en una llamada corta.' },
-  { t: 'Relevamiento y propuesta', d: 'Definimos secciones, contenidos y alcance. En las páginas Start y Business te mostramos un borrador gratis en 48 h.' },
-  { t: 'Diseño y desarrollo', d: 'Armamos el sitio con tus textos, fotos y colores, pensado primero para el celular.' },
-  { t: 'Revisión y ajustes', d: 'Lo recorrés completo y marcás cambios. Ajustamos hasta que quede como lo querés.' },
-  { t: 'Entrega y publicación', d: 'Lo publicamos en tu dominio y te explicamos cómo seguir. La web queda a tu nombre.' },
+  { t: 'Charla inicial', d: 'Nos contás cómo trabaja tu negocio y cómo das turnos hoy. Por WhatsApp o en una llamada corta.' },
+  { t: 'Relevamiento', d: 'Juntamos tus servicios, precios, horarios y las preguntas que más te hacen.' },
+  { t: 'Armado', d: 'Diseñamos tu web y entrenamos a tu recepcionista con la información de tu negocio.' },
+  { t: 'Prueba juntos', d: 'Le escribís como si fueras una clienta y ajustamos cómo responde hasta que quede como lo querés.' },
+  { t: 'Conexión y publicación', d: 'La conectamos a tu WhatsApp, publicamos la web y quedamos a cargo del mantenimiento.' },
 ];
 
 export const FAQ = [
-  { p: '¿Cuánto tiempo lleva tener mi web?', r: 'El borrador de una Página Start o Business está en 48 h hábiles desde que nos pasás tus datos. El tiempo total depende de cuándo tengamos tus textos y fotos: en la propuesta te damos una fecha concreta.' },
-  { p: '¿Cómo se paga?', r: '50% al confirmar el proyecto y 50% en la entrega, por transferencia o Mercado Pago. El borrador es gratis y no te compromete a nada.' },
-  { p: '¿Qué pasa con el dominio y el hosting?', r: 'El dominio (por ejemplo, tunegocio.com.ar) se registra a tu nombre y su costo anual lo pagás vos; te ayudamos a registrarlo y conectarlo. El hosting lo definimos en la propuesta según el tipo de sitio.' },
-  { p: '¿Ofrecen mantenimiento?', r: 'Sí, y es opcional: el plan es un pago único. Si preferís despreocuparte, el mantenimiento mensual cuesta $60.000 (el primer mes es bonificado) e incluye cambios de textos, fotos y precios, secciones o promociones nuevas chicas y soporte por WhatsApp. Si no lo contratás, podés pedirnos cambios puntuales cuando los necesites.' },
-  { p: '¿Cómo funcionan las tiendas online?', r: 'Armamos tu tienda en Tiendanube o Shopify: diseño, categorías, productos, pagos y envíos. La cuenta y el plan mensual de la plataforma quedan a tu nombre y se pagan aparte, directamente a la plataforma.' },
-  { p: '¿Puedo pedir cambios después?', r: 'Sí. Los cambios de la etapa de revisión están incluidos. Las modificaciones posteriores, como sumar una sección o actualizar precios, se cotizan según el trabajo.' },
+  { p: '¿Cómo funciona la recepcionista con IA?', r: 'Está conectada a tu WhatsApp y conoce tus servicios, precios y horarios. Cuando alguien escribe, responde al momento, consulta tu agenda y reserva el turno. Si no sabe algo o la clienta pide hablar con una persona, te pasa la charla.' },
+  { p: '¿Se nota que es un bot?', r: 'Responde con el tono de tu negocio, en mensajes cortos y naturales. No se hace pasar por una persona: si alguien le pregunta, dice que es la asistente virtual del negocio.' },
+  { p: '¿Sigo usando mi WhatsApp?', r: 'Usamos la conexión oficial de Meta. En la charla inicial vemos tu caso: en general podés seguir usando tu número y escribir desde la app de WhatsApp Business cuando quieras tomar una charla.' },
+  { p: '¿Dónde veo los turnos?', r: 'Los turnos que reserva quedan en tu agenda de Google Calendar, que ves desde el celular o la compu.' },
+  { p: '¿Cómo se paga?', r: 'En los planes con web, la instalación se paga 50% al confirmar y 50% en la entrega. El mensual arranca cuando la recepcionista empieza a atender. Por transferencia o Mercado Pago.' },
+  { p: '¿Qué incluye el mensual?', r: 'El funcionamiento de la recepcionista, el hosting, los cambios de precios, servicios y promos en la web y en el bot, los ajustes según las consultas reales y soporte por WhatsApp. No tiene permanencia mínima.' },
+  { p: '¿Qué pasa con el dominio?', r: 'El dominio (por ejemplo, tunegocio.com.ar) se registra a tu nombre y su costo anual lo pagás vos; te ayudamos a registrarlo y conectarlo.' },
 ];

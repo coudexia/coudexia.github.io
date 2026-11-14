@@ -1,5 +1,6 @@
 ---
-import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
+import { PLANES, LANZAMIENTO, DOLAR, wa } from '../data/coudexia';
+const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')) / DOLAR)}`;
 ---
 <section class="seccion" id="precios">
   <div class="wrap">
@@ -8,12 +9,12 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
         <p class="etiqueta rv">Planes y precios</p>
         <h2 class="rv palabras">Elegí tu plan y arrancamos.</h2>
       </div>
-      <p class="bajada rv">Precios en pesos argentinos. Escribinos por WhatsApp con el plan que te interesa: en Página Start y Página Business, en 48 h te mostramos un borrador gratis.</p>
+      <p class="bajada rv">Precios en pesos argentinos, con su equivalente en dólares. Escribinos por WhatsApp con el plan que te interesa y en una charla corta vemos cómo trabaja tu negocio.</p>
     </div>
 
     <div id="planes" class="ancla">
     {LANZAMIENTO.cupos > 0 && (
-      <p class="lanza rv"><b>Precio de lanzamiento</b> para los primeros {LANZAMIENTO.cupos} clientes <span aria-hidden="true">·</span> Incluye el primer mes de mantenimiento bonificado</p>
+      <p class="lanza rv"><b>Precio de lanzamiento</b> para los primeros {LANZAMIENTO.cupos} clientes <span aria-hidden="true">·</span> Primer mes bonificado</p>
     )}
 
     <ul class="planes">
@@ -23,30 +24,28 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
           <p class="nombre">{p.nombre}</p>
           <p class="para">{p.para}</p>
           <p class="precio">
-            {p.desde ? <><small>Desde</small><b>{p.desde}</b><span class="unico">Pago único</span></> : <b class="consultar">A consultar</b>}
+            {p.desde ? <><small>Desde</small><b>{p.desde}</b><span class="usd">≈ {usd(p.desde)}</span><span class="unico">{p.mensual ? <>Instalación + <b class="mes">{p.mensual}</b> por mes (≈ {usd(p.mensual)})</> : 'Pago único'}</span></>
+              : p.mensual ? <><small>Por mes</small><b>{p.mensual}</b><span class="usd">≈ {usd(p.mensual)} por mes</span><span class="unico">Sin costo de instalación</span></>
+              : <b class="consultar">A consultar</b>}
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">
             {p.incluye.map((it) => <li>{it}</li>)}
-            {LANZAMIENTO.cupos > 0 && <li class="extra">1.er mes de mantenimiento bonificado</li>}
+            {LANZAMIENTO.cupos > 0 && <li class="extra">{p.mensual ? '1.er mes bonificado' : '1.er mes de mantenimiento bonificado'}</li>}
           </ul>
-          <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero la {p.nombre} <span class="flecha" aria-hidden="true">→</span></a>
+          <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero este plan <span class="flecha" aria-hidden="true">→</span></a>
         </li>
       ))}
     </ul>
     </div>
 
     <ul class="condiciones rv">
-      <li>Pago único, sin abonos mensuales obligatorios</li>
-      <li>50% al confirmar y 50% en la entrega</li>
+      <li>Instalación: 50% al confirmar y 50% en la entrega</li>
+      <li>Mensual sin permanencia mínima</li>
       <li>Transferencia o Mercado Pago</li>
       <li>Dominio y web a tu nombre</li>
     </ul>
 
-    <a class="idea rv" href="#contacto">
-      <span class="idea-txt"><b>¿Tenés una idea que no está en las opciones?</b> Contanosla y te armamos el presupuesto.</span>
-      <span class="idea-ir" aria-hidden="true">→</span>
-    </a>
   </div>
 </section>
 
@@ -72,6 +71,9 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   .precio small { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--bordo); }
   .destacado .precio small { color: var(--rosa); }
   .precio b { font-size: clamp(2.2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
+  .usd { font-size: .95rem; font-weight: 700; color: var(--bordo); }
+  .destacado .usd { color: var(--rosa); }
+  .precio .mes { font-size: inherit; letter-spacing: 0; line-height: inherit; }
   .unico { margin-top: 4px; font-size: .85rem; font-weight: 600; color: var(--texto-suave); }
   .destacado .unico { color: #D9C3CC; }
   .nota { font-size: .85rem; color: var(--texto-suave); }
@@ -88,17 +90,6 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   .condiciones li { display: flex; align-items: center; gap: 10px; }
   .condiciones li::before { content: ""; width: 7px; height: 7px; border-radius: 2px; rotate: 45deg; background: var(--bordo); }
 
-  /* Acceso al formulario de ideas a medida */
-  .idea { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 40px; padding: clamp(24px, 4vw, 36px) clamp(22px, 4vw, 40px); border: 1.5px solid var(--grafito); border-radius: 22px; text-decoration: none; font-size: clamp(1.05rem, 2vw, 1.3rem); }
-  .idea::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--grafito); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
-  .idea b { font-weight: 800; letter-spacing: -.02em; }
-  .idea-txt { color: var(--texto-suave); transition: color .3s; }
-  .idea-txt b { color: var(--grafito); transition: color .3s; }
-  .idea-ir { flex: none; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--bordo); color: var(--marfil); font-size: 1.3rem; transition: transform .5s var(--ease), background-color .3s; }
-  .idea:hover::before { transform: none; }
-  .idea:hover .idea-txt { color: #CFC6CA; }
-  .idea:hover .idea-txt b { color: var(--marfil); }
-  .idea:hover .idea-ir { transform: rotate(-45deg); background: var(--rosa); color: var(--vino); }
 
   @media (max-width: 960px) {
     .cabecera { grid-template-columns: 1fr; }
@@ -108,6 +99,5 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   }
   @media (max-width: 480px) {
     .plan { padding: 30px 22px 24px; }
-    .idea-ir { width: 46px; height: 46px; }
   }
 </style>

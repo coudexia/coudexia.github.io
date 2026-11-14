@@ -9,3 +9,5 @@ ventas/
 
 # Nunca subir códigos de recuperación
 *recovery-codes*
+
+bot/turnos.json
