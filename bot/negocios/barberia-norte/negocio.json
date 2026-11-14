@@ -1,0 +1,28 @@
+{
+  "config": {
+    "_ayuda": "Negocio de ejemplo (ficticio). Copiá esta carpeta para cada cliente nuevo.",
+    "whatsapp_phone_id": "",
+    "calendario": "",
+    "dias": [2, 3, 4, 5, 6],
+    "abre": "10:00",
+    "cierra": "20:00",
+    "duracion": 45
+  },
+  "nombre": "Barbería Norte",
+  "rubro": "Barbería",
+  "direccion": "Av. Cabildo 2100, Belgrano, CABA",
+  "horario": "Martes a sábado de 10 a 20 h. Domingos y lunes cerrado.",
+  "turnos": "Turnos de 45 minutos.",
+  "servicios": {
+    "Corte": 12000,
+    "Corte + barba": 17000,
+    "Barba (perfilado y toalla caliente)": 8000,
+    "Corte infantil (hasta 12 años)": 9000
+  },
+  "precios": "Pesos argentinos.",
+  "pagos": "Efectivo, transferencia o Mercado Pago.",
+  "preguntas_frecuentes": {
+    "¿Atienden sin turno?": "Solo si hay un hueco libre; conviene sacar turno.",
+    "¿Cuánto dura el corte?": "Unos 30 a 40 minutos."
+  }
+}

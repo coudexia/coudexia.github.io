@@ -1,9 +1,10 @@
 import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { responder, AVISO_HUMANO } from './bot.mjs';
+import { responder, negocios, negocioPorTelefono, AVISO_HUMANO } from './bot.mjs';
 
-const { PORT = 3000, CHAT_WEB = '1', WA_TOKEN, WA_PHONE_ID, WA_VERIFY_TOKEN, WA_APP_SECRET } = process.env;
+// shortcut: un solo WA_TOKEN para todos los números (usuario de sistema de tu app de Meta con acceso a cada cuenta); si un cliente necesita su propio token, moverlo a su negocio.json.
+const { PORT = 3000, CHAT_WEB = '1', WA_TOKEN, WA_VERIFY_TOKEN, WA_APP_SECRET } = process.env;
 const GRAPH = 'https://graph.facebook.com/v23.0';
 const html = readFileSync(new URL('./chat.html', import.meta.url));
 const vistos = new Set(); // Meta a veces reenvía el mismo mensaje
@@ -17,9 +18,9 @@ const leerCuerpo = (req) => new Promise((ok, mal) => {
 
 const json = (res, codigo, datos) => { res.writeHead(codigo, { 'content-type': 'application/json' }); res.end(JSON.stringify(datos)); };
 
-async function contestar(id, texto) {
-  try { return await responder(id, texto); }
-  catch (e) { console.error('[error IA]', id, e.message); return 'Perdón, tuve un problema para responderte. ' + AVISO_HUMANO; }
+async function contestar(neg, contacto, texto) {
+  try { return await responder(neg, contacto, texto); }
+  catch (e) { console.error(`[error IA ${neg.slug}]`, contacto, e.message); return 'Perdón, tuve un problema para responderte. ' + AVISO_HUMANO; }
 }
 
 function firmaValida(cuerpo, firma = '') {
@@ -28,8 +29,8 @@ function firmaValida(cuerpo, firma = '') {
   return recibida.length === esperada.length && timingSafeEqual(recibida, esperada);
 }
 
-async function enviarWhatsApp(para, texto) {
-  const r = await fetch(`${GRAPH}/${WA_PHONE_ID}/messages`, {
+async function enviarWhatsApp(phoneId, para, texto) {
+  const r = await fetch(`${GRAPH}/${phoneId}/messages`, {
     method: 'POST',
     headers: { authorization: `Bearer ${WA_TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({ messaging_product: 'whatsapp', to: para, type: 'text', text: { body: texto } }),
@@ -37,15 +38,25 @@ async function enviarWhatsApp(para, texto) {
   if (!r.ok) console.error('[error WhatsApp]', r.status, await r.text());
 }
 
+// Cada mensaje se atiende con el negocio dueño del número al que le escribieron. Todos en paralelo.
 async function procesarWebhook(datos) {
-  for (const entrada of datos.entry ?? []) for (const cambio of entrada.changes ?? []) for (const m of cambio.value?.messages ?? []) {
-    if (vistos.has(m.id)) continue;
-    vistos.add(m.id);
-    const respuesta = m.type === 'text'
-      ? await contestar(`wa:${m.from}`, m.text.body.slice(0, 2000))
-      : 'Por ahora leo solo mensajes de texto 🙂 ¿Me lo escribís?';
-    if (respuesta) await enviarWhatsApp(m.from, respuesta);
+  const tareas = [];
+  for (const entrada of datos.entry ?? []) for (const cambio of entrada.changes ?? []) {
+    const phoneId = cambio.value?.metadata?.phone_number_id;
+    for (const m of cambio.value?.messages ?? []) {
+      if (vistos.has(m.id)) continue;
+      vistos.add(m.id);
+      const neg = negocioPorTelefono(phoneId);
+      if (!neg) { console.error('[webhook] ningún negocio tiene el whatsapp_phone_id', phoneId); continue; }
+      tareas.push((async () => {
+        const respuesta = m.type === 'text'
+          ? await contestar(neg, `wa:${m.from}`, m.text.body.slice(0, 2000))
+          : 'Por ahora leo solo mensajes de texto 🙂 ¿Me lo escribís?';
+        if (respuesta) await enviarWhatsApp(phoneId, m.from, respuesta);
+      })().catch((e) => console.error(`[error ${neg.slug}]`, e)));
+    }
   }
+  await Promise.all(tareas);
 }
 
 createServer(async (req, res) => {
@@ -65,10 +76,12 @@ createServer(async (req, res) => {
 
     // Chat de prueba en el navegador. Cada mensaje gasta créditos de la API: apagalo (CHAT_WEB=0) si el servidor queda público.
     if (CHAT_WEB === '1' && url.pathname === '/' && req.method === 'GET') { res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return res.end(html); }
+    if (CHAT_WEB === '1' && url.pathname === '/negocios' && req.method === 'GET') return json(res, 200, [...negocios.values()].map(({ slug, nombre }) => ({ slug, nombre })));
     if (CHAT_WEB === '1' && url.pathname === '/chat' && req.method === 'POST') {
-      const { id, texto } = JSON.parse(await leerCuerpo(req));
-      if (typeof id !== 'string' || typeof texto !== 'string' || !texto.trim() || texto.length > 2000) return json(res, 400, { error: 'mensaje inválido' });
-      return json(res, 200, { respuesta: await contestar(`web:${id.slice(0, 64)}`, texto) });
+      const { negocio, id, texto } = JSON.parse(await leerCuerpo(req));
+      const neg = negocios.get(negocio);
+      if (!neg || typeof id !== 'string' || typeof texto !== 'string' || !texto.trim() || texto.length > 2000) return json(res, 400, { error: 'mensaje inválido' });
+      return json(res, 200, { respuesta: await contestar(neg, `web:${id.slice(0, 64)}`, texto) });
     }
 
     res.writeHead(404); res.end();
@@ -76,4 +89,4 @@ createServer(async (req, res) => {
     console.error('[error]', e.message);
     if (!res.headersSent) json(res, 400, { error: 'pedido inválido' });
   }
-}).listen(PORT, () => console.log(`Bot escuchando en http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Bot escuchando en http://localhost:${PORT} · negocios: ${[...negocios.keys()].join(', ')}`));

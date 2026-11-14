@@ -16,3 +16,7 @@ bot/*.json
 !bot/negocio.json
 !bot/package.json
 !bot/package-lock.json
+# Datos de clientes reales: no se suben (solo los dos negocios de ejemplo)
+bot/negocios/*
+!bot/negocios/aura-laser/
+!bot/negocios/barberia-norte/

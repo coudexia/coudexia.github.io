@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bot de prueba · Aura Láser</title>
+<title>Bot de prueba</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font: 15px/1.4 system-ui, sans-serif; background: #e5ddd5; height: 100dvh; display: flex; flex-direction: column; }
   header { background: #075e54; color: #fff; padding: 12px 16px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   header b { display: block; } header small { opacity: .8; }
+  select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 0; }
   #chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; max-width: 720px; width: 100%; margin: 0 auto; }
   .msg { max-width: 80%; padding: 8px 10px; border-radius: 8px; white-space: pre-wrap; box-shadow: 0 1px 1px #0002; }
   .yo { align-self: flex-end; background: #dcf8c6; } .bot { align-self: flex-start; background: #fff; }
@@ -20,14 +22,20 @@
 </style>
 </head>
 <body>
-<header><b>Aura Láser</b><small>Bot de prueba · datos ficticios</small></header>
+<header><span><b id="nombre">Bot de prueba</b><small>Cambiar de negocio empieza una charla nueva</small></span><label><span hidden>Negocio</span><select id="negocio" aria-label="Negocio"></select></label></header>
 <main id="chat" aria-live="polite"></main>
 <form>
   <input name="texto" autocomplete="off" placeholder="Escribí como si fueras una clienta…" aria-label="Mensaje" required>
   <button>Enviar</button>
 </form>
 <script>
-  const id = crypto.randomUUID(), chat = document.getElementById('chat'), form = document.querySelector('form'), boton = form.querySelector('button');
+  let id = crypto.randomUUID();
+  const chat = document.getElementById('chat'), form = document.querySelector('form'), boton = form.querySelector('button'), selector = document.getElementById('negocio'), nombre = document.getElementById('nombre');
+  fetch('/negocios').then((r) => r.json()).then((lista) => {
+    selector.append(...lista.map((n) => new Option(n.nombre, n.slug)));
+    nombre.textContent = selector.selectedOptions[0]?.text ?? '';
+  });
+  selector.addEventListener('change', () => { id = crypto.randomUUID(); chat.replaceChildren(); nombre.textContent = selector.selectedOptions[0].text; });
   const agregar = (texto, clase) => { const d = document.createElement('div'); d.className = 'msg ' + clase; d.textContent = texto; chat.append(d); chat.scrollTop = chat.scrollHeight; return d; };
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -36,7 +44,7 @@
     agregar(texto, 'yo');
     const escribiendo = agregar('escribiendo…', 'nota');
     try {
-      const r = await fetch('/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, texto }) });
+      const r = await fetch('/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ negocio: selector.value, id, texto }) });
       const { respuesta, error } = await r.json();
       escribiendo.remove();
       if (error) agregar('Error: ' + error, 'nota');

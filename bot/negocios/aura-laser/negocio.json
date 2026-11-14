@@ -1,4 +1,20 @@
 {
+  "config": {
+    "_ayuda": "dias: 0=domingo ... 6=sábado. calendario: ID del Google Calendar del negocio (vacío = guarda en turnos-<carpeta>.json). whatsapp_phone_id: ID del número en Meta.",
+    "whatsapp_phone_id": "",
+    "calendario": "coudexia@gmail.com",
+    "dias": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "abre": "09:00",
+    "cierra": "21:00",
+    "duracion": 30
+  },
   "nombre": "Aura Láser",
   "rubro": "Centro de depilación láser diodo",
   "direccion": "Av. Santa Fe 1960, Recoleta, CABA",

@@ -1,21 +1,18 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createSign } from 'node:crypto';
 
-// Con GOOGLE_CREDENTIALS y GOOGLE_CALENDAR_ID los turnos van al Google Calendar del negocio.
-// Sin eso se guardan en turnos.json (para probar en la compu).
-const { GOOGLE_CREDENTIALS, GOOGLE_CALENDAR_ID } = process.env;
-const usaGoogle = Boolean(GOOGLE_CREDENTIALS && GOOGLE_CALENDAR_ID);
-const ARCHIVO = process.env.TURNOS_FILE || new URL('./turnos.json', import.meta.url);
+// Cada negocio trae su agenda: { slug, calendario, dias, abre, cierra, duracion }.
+// Con calendario y GOOGLE_CREDENTIALS los turnos van a su Google Calendar; si no, a turnos-<slug>.json (para probar).
 const ZONA = 'America/Argentina/Buenos_Aires';
 const OFFSET = '-03:00'; // shortcut: Argentina no tiene horario de verano; para un cliente de otro país, calcular el offset con Intl.
-const ABRE = 9 * 60, CIERRA = 21 * 60, DURACION = 30;
-const DIAS_ABIERTO = [1, 2, 3, 4, 5, 6]; // lunes a sábado
 
 const dos = (n) => String(n).padStart(2, '0');
 const aHora = (m) => `${dos(Math.floor(m / 60))}:${dos(m % 60)}`;
 const aMin = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
 const iso = (fecha, hora) => `${fecha}T${hora}:00${OFFSET}`;
-const leer = () => (existsSync(ARCHIVO) ? JSON.parse(readFileSync(ARCHIVO, 'utf8')) : []);
+const usaGoogle = (ag) => Boolean(ag.calendario && process.env.GOOGLE_CREDENTIALS);
+const archivo = (ag) => new URL(`turnos-${ag.slug}.json`, process.env.TURNOS_DIR ? `file:///${process.env.TURNOS_DIR.replace(/\\/g, '/')}/` : import.meta.url);
+const leer = (ag) => (existsSync(archivo(ag)) ? JSON.parse(readFileSync(archivo(ag), 'utf8')) : []);
 
 // Fecha y hora actuales en Argentina, como 'YYYY-MM-DD' y 'HH:MM'
 export function ahoraAR() {
@@ -33,11 +30,11 @@ function validarFecha(fecha, ahora) {
   return d.getUTCDay();
 }
 
-// ---- Google Calendar (cuenta de servicio, sin dependencias) ----
+// ---- Google Calendar (una cuenta de servicio para todos los negocios, sin dependencias) ----
 let token = null, vence = 0;
 async function tokenGoogle() {
   if (token && Date.now() < vence) return token;
-  const cred = JSON.parse(readFileSync(GOOGLE_CREDENTIALS, 'utf8'));
+  const cred = JSON.parse(readFileSync(process.env.GOOGLE_CREDENTIALS, 'utf8'));
   const b64 = (o) => Buffer.from(JSON.stringify(o)).toString('base64url');
   const iat = Math.floor(Date.now() / 1000);
   const datos = `${b64({ alg: 'RS256', typ: 'JWT' })}.${b64({ iss: cred.client_email, scope: 'https://www.googleapis.com/auth/calendar', aud: cred.token_uri, iat, exp: iat + 3600 })}`;
@@ -66,42 +63,42 @@ async function google(ruta, cuerpo) {
 }
 
 // Intervalos ocupados del día, en minutos desde las 00:00: [[inicio, fin], ...]
-async function ocupados(fecha) {
-  if (!usaGoogle) return leer().filter((t) => t.fecha === fecha).map((t) => [aMin(t.hora), aMin(t.hora) + DURACION]);
-  const fb = await google('/freeBusy', { timeMin: iso(fecha, '00:00'), timeMax: iso(fecha, '23:59'), timeZone: ZONA, items: [{ id: GOOGLE_CALENDAR_ID }] });
-  const cal = fb.calendars?.[GOOGLE_CALENDAR_ID];
+async function ocupados(ag, fecha) {
+  if (!usaGoogle(ag)) return leer(ag).filter((t) => t.fecha === fecha).map((t) => [aMin(t.hora), aMin(t.hora) + ag.duracion]);
+  const fb = await google('/freeBusy', { timeMin: iso(fecha, '00:00'), timeMax: iso(fecha, '23:59'), timeZone: ZONA, items: [{ id: ag.calendario }] });
+  const cal = fb.calendars?.[ag.calendario];
   if (!cal || cal.errors?.length) throw new Error(`No puedo leer el calendario (${cal?.errors?.[0]?.reason ?? 'sin respuesta'}). ¿Lo compartieron con la cuenta de servicio?`);
   const base = Date.parse(iso(fecha, '00:00'));
   return cal.busy.map((b) => [(Date.parse(b.start) - base) / 60000, (Date.parse(b.end) - base) / 60000]);
 }
 
-export async function horariosLibres(fecha, ahora = ahoraAR()) {
-  if (!DIAS_ABIERTO.includes(validarFecha(fecha, ahora))) return [];
-  const ocup = await ocupados(fecha);
+export async function horariosLibres(ag, fecha, ahora = ahoraAR()) {
+  if (!ag.dias.includes(validarFecha(fecha, ahora))) return [];
+  const ocup = await ocupados(ag, fecha);
   const libres = [];
-  for (let m = ABRE; m + DURACION <= CIERRA; m += DURACION) {
+  for (let m = aMin(ag.abre); m + ag.duracion <= aMin(ag.cierra); m += ag.duracion) {
     const hora = aHora(m);
-    if (ocup.some(([a, b]) => m < b && m + DURACION > a)) continue;
+    if (ocup.some(([a, b]) => m < b && m + ag.duracion > a)) continue;
     if (fecha === ahora.fecha && hora <= ahora.hora) continue;
     libres.push(hora);
   }
   return libres;
 }
 
-export async function reservar({ fecha, hora, nombre, motivo, contacto }, ahora = ahoraAR()) {
+export async function reservar(ag, { fecha, hora, nombre, motivo, contacto }, ahora = ahoraAR()) {
   // Se vuelve a consultar justo antes de reservar, por si alguien tomó el horario mientras tanto
-  if (!(await horariosLibres(fecha, ahora)).includes(hora)) throw new Error(`El ${fecha} a las ${hora} no está disponible. Consultá los horarios libres de nuevo.`);
+  if (!(await horariosLibres(ag, fecha, ahora)).includes(hora)) throw new Error(`El ${fecha} a las ${hora} no está disponible. Consultá los horarios libres de nuevo.`);
   const turno = { fecha, hora, nombre, motivo, contacto, creado: new Date().toISOString() };
-  if (usaGoogle) {
+  if (usaGoogle(ag)) {
     const tel = contacto.startsWith('wa:') ? `+${contacto.slice(3)}` : contacto;
-    await google(`/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events`, {
+    await google(`/calendars/${encodeURIComponent(ag.calendario)}/events`, {
       summary: `${motivo} – ${nombre}`,
       description: `Turno reservado por la recepcionista IA.\nContacto: ${tel}`,
       start: { dateTime: iso(fecha, hora), timeZone: ZONA },
-      end: { dateTime: iso(fecha, aHora(aMin(hora) + DURACION)), timeZone: ZONA },
+      end: { dateTime: iso(fecha, aHora(aMin(hora) + ag.duracion)), timeZone: ZONA },
     });
   } else {
-    writeFileSync(ARCHIVO, JSON.stringify([...leer(), turno], null, 2));
+    writeFileSync(archivo(ag), JSON.stringify([...leer(ag), turno], null, 2));
   }
   return turno;
 }
