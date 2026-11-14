@@ -24,14 +24,17 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
           <p class="nombre">{p.nombre}</p>
           <p class="para">{p.para}</p>
           <p class="precio">
-            {p.desde ? <><small>Desde</small><b>{p.desde}</b><span class="usd">≈ {usd(p.desde)}</span><span class="unico">{p.mensual ? <>Instalación + <b class="mes">{p.mensual}</b> por mes (≈ {usd(p.mensual)})</> : 'Pago único'}</span></>
-              : p.mensual ? <><small>Por mes</small><b>{p.mensual}</b><span class="usd">≈ {usd(p.mensual)} por mes</span><span class="unico">Sin costo de instalación</span></>
-              : <b class="consultar">A consultar</b>}
+            {p.desde ? <>
+                <small>{p.mensual ? 'Instalación · pago único' : 'Pago único'}</small><b>{p.desde}</b><span class="usd">≈ {usd(p.desde)}</span>
+                {p.mensual && <span class="mas"><small>Pago mensual</small><span>+ <b class="mes">{p.mensual}</b> por mes <span class="usd">(≈ {usd(p.mensual)})</span></span></span>}
+              </> : p.mensual ? <>
+                <small>Pago mensual</small><b>{p.mensual}</b><span class="usd">≈ {usd(p.mensual)} por mes</span><span class="unico">Sin costo de instalación</span>
+              </> : <b class="consultar">A consultar</b>}
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">
             {p.incluye.map((it) => <li>{it}</li>)}
-            {LANZAMIENTO.cupos > 0 && <li class="extra">{p.mensual ? '1.er mes bonificado' : '1.er mes de mantenimiento bonificado'}</li>}
+            {LANZAMIENTO.cupos > 0 && <li class="extra">{p.desde ? '1.er mes de mantenimiento bonificado' : '1.er mes bonificado'}</li>}
           </ul>
           <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero este plan <span class="flecha" aria-hidden="true">→</span></a>
         </li>
@@ -73,7 +76,10 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
   .precio b { font-size: clamp(2.2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
   .usd { font-size: .95rem; font-weight: 700; color: var(--bordo); }
   .destacado .usd { color: var(--rosa); }
-  .precio .mes { font-size: inherit; letter-spacing: 0; line-height: inherit; }
+  .mas { display: grid; gap: 2px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--linea); font-size: 1rem; font-weight: 600; }
+  .destacado .mas { border-color: var(--linea-oscura); }
+  .precio .mes { font-size: 1.6rem; letter-spacing: -.03em; }
+  .mas .usd { font-size: .9rem; }
   .unico { margin-top: 4px; font-size: .85rem; font-weight: 600; color: var(--texto-suave); }
   .destacado .unico { color: #D9C3CC; }
   .nota { font-size: .85rem; color: var(--texto-suave); }
