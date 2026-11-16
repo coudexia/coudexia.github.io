@@ -7,12 +7,21 @@ import { PROCESO } from '../data/coudexia';
       <p class="etiqueta rv">Cómo trabajamos</p>
       <h2 class="rv palabras">Un proceso simple, sin sorpresas.</h2>
       <p class="bajada rv">Sabés en qué etapa está tu proyecto y qué sigue en cada momento.</p>
+      <!-- Contador que acompaña el recorrido (solo en escritorio) -->
+      <div class="visor rv" aria-hidden="true">
+        <span class="aro"><span class="cifra"><span class="rueda">{PROCESO.map((_, i) => <b>{i + 1}</b>)}</span></span></span>
+        <span class="de">Paso<br />de {PROCESO.length}</span>
+      </div>
     </div>
     <ol class="pasos">
       {PROCESO.map((p, i) => (
         <li class="paso">
-          <span class="num" aria-hidden="true">{i + 1}</span>
-          <div><h3>{p.t}</h3><p>{p.d}</p></div>
+          <span class="num" aria-hidden="true"><span class="n">{i + 1}</span><span class="ok">✓</span></span>
+          <div class="cuerpo">
+            <h3>{p.t}</h3>
+            <p>{p.d}</p>
+            <p class="vos"><b>Tu parte:</b> {p.vos}</p>
+          </div>
         </li>
       ))}
     </ol>
@@ -20,38 +29,83 @@ import { PROCESO } from '../data/coudexia';
 </section>
 
 <script>
-  // La línea se llena a medida que bajás y cada paso se activa al pasar por el centro de la pantalla
-  const lista = document.querySelector<HTMLElement>('.pasos')!;
+  // La línea se llena a medida que bajás. El paso que cruza el centro de la pantalla queda destacado
+  // y los anteriores quedan tildados. El contador de la izquierda sigue al paso actual.
+  const sec = document.querySelector<HTMLElement>('#proceso')!;
+  const lista = sec.querySelector<HTMLElement>('.pasos')!;
   const pasos = [...lista.querySelectorAll<HTMLElement>('.paso')];
-  let pendiente = false;
+  const aro = sec.querySelector<HTMLElement>('.aro')!;
+  const rueda = sec.querySelector<HTMLElement>('.rueda')!;
+  let actual = -2, pendiente = false;
   const actualizar = () => {
     pendiente = false;
     const r = lista.getBoundingClientRect(), medio = innerHeight * .55;
-    const k = Math.min(1, Math.max(0, (medio - r.top) / r.height));
-    lista.style.setProperty('--k', String(k));
-    pasos.forEach((p) => p.classList.toggle('activo', p.getBoundingClientRect().top < medio));
+    const k = String(Math.min(1, Math.max(0, (medio - r.top) / r.height)));
+    lista.style.setProperty('--k', k);
+    aro.style.setProperty('--k', k);
+    let n = -1;
+    pasos.forEach((p, i) => { if (p.getBoundingClientRect().top < medio) n = i; });
+    if (n === actual) return;
+    actual = n;
+    pasos.forEach((p, i) => { p.classList.toggle('activo', i === n); p.classList.toggle('hecho', i < n); });
+    rueda.style.transform = `translateY(${-Math.max(n, 0) * 100 / pasos.length}%)`;
   };
   addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(actualizar); } }, { passive: true });
+  addEventListener('resize', actualizar);
   actualizar();
 </script>
 
 <style>
   .grilla { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px clamp(40px, 7vw, 96px); align-items: start; }
   .cabecera { display: grid; gap: 18px; position: sticky; top: 120px; }
+
+  /* Contador: aro que se completa con --k y número que gira al cambiar de paso */
+  .visor { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+  .aro { position: relative; display: grid; place-items: center; width: 104px; height: 104px; }
+  .aro::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--bordo) calc(var(--k, 0) * 360deg), var(--linea) 0); mask: radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px)); -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px)); }
+  .cifra { height: 1em; overflow: hidden; font-size: 2.9rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+  .rueda { display: grid; transition: transform .6s var(--ease); }
+  .rueda b { height: 1em; text-align: center; }
+  .de { font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; line-height: 1.5; color: var(--texto-suave); }
+
   .pasos { position: relative; list-style: none; }
   /* Línea del recorrido: gris de fondo y bordó que se llena con --k (0 a 1) */
   .pasos::before, .pasos::after { content: ""; position: absolute; left: 21px; top: 44px; bottom: 44px; width: 2px; background: var(--linea); }
   .pasos::after { background: var(--bordo); transform: scaleY(var(--k, 0)); transform-origin: top; }
-  .paso { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 24px; padding: 22px 0; }
-  .num { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--marfil); border: 2px solid var(--linea); color: var(--texto-suave); font-weight: 800; transition: background-color .4s, border-color .4s, color .4s, transform .5s var(--ease); }
-  .paso.activo .num { background: var(--bordo); border-color: var(--bordo); color: var(--marfil); transform: scale(1.08); }
-  h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -.02em; margin: 8px 0 6px; color: var(--texto-suave); transition: color .4s; }
-  .paso.activo h3 { color: var(--grafito); }
+  .paso { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 20px; padding: 10px 0; }
+  .num { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; margin-top: 14px; border-radius: 50%; background: var(--marfil); border: 2px solid var(--linea); color: var(--texto-suave); font-weight: 800; transition: background-color .4s, border-color .4s, color .4s, transform .5s var(--ease); }
+  .num > * { grid-area: 1 / 1; transition: opacity .25s, transform .4s var(--ease); }
+  .ok { opacity: 0; transform: scale(.6); }
+  .hecho .num { border-color: var(--bordo); color: var(--bordo); }
+  .hecho .n { opacity: 0; transform: scale(.6); }
+  .hecho .ok { opacity: 1; transform: none; }
+  .activo .num { background: var(--bordo); border-color: var(--bordo); color: var(--marfil); transform: scale(1.08); }
+  /* Onda que sale del número cuando el paso se activa */
+  .activo .num::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--bordo); animation: onda .7s var(--ease) both; }
+  @keyframes onda { from { opacity: .6; } to { opacity: 0; transform: scale(1.7); } }
+
+  /* Cada paso es una tarjeta que se enciende cuando le toca */
+  .cuerpo { position: relative; isolation: isolate; padding: 18px 22px 20px; }
+  .cuerpo::before { content: ""; position: absolute; inset: 0; z-index: -1; border: 1px solid var(--linea); border-radius: 18px; background: var(--papel); box-shadow: 0 24px 48px -32px #501B3566; opacity: 0; transform: scale(.97); transition: opacity .4s, transform .5s var(--ease); }
+  .activo .cuerpo::before { opacity: 1; transform: none; }
+  h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -.02em; margin-bottom: 6px; }
   p { color: var(--texto-suave); max-width: 480px; }
+  .vos { margin-top: 12px; font-size: .9rem; }
+  .vos b { color: var(--bordo); }
+  /* Con JS, lo que todavía no llegó espera atenuado; sin JS se ve todo */
+  :global(.js) .cuerpo > * { transition: opacity .4s, transform .5s var(--ease); }
+  :global(.js) .paso:not(.activo, .hecho) .cuerpo > * { opacity: .5; }
+  :global(.js) .paso:not(.activo, .hecho) .cuerpo > .vos { opacity: 0; transform: translateY(6px); }
 
   @media (max-width: 860px) {
     .grilla { grid-template-columns: 1fr; }
     .cabecera { position: static; }
-    .paso { gap: 16px; }
+    .visor { display: none; }
+    .paso { gap: 12px; }
+    .cuerpo { padding: 16px 18px 18px; }
+  }
+  @media (max-height: 640px) { .visor { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .cuerpo::before, .ok, .hecho .n { transform: none; }
   }
 </style>

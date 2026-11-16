@@ -64,15 +64,5 @@
 </div></footer>
 <a class="wa" href="https://wa.me/5491100000000?text=Hola!" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C8.86 3 3.03 8.82 3.03 16c0 2.3.6 4.53 1.74 6.5L3 29l6.68-1.75A12.95 12.95 0 0 0 16.04 29C23.2 29 29 23.18 29 16S23.2 3 16.04 3Zm0 23.66c-1.96 0-3.88-.53-5.56-1.52l-.4-.24-3.96 1.04 1.06-3.86-.26-.4A10.6 10.6 0 0 1 5.38 16c0-5.88 4.78-10.66 10.66-10.66S26.7 10.12 26.7 16s-4.78 10.66-10.66 10.66Zm5.85-7.98c-.32-.16-1.89-.93-2.18-1.04-.3-.1-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.18.21-.32.32-.53.1-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66s1.14 3.08 1.3 3.3c.16.2 2.25 3.43 5.45 4.81.76.33 1.35.52 1.81.67.76.24 1.46.2 2.01.12.61-.09 1.89-.77 2.15-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37Z"/></svg></a>
 <script src="../_fx/base.js" defer></script>
-<script>
-// Turnos online: carga el calendario de Cal.com solo si la sección tiene un link configurado
-const tu=document.querySelector('.turnos');
-if(tu&&tu.dataset.calLink){tu.hidden=false;
-(function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement('script')).src=A;cal.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const ns=ar[1];api.q=api.q||[];if(typeof ns==='string'){cal.ns[ns]=cal.ns[ns]||api;p(cal.ns[ns],ar);p(cal,['initNamespace',ns])}else p(cal,ar);return}p(cal,ar)}})(window,'https://app.cal.com/embed/embed.js','init');
-Cal('init',{origin:'https://cal.com'});
-Cal('inline',{elementOrSelector:'#cal-turnos',calLink:tu.dataset.calLink,config:{layout:'month_view',theme:'light'}});
-Cal('ui',{theme:'light',layout:'month_view',cssVarsPerTheme:{light:{'cal-brand':getComputedStyle(document.documentElement).getPropertyValue('--principal').trim()}}});
-Cal('on',{action:'linkReady',callback:()=>{const c=tu.querySelector('.cal-cargando');c&&c.remove()}})}
-</script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 ---
-import { PLANES, LANZAMIENTO, DOLAR, wa } from '../data/coudexia';
-const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')) / DOLAR)}`;
+import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
 ---
 <section class="seccion" id="precios">
   <div class="wrap">
@@ -9,7 +8,7 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
         <p class="etiqueta rv">Planes y precios</p>
         <h2 class="rv palabras">Elegí tu plan y arrancamos.</h2>
       </div>
-      <p class="bajada rv">Precios en pesos argentinos, con su equivalente en dólares. Escribinos por WhatsApp con el plan que te interesa y en una charla corta vemos cómo trabaja tu negocio.</p>
+      <p class="bajada rv">Precios en pesos argentinos: un pago inicial por el diseño y el desarrollo, y un mensual por el hosting, el mantenimiento y el soporte. Escribinos por WhatsApp con el plan que te interesa y vemos tu caso.</p>
     </div>
 
     <div id="planes" class="ancla">
@@ -24,17 +23,13 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
           <p class="nombre">{p.nombre}</p>
           <p class="para">{p.para}</p>
           <p class="precio">
-            {p.desde ? <>
-                <small>{p.mensual ? 'Instalación · pago único' : 'Pago único'}</small><b>{p.desde}</b><span class="usd">≈ {usd(p.desde)}</span>
-                {p.mensual && <span class="mas"><small>Pago mensual</small><span>+ <b class="mes">{p.mensual}</b> por mes <span class="usd">(≈ {usd(p.mensual)})</span></span></span>}
-              </> : p.mensual ? <>
-                <small>Pago mensual</small><b>{p.mensual}</b><span class="usd">≈ {usd(p.mensual)} por mes</span><span class="unico">Sin costo de instalación</span>
-              </> : <b class="consultar">A consultar</b>}
+            <small>Instalación · pago único</small><b>{p.desde}</b>
+            <span class="mas"><small>Mantenimiento mensual</small><span>+ <b class="mes">{p.mensual}</b> por mes</span></span>
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">
             {p.incluye.map((it) => <li>{it}</li>)}
-            {LANZAMIENTO.cupos > 0 && <li class="extra">{p.desde ? '1.er mes de mantenimiento bonificado' : '1.er mes bonificado'}</li>}
+            {LANZAMIENTO.cupos > 0 && <li class="extra">1.er mes de mantenimiento bonificado</li>}
           </ul>
           <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero este plan <span class="flecha" aria-hidden="true">→</span></a>
         </li>
@@ -48,7 +43,7 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
       <li>Transferencia o Mercado Pago</li>
       <li>Dominio y web a tu nombre</li>
     </ul>
-
+    <p class="aparte rv"><b>No incluido:</b> el costo anual del dominio y, si los necesitás, los planes pagos de la herramienta de turnos; los dos se contratan a tu nombre. Las secciones nuevas, los rediseños y los cambios que superen los de tu plan se presupuestan aparte.</p>
   </div>
 </section>
 
@@ -60,7 +55,7 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
   /* Aviso de lanzamiento: sin precio tachado, el beneficio es real y tiene límite */
   .lanza { width: fit-content; margin: 0 auto 34px; padding: 10px 20px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .93rem; font-weight: 600; text-align: center; }
   .lanza b { font-weight: 800; }
-  .planes { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .planes { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; max-width: 860px; margin-inline: auto; }
   .plan { position: relative; display: flex; flex-direction: column; padding: 34px 30px 30px; background: var(--papel); border: 1px solid var(--linea); border-radius: 22px; transition: opacity .8s var(--ease), transform .8s var(--ease), box-shadow .4s, border-color .3s; transition-delay: var(--d, 0s), var(--d, 0s), 0s, 0s; }
   .js .plan.rv.in:hover { transform: translateY(-6px); }
   .plan:hover { border-color: #D8C6CD; box-shadow: 0 30px 60px -32px #501B3566; }
@@ -74,14 +69,9 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
   .precio small { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--bordo); }
   .destacado .precio small { color: var(--rosa); }
   .precio b { font-size: clamp(2.2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.1; }
-  .usd { font-size: .95rem; font-weight: 700; color: var(--bordo); }
-  .destacado .usd { color: var(--rosa); }
   .mas { display: grid; gap: 2px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--linea); font-size: 1rem; font-weight: 600; }
   .destacado .mas { border-color: var(--linea-oscura); }
   .precio .mes { font-size: 1.6rem; letter-spacing: -.03em; }
-  .mas .usd { font-size: .9rem; }
-  .unico { margin-top: 4px; font-size: .85rem; font-weight: 600; color: var(--texto-suave); }
-  .destacado .unico { color: #D9C3CC; }
   .nota { font-size: .85rem; color: var(--texto-suave); }
   .incluye { list-style: none; display: grid; gap: 11px; margin: 24px 0 30px; font-size: .96rem; }
   .incluye li { display: flex; gap: 10px; }
@@ -96,12 +86,15 @@ const usd = (pesos: string) => `USD ${Math.round(Number(pesos.replace(/\D/g, '')
   .condiciones li { display: flex; align-items: center; gap: 10px; }
   .condiciones li::before { content: ""; width: 7px; height: 7px; border-radius: 2px; rotate: 45deg; background: var(--bordo); }
 
+  .aparte { max-width: 760px; margin: 22px auto 0; text-align: center; color: var(--texto-suave); font-size: .9rem; }
 
   @media (max-width: 960px) {
     .cabecera { grid-template-columns: 1fr; }
-    .planes { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
-    .para { min-height: 0; }
     .lanza { border-radius: 18px; }
+  }
+  @media (max-width: 700px) {
+    .planes { grid-template-columns: 1fr; max-width: 560px; }
+    .para { min-height: 0; }
   }
   @media (max-width: 480px) {
     .plan { padding: 30px 22px 24px; }

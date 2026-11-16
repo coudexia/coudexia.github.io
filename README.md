@@ -1,6 +1,6 @@
 # Coudexia · sitio web
 
-Landing de Coudexia (diseño y desarrollo de sitios web y tiendas online), hecha con Astro.
+Landing de Coudexia (páginas web con reservas online para negocios con turnos), hecha con Astro.
 Publicada en https://coudexia.github.io/ con GitHub Pages: cada push a `main` se publica solo.
 
 ## Usar en tu compu
@@ -11,7 +11,7 @@ Publicada en https://coudexia.github.io/ con GitHub Pages: cada push a `main` se
 ## Qué se edita y dónde
 - **`src/data/coudexia.ts`**: contacto (WhatsApp, email, redes), precios de los planes, servicios,
   proyectos, proceso y preguntas frecuentes. Un campo vacío (`''`) no se muestra.
-- `src/components/`: una sección por archivo (Header, Hero, Servicios, Proyectos, Precios, Proceso, Faq, Contacto, Footer).
+- `src/components/`: una sección por archivo (Header, Hero, Problema, Servicios, Reservas, Proyectos, Precios, Proceso, Faq, Contacto, Footer).
 - `src/layouts/Base.astro`: colores de la marca, tipografía y metadatos para Google y redes.
 - Marca: logo en `src/assets/logo.svg` (en curvas, se colorea por CSS), `public/favicon.svg`,
   `public/apple-touch-icon.png` y `public/og.png` (imagen al compartir el link).

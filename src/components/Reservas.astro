@@ -1,0 +1,264 @@
+---
+import { RESERVA, wa } from '../data/coudexia';
+// Datos de la reserva de ejemplo (negocio ficticio). En horas, true = horario ocupado.
+const servicios = [['Limpieza facial', '60 min', '$28.000'], ['Lifting de pestañas', '45 min', '$22.000'], ['Masaje descontracturante', '50 min', '$25.000']];
+const horas: [string, boolean][] = [['10:00', false], ['11:30', true], ['14:00', true], ['16:00', false], ['17:30', false], ['18:00', false]];
+const [servInicial, horaInicial] = [servicios[0][0], '17:30'];
+---
+<section class="seccion reservas" id="reservas">
+  <div class="wrap">
+    <div class="cabecera">
+      <p class="etiqueta rv">Reservas online</p>
+      <h2 class="rv palabras">Del "¿tenés turno?" a la reserva confirmada.</h2>
+      <p class="bajada rv">Tu cliente reserva desde tu web en menos de un minuto, sin esperar a que le contestes. Probalo: tocá el celular y hacé la reserva vos.</p>
+    </div>
+
+    <div class="demo rv">
+      <div class="guia">
+        <ol class="pasos">
+          {RESERVA.map((p, i) => (
+            <li class:list={['paso', { activo: i === 0 }]}>
+              <button type="button" aria-current={i === 0 ? 'step' : undefined}>
+                <span class="num" aria-hidden="true">{i + 1}</span>
+                <span class="txt"><b>{p.t}</b><span class="d">{p.d}</span></span>
+                <span class="barra" aria-hidden="true"><i></i></span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <button class="pausar" type="button" aria-pressed="false">Pausar</button>
+      </div>
+
+      <!-- Una pantalla por paso. Lo que se toca adentro avanza la reserva. -->
+      <div class="celular">
+        <div class="vistas">
+          <div class="vista" data-pos="actual">
+            <p class="url"><span aria-hidden="true">🔒</span>tunegocio.com.ar</p>
+            <div class="pant">
+              <div class="foto"><span>Nácar Estética</span></div>
+              <p class="h">Tu piel, en buenas manos.</p>
+              <p class="s">Tratamientos faciales y corporales, con turno.</p>
+              <button type="button" class="cta toca" data-sig>Reservar turno</button>
+              <div class="relleno" aria-hidden="true"><i></i><i></i></div>
+            </div>
+          </div>
+
+          <div class="vista" data-pos="despues" data-elige="serv" inert>
+            <p class="url"><span aria-hidden="true">🔒</span>tunegocio.com.ar</p>
+            <div class="pant">
+              <p class="k">Reservá tu turno</p>
+              <p class="h">Elegí el servicio</p>
+              {servicios.map(([nombre, dura, precio], i) => (
+                <button type="button" class:list={['op', { sel: i === 0 }]} data-valor={nombre}><b>{nombre}</b><em>{precio}</em><span>{dura}</span></button>
+              ))}
+            </div>
+          </div>
+
+          <div class="vista" data-pos="despues" data-elige="hora" inert>
+            <p class="url"><span aria-hidden="true">🔒</span>tunegocio.com.ar</p>
+            <div class="pant">
+              <p class="k">Reservá tu turno</p>
+              <p class="h">Elegí el horario</p>
+              <p class="dias" aria-hidden="true"><span>Mié</span><span class="hoy">Jue</span><span>Vie</span></p>
+              <div class="horas">
+                {horas.map(([h, ocupado]) => (
+                  <button type="button" class:list={['op', { sel: h === horaInicial }]} data-valor={h} disabled={ocupado} aria-label={ocupado ? `${h}, ocupado` : h}>{h}</button>
+                ))}
+              </div>
+              <p class="s">Los horarios tachados ya están ocupados en tu calendario.</p>
+            </div>
+          </div>
+
+          <div class="vista" data-pos="despues" inert>
+            <p class="url"><span aria-hidden="true">🔒</span>tunegocio.com.ar</p>
+            <div class="pant">
+              <p class="k">Reservá tu turno</p>
+              <p class="h">Confirmá tu reserva</p>
+              <p class="resumen"><b data-muestra="serv">{servInicial}</b><span>Jueves · <span data-muestra="hora">{horaInicial}</span> h</span></p>
+              <p class="dato"><small>Nombre</small>Sofía</p>
+              <p class="dato"><small>Email</small>sofia@email.com</p>
+              <button type="button" class="cta toca" data-sig>Confirmar reserva</button>
+            </div>
+          </div>
+
+          <div class="vista" data-pos="despues" inert>
+            <p class="url gcal">Google Calendar · jueves</p>
+            <div class="pant">
+              <p class="aviso"><span aria-hidden="true">✓</span>Nuevo turno reservado</p>
+              <ul class="agenda">
+                <li><time>09:00</time><span class="ev">Depilación · Carla</span></li>
+                <li><time data-muestra="hora">{horaInicial}</time><span class="ev nuevo"><b data-muestra="serv">{servInicial}</b> · Sofía</span></li>
+                <li><time>20:00</time><span class="libre">Libre</span></li>
+              </ul>
+              <button type="button" class="otra" data-sig>Ver de nuevo <span aria-hidden="true">↺</span></button>
+            </div>
+          </div>
+        </div>
+        <p class="ficticio">Reserva de ejemplo · negocio ficticio</p>
+      </div>
+    </div>
+
+    <div class="cierre rv">
+      <p>Funciona con <b>Cal.com</b> y <b>Google Calendar</b>, con cuentas a tu nombre: la agenda y los datos de tus clientes son tuyos.</p>
+      <a class="btn btn-claro" href={wa('Hola Coudexia! Quiero una web con reservas online para mi negocio.')} target="_blank" rel="noopener">Quiero turnos online en mi web <span class="flecha" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const sec = document.querySelector<HTMLElement>('#reservas')!;
+  const pasos = [...sec.querySelectorAll<HTMLElement>('.paso')];
+  const vistas = [...sec.querySelectorAll<HTMLElement>('.vista')];
+  const pausar = sec.querySelector<HTMLButtonElement>('.pausar')!;
+  let n = 0;
+
+  const ir = (i: number) => {
+    n = (i + vistas.length) % vistas.length;
+    pasos.forEach((p, k) => {
+      p.classList.toggle('activo', k === n);
+      p.classList.toggle('hecho', k < n);
+      const b = p.querySelector('button')!;
+      k === n ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current');
+    });
+    vistas.forEach((v, k) => {
+      v.dataset.pos = k === n ? 'actual' : k < n ? 'antes' : 'despues';
+      v.inert = k !== n;
+      if (k !== n) v.classList.remove('ya');
+    });
+  };
+
+  // Avance automático: cuando la barra del paso activo termina de llenarse, pasa al siguiente.
+  // La barra es una animación CSS, así que se frena sola fuera de pantalla, con el mouse sobre el celular o con "Pausar".
+  sec.addEventListener('animationend', (e) => { if ((e.target as Element).matches('.barra i')) ir(n + 1); });
+  new IntersectionObserver(([e]) => sec.classList.toggle('corre', e.isIntersecting), { threshold: .35 }).observe(sec.querySelector('.demo')!);
+  pausar.addEventListener('click', () => {
+    const si = sec.classList.toggle('pausa');
+    pausar.setAttribute('aria-pressed', String(si));
+    pausar.textContent = si ? 'Reproducir' : 'Pausar';
+  });
+
+  pasos.forEach((p, k) => p.querySelector('button')!.addEventListener('click', () => ir(k)));
+  sec.querySelectorAll('[data-sig]').forEach((b) => b.addEventListener('click', () => ir(n + 1)));
+  // Elegir un servicio o un horario: se marca, se refleja en las pantallas siguientes y avanza
+  sec.querySelectorAll<HTMLElement>('.op').forEach((b) => b.addEventListener('click', () => {
+    const v = b.closest<HTMLElement>('.vista')!;
+    v.querySelectorAll('.op').forEach((o) => o.classList.toggle('sel', o === b));
+    v.classList.add('ya');
+    sec.querySelectorAll(`[data-muestra="${v.dataset.elige}"]`).forEach((el) => (el.textContent = b.dataset.valor!));
+    setTimeout(() => ir(vistas.indexOf(v) + 1), 420);
+  }));
+</script>
+
+<style>
+  .reservas { background: var(--vino); color: var(--marfil); overflow: hidden; }
+  .cabecera { display: grid; gap: 18px; max-width: 820px; margin-bottom: clamp(40px, 6vw, 64px); }
+  .etiqueta { color: var(--rosa); }
+  .bajada, .cierre p { color: #D9C3CC; }
+  .demo { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(32px, 7vw, 104px); align-items: center; }
+
+  /* Pasos: lista en escritorio, barras tipo historias en celular */
+  .pasos { list-style: none; counter-reset: paso; }
+  .paso { counter-increment: paso; }
+  .paso button { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: start; width: 100%; padding: 18px 0; border: 0; background: none; text-align: left; cursor: pointer; }
+  .num { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--linea-oscura); color: #D9C3CC; font-weight: 800; transition: background-color .3s, border-color .3s, color .3s, transform .5s var(--ease); }
+  .hecho .num { border-color: var(--rosa); color: var(--rosa); }
+  .activo .num { background: var(--rosa); border-color: var(--rosa); color: var(--vino); transform: scale(1.08); }
+  .txt { display: grid; gap: 4px; opacity: .62; transition: opacity .3s, transform .5s var(--ease); }
+  .activo .txt { opacity: 1; transform: translateX(4px); }
+  .txt b { font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; }
+  .d { color: #D9C3CC; font-size: .95rem; }
+  .barra { position: absolute; left: 62px; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--linea-oscura); overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--rosa); transform: scaleX(0); transform-origin: left; }
+  .hecho .barra i { transform: none; }
+  .activo .barra i { animation: llena 4.2s linear forwards paused; }
+  .corre:not(.pausa) .activo .barra i { animation-play-state: running; }
+  @keyframes llena { to { transform: none; } }
+  .pausar { min-height: 40px; margin: 18px 0 0 62px; padding: 0 16px; border: 1px solid var(--linea-oscura); border-radius: 999px; background: none; color: #D9C3CC; font-size: .82rem; font-weight: 700; cursor: pointer; transition: border-color .2s, color .2s; }
+
+  /* Celular con una pantalla por paso */
+  .celular { position: relative; justify-self: center; width: min(100%, 330px); }
+  .vistas { display: grid; padding: 8px; border-radius: 34px; background: var(--grafito); box-shadow: 0 30px 60px -20px #1a0610cc; color: var(--grafito); }
+  .vista { grid-area: 1 / 1; display: flex; flex-direction: column; min-height: 470px; border-radius: 26px; overflow: hidden; background: var(--marfil); opacity: 0; visibility: hidden; transition: opacity .3s, transform .5s var(--ease), visibility 0s .3s; }
+  .vista[data-pos="antes"] { transform: translateX(-28px); }
+  .vista[data-pos="despues"] { transform: translateX(28px); }
+  .vista[data-pos="actual"] { opacity: 1; visibility: visible; transition-delay: .1s, .1s, 0s; }
+  .url { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; background: #EFE9E5; color: var(--texto-suave); font-size: .78rem; font-weight: 600; }
+  .gcal { background: var(--papel); border-bottom: 1px solid var(--linea); color: var(--grafito); font-weight: 700; }
+  .pant { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 18px 16px; }
+  .k { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--bordo); }
+  .h { font-size: 1.4rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.15; margin-bottom: 4px; }
+  .s { color: var(--texto-suave); font-size: .84rem; line-height: 1.45; }
+  .foto { display: grid; place-items: end start; height: 132px; margin-bottom: 6px; padding: 14px; border-radius: 16px; background: var(--rosa); color: var(--vino); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .relleno { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+  .relleno i { height: 64px; border-radius: 12px; background: #EFE9E5; }
+
+  .cta { position: relative; min-height: 46px; margin-top: 8px; border: 0; border-radius: 999px; background: var(--bordo); color: var(--marfil); font-weight: 700; font-size: .95rem; cursor: pointer; transition: transform .16s var(--ease); }
+  .cta:active, .op:active { transform: scale(.97); }
+  /* Aro que invita a tocar el botón del paso */
+  .vista[data-pos="actual"] .toca::after { content: ""; position: absolute; inset: -5px; border-radius: inherit; border: 2px solid var(--bordo); animation: llama 1.8s var(--ease) infinite; }
+  @keyframes llama { from { opacity: .7; transform: scale(.97); } to { opacity: 0; transform: scale(1.06); } }
+
+  .op { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 11px 12px; border: 1.5px solid var(--linea); border-radius: 12px; background: var(--papel); text-align: left; font-size: .86rem; cursor: pointer; transition: background-color .25s, border-color .25s, color .25s, transform .16s var(--ease); }
+  .op em { font-style: normal; font-weight: 700; }
+  .op span { grid-column: 1 / -1; font-size: .78rem; opacity: .7; }
+  /* La opción elegida se marca sola un momento después de entrar; si la elige la persona, al instante (.ya) */
+  .vista[data-pos="actual"] .op.sel { background: var(--bordo); border-color: var(--bordo); color: var(--marfil); transition-delay: 1.4s; }
+  .vista.ya .op.sel { transition-delay: 0s; }
+  .dias { display: flex; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--texto-suave); }
+  .dias span { padding: 5px 12px; border-radius: 999px; }
+  .dias .hoy { background: var(--grafito); color: var(--marfil); }
+  .horas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .horas .op { display: block; padding: 11px 0; text-align: center; font-weight: 700; }
+  .horas .op:disabled { opacity: .45; text-decoration: line-through; cursor: not-allowed; }
+
+  .resumen { display: grid; gap: 2px; padding: 12px 14px; border-radius: 14px; background: var(--rosa); color: var(--vino); font-size: .86rem; }
+  .dato { display: grid; gap: 3px; padding: 9px 12px; border: 1.5px solid var(--linea); border-radius: 12px; background: var(--papel); font-size: .86rem; }
+  .dato small { font-size: .7rem; font-weight: 700; color: var(--texto-suave); }
+
+  /* Paso 5: el aviso baja y el turno aparece en la agenda */
+  .aviso { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 14px; background: var(--grafito); color: var(--marfil); font-size: .84rem; font-weight: 700; opacity: 0; transform: translateY(-14px); transition: opacity .3s, transform .5s var(--ease); }
+  .aviso span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #2BB673; font-size: .7rem; }
+  .agenda { list-style: none; display: grid; margin-top: 6px; }
+  .agenda li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; min-height: 62px; border-top: 1px solid var(--linea); font-size: .84rem; }
+  .agenda time { color: var(--texto-suave); font-size: .76rem; font-weight: 700; }
+  .ev { padding: 10px 12px; border-radius: 10px; background: #EFE9E5; color: var(--texto-suave); }
+  .nuevo { background: var(--bordo); color: var(--marfil); opacity: 0; transform: scale(.94); transform-origin: left; transition: opacity .3s, transform .5s var(--ease); }
+  .libre { color: #A89EA3; }
+  .vista[data-pos="actual"] :is(.aviso, .nuevo) { opacity: 1; transform: none; }
+  .vista[data-pos="actual"] .aviso { transition-delay: .4s; }
+  .vista[data-pos="actual"] .nuevo { transition-delay: .9s; }
+  .otra { align-self: center; min-height: 40px; margin-top: auto; padding: 0 16px; border: 1.5px solid var(--linea); border-radius: 999px; background: none; font-size: .84rem; font-weight: 700; cursor: pointer; }
+  .ficticio { margin-top: 14px; text-align: center; color: #D9C3CC; font-size: .72rem; font-weight: 600; }
+
+  .cierre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; margin-top: clamp(40px, 6vw, 64px); padding-top: 28px; border-top: 1px solid var(--linea-oscura); }
+  .cierre p { max-width: 560px; }
+  .cierre b { color: var(--marfil); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .paso button:hover .txt { opacity: 1; }
+    .pausar:hover { border-color: var(--rosa); color: var(--marfil); }
+    /* Con el mouse sobre el celular la reserva espera a la persona */
+    .demo:has(.celular:hover) .activo .barra i { animation-play-state: paused; }
+  }
+
+  @media (max-width: 860px) {
+    .demo { grid-template-columns: 1fr; gap: 22px; }
+    .pasos { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding-bottom: 92px; }
+    .paso button { position: static; display: block; padding: 14px 0; }
+    .num { display: none; }
+    .barra { position: static; display: block; height: 4px; }
+    .txt, .activo .txt { position: absolute; left: 0; right: 0; top: 40px; transform: translateY(6px); }
+    .txt { opacity: 0; pointer-events: none; }
+    .activo .txt { opacity: 1; transform: none; }
+    .txt b::before { content: counter(paso) " · "; color: var(--rosa); }
+    .pausar { margin: 0; justify-self: start; }
+    .guia { display: grid; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Sin avance automático: se recorre tocando los pasos o el celular */
+    .activo .barra i { transform: none; }
+    .pausar { display: none; }
+    .vista, .vista[data-pos] { transform: none; }
+  }
+</style>

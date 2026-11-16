@@ -5,7 +5,7 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
   <div class="wrap grilla">
     <div class="texto">
       <p class="etiqueta rv">Contacto</p>
-      <h2 class="rv palabras">¿Querés que tu WhatsApp atienda solo?</h2>
+      <h2 class="rv palabras">¿Hablamos de la web de tu negocio?</h2>
       <p class="bajada rv">Contanos de tu negocio y cómo das turnos hoy. Te respondemos con lo que haríamos en tu caso y cuánto cuesta.</p>
       <ul class="canales rv">
         <li><a href={wa()} target="_blank" rel="noopener"><small>WhatsApp</small>{CONTACTO.telefono}<span class="ir" aria-hidden="true">↗</span></a></li>
@@ -85,7 +85,7 @@ import { CONTACTO, IDEAS, PLAZOS, wa } from '../data/coudexia';
       d.plazo && `Lo necesito: ${d.plazo.toLowerCase()}.`,
     ].filter(Boolean) as string[];
     const url = via === 'email'
-      ? `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Consulta por recepcionista IA: ${d.tipo}`)}&body=${encodeURIComponent(lineas.join('\n\n'))}`
+      ? `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Consulta por una web: ${d.tipo}`)}&body=${encodeURIComponent(lineas.join('\n\n'))}`
       : `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(lineas.join('\n'))}`;
     Object.assign(document.createElement('a'), { href: url, target: via === 'email' ? '_self' : '_blank', rel: 'noopener' }).click();
     aviso.innerHTML = `Listo: se abrió ${via === 'email' ? 'tu correo' : 'WhatsApp'} con tu mensaje. Si no se abrió, <a href="${url}" target="_blank" rel="noopener">tocá acá</a>.`;

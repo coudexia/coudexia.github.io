@@ -1,14 +1,14 @@
 ---
 import Logo from './Logo.astro';
 import { CONTACTO, wa } from '../data/coudexia';
-const nav = [['#servicios', 'Servicios'], ['#precios', 'Planes y precios'], ['#proyectos', 'Proyectos'], ['#incluye', 'Qué incluye'], ['#proceso', 'Proceso'], ['#preguntas', 'Preguntas frecuentes'], ['#contacto', 'Contacto']];
+const nav = [['#servicios', 'Servicios'], ['#reservas', 'Reservas online'], ['#proyectos', 'Proyectos'], ['#precios', 'Planes y precios'], ['#proceso', 'Proceso'], ['#preguntas', 'Preguntas frecuentes'], ['#contacto', 'Contacto']];
 const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin]].filter(([, u]) => u);
 ---
 <footer class="footer">
   <div class="wrap grilla">
     <div class="marca">
       <a href="#inicio" class="logo-link" aria-label="Coudexia, volver al inicio"><Logo claro /></a>
-      <p>Webs y recepcionistas con IA para WhatsApp, para negocios con turnos.</p>
+      <p>Páginas web con reservas online para negocios con turnos.</p>
     </div>
     <nav aria-label="Secundaria">
       <h3>Navegación</h3>

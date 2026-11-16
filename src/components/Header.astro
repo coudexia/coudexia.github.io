@@ -1,10 +1,11 @@
 ---
 import Logo from './Logo.astro';
+import { wa } from '../data/coudexia';
 const links = [
-  ['#inicio', 'Inicio'],
   ['#servicios', 'Servicios'],
-  ['#precios', 'Precios'],
+  ['#reservas', 'Reservas'],
   ['#proyectos', 'Proyectos'],
+  ['#precios', 'Precios'],
   ['#contacto', 'Contacto'],
 ];
 ---
@@ -15,9 +16,9 @@ const links = [
       <ul>
         {links.map(([href, t], i) => <li style={`--i:${i}`}><a href={href}>{t}</a></li>)}
       </ul>
-      <a class="btn btn-principal cta-menu" href="#planes">Ver planes y precios</a>
+      <a class="btn btn-principal cta-menu" href={wa()} target="_blank" rel="noopener">Escribinos por WhatsApp</a>
     </nav>
-    <a class="btn btn-principal cta" href="#planes">Ver planes</a>
+    <a class="btn btn-principal cta" href={wa()} target="_blank" rel="noopener">Escribinos</a>
     <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span>
     </button>
