@@ -16,7 +16,7 @@ import { SITIO, CONTACTO } from '../data/coudexia';
 // Datos de la empresa para Google
 const ld = {
   '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'Coudexia',
-  description: SITIO.descripcion, url: 'https://coudexia.github.io/', image: 'https://coudexia.github.io/og.png',
+  description: SITIO.descripcion, url: Astro.site!.href, image: new URL('/og.png', Astro.site).href,
   telephone: CONTACTO.telefono, email: CONTACTO.email, areaServed: 'AR',
   address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
 };
