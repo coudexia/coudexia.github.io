@@ -3,6 +3,8 @@
 {
   "name": "coudexia",
   "compatibility_date": "2026-11-16",
+  // Con "routes" la dirección workers.dev se apaga sola: la dejamos prendida para no romper links ya compartidos.
+  "workers_dev": true,
   // Dominios propios: Cloudflare crea el registro DNS y el certificado al publicar.
   "routes": [
     { "pattern": "coudexia.com.ar", "custom_domain": true },
