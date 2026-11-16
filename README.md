@@ -1,13 +1,13 @@
 # Coudexia · sitio web
 
 Landing de Coudexia (páginas web con reservas online para negocios con turnos), hecha con Astro.
-Publicada en https://coudexia.coudexia.workers.dev con Cloudflare: cada push a `main` se publica solo.
+Publicada en https://coudexia.com.ar con Cloudflare: cada push a `main` se publica solo.
 
 ## Publicación
 - **Dónde**: Cloudflare (Workers con archivos estáticos, plan gratuito), proyecto `coudexia`, conectado a este repo de GitHub.
 - **Cómo**: en cada push a `main` Cloudflare corre `npm run build` y después `npx wrangler deploy`, que sube la carpeta `dist/` según `wrangler.jsonc`. Las otras ramas generan una dirección de vista previa.
 - **Sin claves en el repo**: el token de publicación lo creó y lo guarda Cloudflare. El sitio no usa variables de entorno.
-- **Dirección del sitio**: está en `astro.config.mjs` (`site`), `public/robots.txt` y `public/sitemap.xml`. Al conectar un dominio propio (panel de Cloudflare → el proyecto → Settings → Domains & Routes) hay que cambiarla en los tres.
+- **Dirección del sitio**: `coudexia.com.ar` (registrado en NIC Argentina, delegado a Cloudflare; se renueva una vez por año). Los dominios conectados están en `wrangler.jsonc` (`routes`). Si cambia la dirección, hay que cambiarla también en `astro.config.mjs` (`site`), `public/robots.txt` y `public/sitemap.xml`.
 - **Espejo en GitHub Pages**: `.github/workflows/deploy.yml` sigue publicando una copia en https://coudexia.github.io/ para que los links viejos no queden desactualizados. Se puede borrar cuando ya nada apunte ahí.
 - **Costos**: hosting USD 0. El único costo fijo previsto es el dominio.
 
@@ -34,4 +34,4 @@ Marcas y datos ficticios; fotos de Unsplash. Las capturas de las tarjetas están
    - `demo`: `odontologo`, `estetica`, `servicio-tecnico`, `estetica-integral`, `depilacion` o `fletes`
    - Obligatorios: `nombre`, `whatsapp`. El resto de los campos está documentado en `scripts/clientes.mjs`.
 2. `npm run clientes` genera el borrador en `public/clientes/<slug>/` (también se genera solo al publicar).
-3. Push a `main`: queda en `https://coudexia.coudexia.workers.dev/clientes/<slug>/` (sin indexar en Google).
+3. Push a `main`: queda en `https://coudexia.com.ar/clientes/<slug>/` (sin indexar en Google).

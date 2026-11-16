@@ -3,6 +3,11 @@
 {
   "name": "coudexia",
   "compatibility_date": "2026-11-16",
+  // Dominios propios: Cloudflare crea el registro DNS y el certificado al publicar.
+  "routes": [
+    { "pattern": "coudexia.com.ar", "custom_domain": true },
+    { "pattern": "www.coudexia.com.ar", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"
