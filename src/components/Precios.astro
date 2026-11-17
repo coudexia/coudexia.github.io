@@ -1,5 +1,12 @@
 ---
 import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
+// Selector "¿Qué necesitás?": cada necesidad recomienda un plan, con el motivo sacado de lo que incluye ese plan
+const NECESIDADES = [
+  { t: 'Mostrar mis servicios y precios', plan: 'Página Web', por: 'una página clara con tus servicios, precios, ubicación y WhatsApp alcanza para empezar.' },
+  { t: 'Promocionar un servicio puntual', plan: 'Página Web', por: 'una landing enfocada en un solo objetivo convierte mejor que un sitio grande.' },
+  { t: 'Que reserven turno sin salir de mi web', plan: 'Web Pro', por: 'el calendario de turnos queda integrado en tu web, con un tipo de turno por servicio.' },
+  { t: 'Una web completa con galería y más', plan: 'Web Pro', por: 'hasta 5 páginas: servicios y precios, galería, nosotros y preguntas frecuentes.' },
+];
 ---
 <section class="seccion" id="precios">
   <div class="wrap">
@@ -20,9 +27,23 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
       </div>
     )}
 
+    <div class="elige rv">
+      <p class="elige-q" id="elige-q">¿Qué necesitás para tu negocio?</p>
+      <div class="elige-ops" role="group" aria-labelledby="elige-q">
+        {NECESIDADES.map((n) => (
+          <button type="button" aria-pressed="false" data-plan={n.plan} data-por={n.por}
+            data-href={wa(`Hola Coudexia! Me interesa el plan ${n.plan}. Lo que necesito: ${n.t.toLowerCase()}.`)}>{n.t}</button>
+        ))}
+      </div>
+      <div class="elige-res" aria-live="polite">
+        <p hidden>Te recomendamos <b class="elige-plan"></b>: <span class="elige-por"></span></p>
+        <a class="btn btn-principal" href={wa()} target="_blank" rel="noopener" hidden>Consultar por este plan <span class="flecha" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
     <ul class="planes">
       {PLANES.map((p, i) => (
-        <li class:list={['plan rv', { destacado: p.destacado }]} style={`--d:${i * .1}s`}>
+        <li class:list={['plan rv', { destacado: p.destacado }]} style={`--d:${i * .1}s`} data-plan={p.nombre}>
           {p.destacado && <span class="sello">Recomendado</span>}
           <p class="nombre">{p.nombre}</p>
           <p class="para">{p.para}</p>
@@ -55,6 +76,21 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
 <script>
   const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const cartas = [...document.querySelectorAll<HTMLElement>('.plan')];
+
+  // Selector de necesidades: marca la opción, explica el plan recomendado, resalta su tarjeta y arma el WhatsApp
+  const elige = document.querySelector<HTMLElement>('.elige')!;
+  const ops = [...elige.querySelectorAll<HTMLButtonElement>('.elige-ops button')];
+  const res = elige.querySelector<HTMLParagraphElement>('.elige-res p')!;
+  const cta = elige.querySelector<HTMLAnchorElement>('.elige-res a')!;
+  ops.forEach((b) => b.addEventListener('click', () => {
+    ops.forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+    res.querySelector('.elige-plan')!.textContent = b.dataset.plan!;
+    res.querySelector('.elige-por')!.textContent = b.dataset.por!;
+    cta.href = b.dataset.href!;
+    res.hidden = cta.hidden = false;
+    elige.classList.remove('nuevo'); void elige.offsetWidth; elige.classList.add('nuevo'); // reinicia la entrada del resultado
+    cartas.forEach((c) => c.classList.toggle('elegido', c.dataset.plan === b.dataset.plan));
+  }));
 
   // El precio "sube" hasta el valor real cuando la tarjeta entra en pantalla (arranca del 60% para no cambiar de ancho)
   if (!calmo) {
@@ -110,6 +146,27 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   :global(.js) .cupo i { transform: scaleX(0); transition: transform 1.6s var(--ease) .5s; }
   :global(.js) .lanza.in .cupo i { transform: scaleX(var(--k)); }
   .lanza-sub { font-size: .82rem; font-weight: 600; opacity: .85; }
+  /* Selector de necesidades */
+  .elige { display: grid; justify-items: center; gap: 14px; max-width: 860px; margin: 0 auto 40px; text-align: center; }
+  .elige-q { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; }
+  .elige-ops { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .elige-ops button { min-height: 44px; padding: 0 18px; border: 1.5px solid var(--linea); border-radius: 999px; background: var(--papel); font-weight: 600; font-size: .92rem; cursor: pointer; transition: background-color .2s, border-color .2s, color .2s, transform .16s var(--ease); }
+  .elige-ops button:active { transform: scale(.97); }
+  .elige-ops button[aria-pressed="true"] { background: var(--bordo); border-color: var(--bordo); color: var(--marfil); }
+  .elige-res { display: grid; justify-items: center; gap: 12px; }
+  .elige-res p { max-width: 600px; color: var(--texto-suave); }
+  .elige-res b { color: var(--vino); }
+  .nuevo .elige-res > * { animation: aparece-res .45s var(--ease) both; }
+  .nuevo .elige-res > a { animation-delay: .08s; }
+  @keyframes aparece-res { from { opacity: 0; transform: translateY(8px); } }
+  /* La tarjeta del plan recomendado queda marcada */
+  .plan { outline: 3px solid transparent; outline-offset: 10px; transition: opacity .8s var(--ease), transform .8s var(--ease), box-shadow .4s, border-color .3s, outline-color .3s, outline-offset .4s var(--ease); transition-delay: var(--d, 0s), var(--d, 0s), 0s, 0s, 0s, 0s; }
+  .elige-res [hidden] { display: none; }
+  .plan.elegido { outline-color: var(--bordo); outline-offset: 5px; }
+  @media (hover: hover) and (pointer: fine) {
+    .elige-ops button:hover { border-color: var(--bordo); }
+    .elige-ops button[aria-pressed="true"]:hover { background: var(--bordo-hover); }
+  }
   .ultimos { margin-top: 10px; text-align: center; font-size: .82rem; font-weight: 700; color: var(--bordo); }
   .destacado .ultimos { color: var(--rosa); }
   .planes { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; max-width: 860px; margin-inline: auto; }

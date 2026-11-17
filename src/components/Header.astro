@@ -13,6 +13,7 @@ const links = [
   <div class="wrap barra">
     <a class="marca" href="#inicio" aria-label="Coudexia, ir al inicio"><Logo /></a>
     <nav id="menu" class="menu" aria-label="Principal">
+      <span class="ind ind-hover" aria-hidden="true"></span><span class="ind ind-activo" aria-hidden="true"></span>
       <ul>
         {links.map(([href, t], i) => <li style={`--i:${i}`}><a href={href}>{t}</a></li>)}
       </ul>
@@ -54,8 +55,29 @@ const links = [
 
   // Link activo según la sección visible
   const links = [...header.querySelectorAll<HTMLAnchorElement>('.menu ul a')];
+  // En escritorio dos pastillas se deslizan detrás de los links: la oscura sigue a la sección activa
+  // y la clara al mouse. Se mueven con transform; el ancho se ajusta al link.
+  const nav = header.querySelector<HTMLElement>('.menu')!;
+  const indActivo = nav.querySelector<HTMLElement>('.ind-activo')!;
+  const indHover = nav.querySelector<HTMLElement>('.ind-hover')!;
+  const escritorio = matchMedia('(min-width: 961px)');
+  const mover = (ind: HTMLElement, a?: HTMLElement | null) => {
+    if (!a || !escritorio.matches) { ind.style.opacity = '0'; return; }
+    const n = nav.getBoundingClientRect(), r = a.getBoundingClientRect();
+    ind.style.cssText = `opacity:1;width:${r.width}px;height:${r.height}px;transform:translate(${r.left - n.left}px,${r.top - n.top}px)`;
+  };
+  const activo = () => links.find((a) => a.hasAttribute('aria-current'));
+  links.forEach((a) => a.addEventListener('pointerenter', () => mover(indHover, a)));
+  nav.querySelector('ul')!.addEventListener('pointerleave', () => mover(indHover));
+  addEventListener('resize', () => mover(indActivo, activo()));
+  // La primera vez se ubica sin animar; después ya se desliza
+  document.fonts.ready.then(() => { mover(indActivo, activo()); requestAnimationFrame(() => nav.classList.add('listo')); });
+
   const io = new IntersectionObserver((es) => es.forEach((e) => {
-    if (e.isIntersecting) links.forEach((a) => a.toggleAttribute('aria-current', a.hash === `#${e.target.id}`));
+    if (e.isIntersecting) {
+      links.forEach((a) => a.toggleAttribute('aria-current', a.hash === `#${e.target.id}`));
+      mover(indActivo, activo());
+    }
   }), { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
 </script>
@@ -73,9 +95,19 @@ const links = [
   .menu ul a:hover { color: var(--grafito); }
   .menu ul a[aria-current] { color: var(--marfil); background: var(--grafito); }
   .cta { min-height: 44px; padding: 0 20px; font-size: .92rem; }
+
+  /* Pastillas deslizantes (solo escritorio y con JS): reemplazan el fondo fijo del link activo */
+  .menu { position: relative; }
+  .ind { position: absolute; left: 0; top: 0; z-index: 1; border-radius: 999px; opacity: 0; pointer-events: none; }
+  .ind-hover { background: var(--papel); box-shadow: 0 4px 12px -6px #501B3540; }
+  .ind-activo { background: var(--grafito); }
+  .listo .ind { transition: transform .45s var(--ease), width .45s var(--ease), opacity .25s; }
+  .menu ul a { z-index: 2; }
+  :global(.js) .menu ul a[aria-current] { background: transparent; transition: color .3s .1s, background-color .25s; }
   .cta-menu, .hamburguesa { display: none; }
 
   @media (max-width: 960px) {
+    .ind { display: none; }
     .cta { display: none; }
     .hamburguesa { display: grid; place-content: center; gap: 6px; width: 46px; height: 46px; border: 1.5px solid var(--grafito); border-radius: 999px; background: transparent; cursor: pointer; }
     .hamburguesa span { display: block; width: 18px; height: 2px; background: var(--grafito); transition: transform .3s var(--ease); }
