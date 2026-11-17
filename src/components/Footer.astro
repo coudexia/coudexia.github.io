@@ -51,7 +51,12 @@ const redes = [['Instagram', CONTACTO.instagram], ['LinkedIn', CONTACTO.linkedin
   ul a { text-decoration: none; color: #DDD5D8; }
   ul a:hover { color: var(--marfil); text-decoration: underline; text-underline-offset: 4px; }
   /* Logo gigante de cierre */
-  .gigante { margin-top: 72px; padding-bottom: 28px; line-height: 0; }
+  .gigante { margin-top: 72px; padding-bottom: 28px; line-height: 0; overflow: hidden; }
+  /* El logo gigante sube desde abajo a medida que llegás al final */
+  @supports (animation-timeline: view()) {
+    .gigante :global(svg) { animation: asoma linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+  }
+  @keyframes asoma { from { translate: 0 70%; } }
   .gigante :global(.logo) { display: block; width: 100%; }
   .gigante :global(svg) { width: 100%; height: auto; }
   .gigante :global(.l) { fill: #342E33; }

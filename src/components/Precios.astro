@@ -28,8 +28,8 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
           </p>
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">
-            {p.incluye.map((it) => <li>{it}</li>)}
-            {LANZAMIENTO.cupos > 0 && <li class="extra">1.er mes de mantenimiento bonificado</li>}
+            {p.incluye.map((it, j) => <li style={`--i:${j}`}>{it}</li>)}
+            {LANZAMIENTO.cupos > 0 && <li class="extra" style={`--i:${p.incluye.length}`}>1.er mes de mantenimiento bonificado</li>}
           </ul>
           <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero este plan <span class="flecha" aria-hidden="true">→</span></a>
         </li>
@@ -46,6 +46,45 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
     <p class="aparte rv"><b>No incluido:</b> el costo anual del dominio y, si los necesitás, los planes pagos de la herramienta de turnos; los dos se contratan a tu nombre. Las secciones nuevas, los rediseños y los cambios que superen los de tu plan se presupuestan aparte.</p>
   </div>
 </section>
+
+<script>
+  const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cartas = [...document.querySelectorAll<HTMLElement>('.plan')];
+
+  // El precio "sube" hasta el valor real cuando la tarjeta entra en pantalla (arranca del 60% para no cambiar de ancho)
+  if (!calmo) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const el = e.target as HTMLElement, fin = el.textContent ?? '', n = Number(fin.replace(/\D/g, ''));
+      if (!n) return;
+      const t0 = performance.now() + 250;
+      const paso = (t: number) => {
+        const k = Math.min(Math.max((t - t0) / 1400, 0), 1);
+        el.textContent = k < 1 ? '$' + (Math.round(n * (.6 + .4 * (1 - (1 - k) ** 4)) / 1000) * 1000).toLocaleString('es-AR') : fin;
+        if (k < 1) requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    }), { threshold: .8 });
+    cartas.forEach((c) => io.observe(c.querySelector('.precio > b')!));
+  }
+
+  // Inclinación 3D y luz que sigue al mouse (solo con mouse)
+  if (!calmo && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    cartas.forEach((c) => {
+      c.addEventListener('pointermove', (e) => {
+        if (!c.classList.contains('in')) return;
+        const r = c.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.style.setProperty('--mx', `${x * 100}%`);
+        c.style.setProperty('--my', `${y * 100}%`);
+        c.classList.add('tilt');
+        c.style.transform = `perspective(1100px) rotateX(${(.5 - y) * 9}deg) rotateY(${(x - .5) * 9}deg) translateY(-8px)`;
+      });
+      c.addEventListener('pointerleave', () => { c.classList.remove('tilt'); c.style.transform = ''; });
+    });
+  }
+</script>
 
 <style>
   .cabecera { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; margin-bottom: clamp(40px, 6vw, 64px); }
@@ -81,6 +120,45 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   .incluye .extra { font-weight: 700; color: var(--bordo); }
   .destacado .incluye .extra { color: var(--rosa); }
   .plan .btn { margin-top: auto; width: 100%; }
+  .precio b { font-variant-numeric: tabular-nums; }
+
+  /* Recomendado: borde con un brillo que da la vuelta a la tarjeta */
+  @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  .destacado { border: 2px solid transparent; background: linear-gradient(var(--vino), var(--vino)) padding-box, conic-gradient(from var(--ang), var(--vino) 0 45%, var(--bordo-hover) 62%, var(--rosa) 75%, #FFF4F8 80%, var(--rosa) 85%, var(--bordo-hover) 92%, var(--vino)) border-box; box-shadow: 0 34px 70px -34px #782D4DCC; animation: vuelta 4s linear infinite, respira 3.2s ease-in-out infinite; }
+  @keyframes vuelta { to { --ang: 360deg; } }
+  @keyframes respira { 50% { box-shadow: 0 40px 100px -28px #B04A7AE6; } }
+  /* En escritorio la recomendada queda un poco más grande que la otra */
+  @media (min-width: 701px) { .destacado { scale: 1.04; } }
+  .destacado:hover { border-color: transparent; }
+  .sello { background: linear-gradient(100deg, var(--rosa) 40%, #FFF4F8 50%, var(--rosa) 60%) 0 0 / 300% 100%; animation: destello 4s var(--ease) infinite; }
+  @keyframes destello { 0%, 40% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+  /* "Quiero este plan": un reflejo cruza el botón cada tanto (los dos botones van desfasados) */
+  .plan .btn::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 30%, #FFFFFF8C 50%, transparent 70%); transform: translateX(-110%); animation: reflejo 3.2s var(--ease) infinite 1s; pointer-events: none; }
+  .plan .btn-claro::after { background: linear-gradient(110deg, transparent 30%, #E9C9D5 50%, transparent 70%); animation-delay: 2.6s; }
+  @keyframes reflejo { 0% { transform: translateX(-110%); } 35%, 100% { transform: translateX(110%); } }
+  .plan .btn .flecha { animation: empuja 3.2s var(--ease) infinite 1s; }
+  .plan .btn-claro .flecha { animation-delay: 2.6s; }
+  @keyframes empuja { 12% { transform: translateX(7px); } 24%, 100% { transform: none; } }
+  /* Onda que sale del botón, como un llamado a tocarlo */
+  .plan .btn { animation: llamado 2.4s var(--ease) infinite; }
+  .plan .btn-claro { --onda: #E9C9D5; animation-delay: 1.2s; }
+  @keyframes llamado { from { box-shadow: 0 0 0 0 var(--onda, #782D4D80); } 70%, to { box-shadow: 0 0 0 14px transparent; } }
+
+  /* Lo que incluye entra renglón por renglón detrás de la tarjeta */
+  :global(.js) .incluye li { opacity: 0; transform: translateX(-10px); transition: opacity .5s var(--ease), transform .5s var(--ease); transition-delay: calc(var(--d, 0s) + .35s + var(--i) * 60ms); }
+  :global(.js) .plan.in .incluye li { opacity: 1; transform: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Luz que sigue al mouse */
+    .plan::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), #E9C9D566, transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .destacado::after { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), #FFFFFF1F, transparent 45%); }
+    .plan:hover::after { opacity: 1; }
+    .plan.tilt { transition: transform .2s var(--ease), box-shadow .4s, border-color .3s; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .incluye li { opacity: 1; transform: none; }
+  }
 
   .condiciones { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; margin-top: 28px; color: var(--texto-suave); font-size: .92rem; font-weight: 600; }
   .condiciones li { display: flex; align-items: center; gap: 10px; }

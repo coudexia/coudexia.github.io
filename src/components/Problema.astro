@@ -70,7 +70,11 @@ const puntos = [
   .selector button[aria-pressed="true"] { color: var(--marfil); }
 
   .puntos { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .puntos li { display: grid; border: 1px solid var(--linea); border-radius: 22px; background: var(--marfil); transition: opacity .8s var(--ease), transform .8s var(--ease), border-color .4s; transition-delay: var(--d, 0s), var(--d, 0s), calc(var(--i) * 70ms); }
+  .puntos li { display: grid; border: 1px solid var(--linea); border-radius: 22px; background: var(--marfil); transition: opacity .8s var(--ease), transform .8s var(--ease), border-color .4s, translate .45s var(--ease), box-shadow .45s; transition-delay: var(--d, 0s), var(--d, 0s), calc(var(--i) * 70ms), 0s, 0s; }
+  /* La tarjeta se levanta al pasar el mouse ("translate" para no pisar la aparición, que usa "transform") */
+  @media (hover: hover) and (pointer: fine) {
+    .puntos li:hover { translate: 0 -8px; border-color: var(--bordo); box-shadow: 0 30px 50px -30px #501B3580; }
+  }
   [data-modo="con"] .puntos li { border-color: #D8C6CD; }
   /* Las dos caras ocupan el mismo lugar: una sale hacia arriba y la otra entra desde abajo, tarjeta por tarjeta */
   .cara { grid-area: 1 / 1; padding: 24px 22px 26px; transition: opacity .35s, transform .5s var(--ease); transition-delay: calc(var(--i) * 70ms); }

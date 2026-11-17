@@ -47,5 +47,17 @@ const ld = {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.rv').forEach((el) => io.observe(el));
+
+    // Botones "magnéticos": siguen un poco al mouse (solo con mouse y sin "reducir movimiento")
+    if (matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+      document.querySelectorAll<HTMLElement>('.btn').forEach((b) => {
+        b.addEventListener('pointermove', (e) => {
+          const r = b.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          b.style.translate = `${x * 22}px ${y * 14}px`;
+        });
+        b.addEventListener('pointerleave', () => { b.style.translate = ''; });
+      });
+    }
   </script>
 </Base>

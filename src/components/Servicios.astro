@@ -19,7 +19,7 @@ import { SERVICIOS } from '../data/coudexia';
             <p class="ideal"><b>Ideal para:</b> {s.ideal}</p>
           </div>
           <div class="lado">
-            <ul class="items">{s.items.map((it) => <li>{it}</li>)}</ul>
+            <ul class="items">{s.items.map((it, j) => <li style={`--i:${j}`}>{it}</li>)}</ul>
             <a class="ir" href={s.cta[1]}>{s.cta[0]} <span aria-hidden="true">→</span></a>
           </div>
         </li>
@@ -74,6 +74,12 @@ import { SERVICIOS } from '../data/coudexia';
     .servicio:hover :is(.ideal b, .ir) { color: var(--rosa); }
     .servicio:hover .items li { color: var(--marfil); }
   }
+
+  /* Al aparecer el servicio: el número crece y los ítems entran de a uno */
+  :global(.js) .servicio .num { opacity: 0; scale: .5; transition: color .4s, -webkit-text-stroke-color .4s, opacity .6s .15s, scale .9s var(--ease) .15s; }
+  :global(.js) .servicio.in .num { opacity: 1; scale: 1; }
+  :global(.js) .servicio .items li { opacity: 0; translate: -16px 0; transition: color .3s, opacity .5s var(--ease), translate .6s var(--ease); transition-delay: 0s, calc(.3s + var(--i) * 80ms), calc(.3s + var(--i) * 80ms); }
+  :global(.js) .servicio.in .items li { opacity: 1; translate: none; }
 
   @media (max-width: 860px) {
     .servicio { grid-template-columns: 1fr; gap: 14px; padding-inline: 0; }

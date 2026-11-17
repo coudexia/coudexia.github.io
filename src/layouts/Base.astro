@@ -32,6 +32,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="twitter:image" content={abs('/og.png')} />
   </head>
   <body>
+    <div class="progreso" aria-hidden="true"></div>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
     <slot />
   </body>
@@ -77,7 +78,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   .bajada { color: var(--texto-suave); font-size: 1.125rem; max-width: 560px; }
 
   /* Botones */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease), translate .3s var(--ease); }
   .btn:active { transform: scale(.98); }
   .btn-principal { background: var(--bordo); color: var(--marfil); }
   .btn-principal:hover { background: var(--bordo-hover); }
@@ -92,7 +93,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   .saltar:focus { top: 12px; }
 
   /* Aparición al hacer scroll (solo con JS y sin "reducir movimiento") */
-  .js .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: var(--d, 0s); }
+  .js .rv { opacity: 0; transform: translateY(40px) scale(.98); transition: opacity 1s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0s); }
   .js .rv.in { opacity: 1; transform: none; }
 
   /* Títulos que entran palabra por palabra (el script envuelve cada palabra) */
@@ -114,11 +115,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   .btn-borde:hover { background: transparent; }
   .btn-claro:hover { background: var(--marfil); }
 
+  /* Barra de lectura arriba de todo: la mueve el propio scroll (sin JS); si el navegador no lo soporta, no se ve */
+  .progreso { position: fixed; inset: 0 0 auto; z-index: 60; height: 3px; background: linear-gradient(90deg, var(--bordo), var(--rosa)); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+  @supports (animation-timeline: scroll()) {
+    .progreso { animation: progreso linear both; animation-timeline: scroll(root); }
+  }
+  @keyframes progreso { to { transform: scaleX(1); } }
+
+  /* Las secciones oscuras se "abren" de tarjeta redondeada a ancho completo al entrar en pantalla */
+  @supports (animation-timeline: view()) {
+    .reservas, .proyectos, .contacto { animation: abre-seccion linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+  }
+  @keyframes abre-seccion { from { clip-path: inset(0 6% round 56px); } to { clip-path: inset(0 0 round 0); } }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: .01ms !important; }
-    /* La cinta de rubros sigue desfilando (lento, ver Hero.astro); el resto se queda quieto */
-    *:not(.pista), *::before, *::after { animation: none !important; }
+    /* La cinta de rubros sigue desfilando (lento, ver Hero.astro) y la barra de lectura sigue al scroll; el resto se queda quieto */
+    *:not(.pista, .progreso), *::before, *::after { animation: none !important; }
     .js .rv, .js .palabras .w > span { opacity: 1; transform: none; }
   }
 </style>
