@@ -94,7 +94,8 @@ import { PROCESO } from '../data/coudexia';
   .vos b { color: var(--bordo); }
   /* Con JS, lo que todavía no llegó espera atenuado; sin JS se ve todo */
   :global(.js) .cuerpo > * { transition: opacity .4s, transform .5s var(--ease); }
-  :global(.js) .paso:not(.activo, .hecho) .cuerpo > * { opacity: .5; }
+  /* Solo el título se atenúa: la descripción queda legible (contraste suficiente) */
+  :global(.js) .paso:not(.activo, .hecho) .cuerpo > h3 { opacity: .5; }
   :global(.js) .paso:not(.activo, .hecho) .cuerpo > .vos { opacity: 0; transform: translateY(6px); }
 
   @media (max-width: 860px) {

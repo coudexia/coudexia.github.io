@@ -52,7 +52,8 @@ const titulo = 'Una web profesional para que tus clientes reserven'.split(' ');
     </div>
   </div>
 
-  <div class="cinta" aria-label={`Para ${RUBROS.join(', ')}`}>
+  <div class="cinta">
+    <p class="solo-lector">Para {RUBROS.join(', ')}</p>
     <div class="pista" aria-hidden="true">
       {[0, 1].map(() => <ul>{RUBROS.map((r) => <li>{r}</li>)}</ul>)}
     </div>
@@ -160,7 +161,8 @@ const titulo = 'Una web profesional para que tus clientes reserven'.split(' ');
   .promesas li::before { content: "✓"; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--rosa); color: var(--vino); font-size: .7rem; font-weight: 800; }
 
   /* Cinta de rubros */
-  .cinta { margin-top: clamp(48px, 7vw, 80px); border-block: 1px solid var(--linea); overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .cinta { position: relative; margin-top: clamp(48px, 7vw, 80px); border-block: 1px solid var(--linea); overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
   .pista { display: flex; width: max-content; animation: desliza 38s linear infinite; }
   .pista ul { display: flex; list-style: none; }
   .pista li { display: flex; align-items: center; gap: 28px; padding: 20px 28px 20px 0; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }

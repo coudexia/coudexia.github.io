@@ -12,8 +12,12 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
     </div>
 
     <div id="planes" class="ancla">
-    {LANZAMIENTO.cupos > 0 && (
-      <p class="lanza rv"><b>Precio de lanzamiento</b> para los primeros {LANZAMIENTO.cupos} clientes <span aria-hidden="true">·</span> Primer mes bonificado</p>
+    {LANZAMIENTO.quedan > 0 && (
+      <div class="lanza rv">
+        <p class="lanza-txt"><span class="alerta" aria-hidden="true"></span><span><b>Precio de lanzamiento:</b> quedan <b class="quedan">{LANZAMIENTO.quedan} de {LANZAMIENTO.cupos}</b> lugares</span></p>
+        <span class="cupo" aria-hidden="true"><i style={`--k:${(LANZAMIENTO.cupos - LANZAMIENTO.quedan) / LANZAMIENTO.cupos}`}></i></span>
+        <p class="lanza-sub">Precio especial + primer mes de mantenimiento bonificado</p>
+      </div>
     )}
 
     <ul class="planes">
@@ -29,9 +33,10 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
           {p.nota && <p class="nota">{p.nota}</p>}
           <ul class="incluye">
             {p.incluye.map((it, j) => <li style={`--i:${j}`}>{it}</li>)}
-            {LANZAMIENTO.cupos > 0 && <li class="extra" style={`--i:${p.incluye.length}`}>1.er mes de mantenimiento bonificado</li>}
+            {LANZAMIENTO.quedan > 0 && <li class="extra" style={`--i:${p.incluye.length}`}>1.er mes de mantenimiento bonificado</li>}
           </ul>
           <a class:list={['btn', p.destacado ? 'btn-claro' : 'btn-principal']} href={wa(p.mensaje)} target="_blank" rel="noopener">Quiero este plan <span class="flecha" aria-hidden="true">→</span></a>
+          {LANZAMIENTO.quedan > 0 && <p class="ultimos">Quedan {LANZAMIENTO.quedan} lugares a este precio</p>}
         </li>
       ))}
     </ul>
@@ -92,8 +97,21 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
   /* Destino de los links "Ver Página…" de Servicios: deja el aviso y los planes a la vista */
   .ancla { scroll-margin-top: 24px; }
   /* Aviso de lanzamiento: sin precio tachado, el beneficio es real y tiene límite */
-  .lanza { width: fit-content; margin: 0 auto 34px; padding: 10px 20px; border-radius: 999px; background: var(--rosa); color: var(--vino); font-size: .93rem; font-weight: 600; text-align: center; }
+  .lanza { display: grid; gap: 10px; width: min(100%, 520px); margin: 0 auto 40px; padding: 16px 22px 14px; border: 1.5px solid #D8A9BC; border-radius: 18px; background: var(--rosa); color: var(--vino); font-size: .95rem; font-weight: 600; text-align: center; }
   .lanza b { font-weight: 800; }
+  .lanza-txt { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .quedan { display: inline-block; padding: 1px 9px; border-radius: 999px; background: var(--vino); color: var(--marfil); }
+  /* Punto que late: el aviso está "en vivo" */
+  .alerta { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #C2185B; box-shadow: 0 0 0 0 #C2185B88; animation: alerta 1.6s infinite; }
+  @keyframes alerta { 70% { box-shadow: 0 0 0 10px #C2185B00; } 100% { box-shadow: 0 0 0 0 #C2185B00; } }
+  /* Barra de lugares tomados: se llena cuando el aviso entra en pantalla */
+  .cupo { display: block; height: 8px; border-radius: 999px; background: #F7F4F1AA; overflow: hidden; }
+  .cupo i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--bordo), #C2185B); transform-origin: left; transform: scaleX(var(--k)); }
+  :global(.js) .cupo i { transform: scaleX(0); transition: transform 1.6s var(--ease) .5s; }
+  :global(.js) .lanza.in .cupo i { transform: scaleX(var(--k)); }
+  .lanza-sub { font-size: .82rem; font-weight: 600; opacity: .85; }
+  .ultimos { margin-top: 10px; text-align: center; font-size: .82rem; font-weight: 700; color: var(--bordo); }
+  .destacado .ultimos { color: var(--rosa); }
   .planes { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; max-width: 860px; margin-inline: auto; }
   .plan { position: relative; display: flex; flex-direction: column; padding: 34px 30px 30px; background: var(--papel); border: 1px solid var(--linea); border-radius: 22px; transition: opacity .8s var(--ease), transform .8s var(--ease), box-shadow .4s, border-color .3s; transition-delay: var(--d, 0s), var(--d, 0s), 0s, 0s; }
   .js .plan.rv.in:hover { transform: translateY(-6px); }
@@ -168,7 +186,6 @@ import { PLANES, LANZAMIENTO, wa } from '../data/coudexia';
 
   @media (max-width: 960px) {
     .cabecera { grid-template-columns: 1fr; }
-    .lanza { border-radius: 18px; }
   }
   @media (max-width: 700px) {
     .planes { grid-template-columns: 1fr; max-width: 560px; }

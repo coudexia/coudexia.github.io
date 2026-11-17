@@ -103,8 +103,9 @@ export const PLANES = [
   },
 ];
 
-// Precio de lanzamiento: vale para los primeros N clientes. Cuando se cubran, subir los precios de PLANES y poner cupos: 0 para ocultar el aviso.
-export const LANZAMIENTO = { cupos: 10 };
+// Precio de lanzamiento: vale para los primeros N clientes. Bajar "quedan" cada vez que se suma un cliente;
+// cuando llegue a 0 el aviso se oculta solo (y conviene subir los precios de PLANES).
+export const LANZAMIENTO = { cupos: 10, quedan: 5 };
 
 // "vos" = lo único que tiene que hacer el cliente en ese paso
 export const PROCESO = [

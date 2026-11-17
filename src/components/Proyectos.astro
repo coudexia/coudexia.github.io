@@ -41,7 +41,7 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
         <button type="button" data-disp="desk" aria-pressed="true">Escritorio</button>
         <button type="button" data-disp="cel" aria-pressed="false">Celular</button>
       </div>
-      <a class="visor-abrir" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+      <a class="visor-abrir" href={url(PROYECTOS[0].demo)} target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
       <button type="button" class="cerrar" aria-label="Cerrar vista previa">✕</button>
     </div>
     <div class="pantalla"><iframe title="Vista previa del proyecto"></iframe></div>

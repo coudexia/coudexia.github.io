@@ -41,8 +41,7 @@ const ld = {
     document.querySelectorAll('.palabras').forEach((h) => {
       h.innerHTML = (h.textContent ?? '').trim().split(/\s+/).map((w, i) => `<span class="w"><span style="--i:${i}">${w}</span></span>`).join(' ');
     });
-    // Aparición suave al hacer scroll
-    document.documentElement.classList.add('js');
+    // Aparición suave al hacer scroll (la clase "js" la pone Base.astro en el <head>)
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });

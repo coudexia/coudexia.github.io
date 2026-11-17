@@ -1,0 +1,10 @@
+# Caché del navegador (Cloudflare lee este archivo al publicar). La fuente y las capturas casi no cambian:
+# si se reemplaza alguna, conviene cambiarle el nombre para que los visitantes vean la nueva.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/demos/_fx/fuentes/*
+  Cache-Control: public, max-age=31536000, immutable
+/proyectos/*
+  Cache-Control: public, max-age=604800
+/og.png
+  Cache-Control: public, max-age=604800
