@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Vidrio Pádel Club | Canchas de pádel en Villa Urquiza</title>
+<meta name="description" content="4 canchas de pádel en Villa Urquiza. Mirá qué horarios quedan libres hoy, elegí cancha y reservá en dos toques.">
+<meta name="theme-color" content="#0a0f1f">
+<link rel="stylesheet" href="../_fx/fuentes/padel.css">
+<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="../_fx/base.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsActivityLocation","name":"Vidrio Pádel Club","address":{"@type":"PostalAddress","streetAddress":"Triunvirato 4870","addressLocality":"Villa Urquiza, CABA","addressCountry":"AR"},"telephone":"+5491100000000","openingHours":"Mo-Su 08:00-24:00"}</script>
+</head>
+<body>
+<script>if(top!==self)document.documentElement.classList.add("embed")</script><div class="demo-ribbon">Proyecto demo · Página Web · datos ficticios <a href="../../">← Volver a Coudexia</a></div>
+<header><div class="wrap">
+  <a class="logo" href="#" aria-label="Vidrio Pádel Club, inicio"><span class="pelota" aria-hidden="true"></span>vidrio<small>pádel club</small></a>
+  <nav class="menu" aria-label="Principal"><a href="#canchas">Canchas</a><a href="#clases">Clases</a><a href="#torneos">Torneos</a><a href="#club">El club</a></nav>
+  <a class="btn btn-lima chico" href="#canchas">Reservar</a>
+</div></header>
+
+<main>
+<section class="hero">
+  <img class="hero-foto" src="https://images.unsplash.com/photo-1767128890439-1af9ca2ff1ac?auto=format&fit=crop&w=1600&q=70" alt="Jugador de pádel levantando la paleta en una cancha techada" fetchpriority="high">
+  <div class="wrap hero-txt">
+    <h1 class="rv">Tu cancha,<br><span>en dos toques.</span></h1>
+    <p class="bajada rv">4 canchas de vidrio en Villa Urquiza, abiertas de 8 a 00 h todos los días. Mirá qué queda libre y reservá sin llamar a nadie.</p>
+    <div class="acciones rv"><a class="btn btn-lima" href="#canchas">Ver horarios libres</a><a class="btn btn-linea" href="#clases">Quiero aprender</a></div>
+  </div>
+  <div class="marcador rv" aria-label="Estado de hoy">
+    <div><small>Hoy libres</small><b id="libres-hoy">—</b></div>
+    <div><small>Valle</small><b>$26.000</b></div>
+    <div><small>Pico</small><b>$36.000</b></div>
+  </div>
+</section>
+
+<section class="seccion canchas" id="canchas"><div class="wrap">
+  <div class="cab rv">
+    <p class="etq">Reservá tu turno</p>
+    <h2>Elegí día, cancha<br>y horario.</h2>
+    <p>Turnos de 90 minutos. El precio es por cancha: se divide entre los 4. <span class="ley"><i class="l-libre"></i>Libre <i class="l-pico"></i>Hora pico <i class="l-ocupado"></i>Ocupado</span></p>
+  </div>
+  <div class="dias rv" id="dias" role="group" aria-label="Día"></div>
+  <div class="tabla-caja rv">
+    <table class="tabla">
+      <thead><tr><th scope="col"><span class="sr">Hora</span></th><th scope="col">Cancha 1<small>Panorámica</small></th><th scope="col">Cancha 2<small>Techada</small></th><th scope="col">Cancha 3<small>Techada</small></th><th scope="col">Cancha 4<small>Descubierta</small></th></tr></thead>
+      <tbody id="grilla"></tbody>
+    </table>
+  </div>
+  <div class="resumen" id="resumen" aria-live="polite">
+    <p id="r-txt">Tocá un turno libre para reservarlo.</p>
+    <a class="btn btn-lima" id="r-ok" href="https://wa.me/5491100000000" aria-disabled="true">Reservar</a>
+  </div>
+</div></section>
+
+<section class="seccion club" id="club"><div class="wrap">
+  <div class="cab rv"><p class="etq">El club</p><h2>Venís a jugar.<br>Del resto nos ocupamos.</h2></div>
+  <div class="feats">
+    <article class="feat grande rv"><img src="https://images.unsplash.com/photo-1770230901556-4e1c0bacfb09?auto=format&fit=crop&w=1100&q=70" alt="Dos jugadores en una cancha de pádel al aire libre" loading="lazy"><div><b>4</b><h3>canchas de vidrio</h3><p>Césped sintético nuevo, iluminación LED y una panorámica para ver los partidos.</p></div></article>
+    <article class="feat rv"><b>01</b><h3>Paletas y pelotas</h3><p>Alquiler de paletas por $3.000 y tubo de pelotas nuevas en recepción.</p></article>
+    <article class="feat rv"><b>02</b><h3>Vestuarios</h3><p>Con duchas con agua caliente y lockers con candado.</p></article>
+    <article class="feat lima rv"><b>03</b><h3>Bar y parrilla</h3><p>El tercer tiempo también se juega: cerveza tirada y picadas.</p></article>
+  </div>
+</div></section>
+
+<section class="seccion clases" id="clases"><div class="wrap">
+  <div class="cab rv"><p class="etq">Clases</p><h2>De cero a tu primer americano.</h2><p>Grupos de 4 por nivel, con profes certificados. La primera clase es gratis.</p></div>
+  <div class="niveles">
+    <article class="nivel rv"><p class="tag">Nivel 1</p><h3>Inicial</h3><p>Nunca jugaste o jugaste poco. Golpes básicos, reglas y posición en la cancha.</p><p class="precio"><b>$48.000</b>/mes · 1 vez por semana</p></article>
+    <article class="nivel destacado rv"><p class="tag">Nivel 2</p><h3>Intermedio</h3><p>Ya peloteás. Volea, bandeja, salida de pared y juego en pareja.</p><p class="precio"><b>$72.000</b>/mes · 2 veces por semana</p></article>
+    <article class="nivel rv"><p class="tag">Nivel 3</p><h3>Competición</h3><p>Jugás torneos. Táctica, víbora, remate por 3 y preparación física.</p><p class="precio"><b>$90.000</b>/mes · 2 veces por semana</p></article>
+  </div>
+  <div class="acciones rv"><a class="btn btn-lima" href="https://wa.me/5491100000000?text=Hola%20Vidrio!%20Quiero%20una%20clase%20de%20prueba.">Pedir clase de prueba gratis</a></div>
+</div></section>
+
+<section class="seccion torneos" id="torneos"><div class="wrap torneo">
+  <img class="rv" src="https://images.unsplash.com/photo-1658723826297-fe4d1b1e6600?auto=format&fit=crop&w=900&q=70" alt="Paletas de pádel y pelotas sobre la cancha" loading="lazy">
+  <div class="rv">
+    <p class="etq">Próximo torneo</p>
+    <h2>Americano<br>de los viernes.</h2>
+    <ul class="ficha-t">
+      <li><span>Cuándo</span><b>Todos los viernes · 20 h</b></li>
+      <li><span>Categorías</span><b>6ta, 7ma y mixto</b></li>
+      <li><span>Inscripción</span><b>$15.000 por persona</b></li>
+      <li><span>Cupo</span><b><span class="cupo"><i style="--k:.75"></i></span> 12 de 16 lugares</b></li>
+    </ul>
+    <div class="acciones"><a class="btn btn-lima" href="https://wa.me/5491100000000?text=Hola%20Vidrio!%20Quiero%20anotarme%20al%20americano.">Anotarme</a></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span class="logo"><span class="pelota" aria-hidden="true"></span>vidrio<small>pádel club</small></span>
+  <p>Triunvirato 4870, Villa Urquiza · Todos los días de 8 a 00 h</p>
+  <p>© 2026 Vidrio Pádel Club · Sitio de demostración hecho por Coudexia.</p>
+</div></footer>
+
+<a class="flotante" href="#canchas">Ver horarios libres</a>
+
+<script src="../_fx/base.js"></script>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const HORAS = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30', '20:00', '21:30', '23:00'];
+  const VALLE = 26000, PICO = 36000;
+  const peso = (n) => '$' + n.toLocaleString('es-AR');
+  const corto = (n) => '$' + n / 1000 + 'k';
+  const dias = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+  let dia = 0, sel = null;
+
+  const finde = (d) => d.getDay() === 0 || d.getDay() === 6;
+  const esPico = (d, h) => finde(d) ? h >= 3 : h >= 6;
+  // Ocupación "fija" por día, cancha y hora: más llena en hora pico, como en un club real
+  const ocupado = (di, c, h) => {
+    const r = ((di + 3) * 31 + c * 17 + h * 13 + di * h * 7) % 100;
+    return r < (esPico(dias[di], h) ? 72 : 34);
+  };
+
+  $('#dias').innerHTML = dias.map((d, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}"><small>${i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : DIAS[d.getDay()]}</small><b>${d.getDate()}</b></button>`).join('');
+
+  const pintar = () => {
+    const d = dias[dia];
+    $('#grilla').innerHTML = HORAS.map((h, hi) => `<tr><th scope="row">${h}</th>${[1, 2, 3, 4].map((c) => {
+      if (ocupado(dia, c, hi)) return `<td><span class="ocupado" aria-label="Cancha ${c}, ${h}, ocupado"></span></td>`;
+      const p = esPico(d, hi) ? PICO : VALLE;
+      const on = sel && sel.c === c && sel.h === h;
+      return `<td><button type="button" class="${p === PICO ? 'pico' : ''}" data-c="${c}" data-h="${h}" data-p="${p}" aria-pressed="${!!on}" aria-label="Cancha ${c}, ${h}, ${peso(p)}">${corto(p)}</button></td>`;
+    }).join('')}</tr>`).join('');
+  };
+  const resumen = () => {
+    const a = $('#r-ok');
+    if (!sel) { $('#r-txt').textContent = 'Tocá un turno libre para reservarlo.'; a.setAttribute('aria-disabled', 'true'); $('#resumen').classList.remove('listo'); return; }
+    const d = dias[dia];
+    const fecha = `${DIAS[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}`;
+    $('#r-txt').innerHTML = `<b>Cancha ${sel.c}</b> · ${fecha} · ${sel.h} h · 90 min<br><span>${peso(sel.p)} la cancha · ${peso(sel.p / 4)} cada uno</span>`;
+    a.setAttribute('aria-disabled', 'false');
+    a.href = 'https://wa.me/5491100000000?text=' + encodeURIComponent(`Hola Vidrio! Quiero reservar la cancha ${sel.c} el ${fecha} a las ${sel.h} h.`);
+    $('#resumen').classList.add('listo');
+  };
+
+  $('#dias').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    dia = Number(b.dataset.i); sel = null;
+    $('#dias').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    pintar(); resumen();
+  });
+  $('#grilla').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    sel = { c: Number(b.dataset.c), h: b.dataset.h, p: Number(b.dataset.p) };
+    pintar(); resumen();
+  });
+  $('#r-ok').addEventListener('click', (e) => {
+    if ($('#r-ok').getAttribute('aria-disabled') === 'true') { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
+
+  // En la grilla ya está la barra de reserva: el botón flotante se esconde para no taparla
+  new IntersectionObserver(([e]) => document.documentElement.classList.toggle('en-canchas', e.isIntersecting)).observe($('#canchas'));
+
+  let libres = 0;
+  HORAS.forEach((_, hi) => [1, 2, 3, 4].forEach((c) => { if (!ocupado(0, c, hi)) libres++; }));
+  $('#libres-hoy').textContent = libres + ' turnos';
+  pintar(); resumen();
+})();
+</script>
+</body>
+</html>

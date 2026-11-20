@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bigotes Veterinaria | Clínica veterinaria en Colegiales</title>
+<meta name="description" content="Clínica veterinaria y peluquería en Colegiales. Mirá qué vacuna o control le toca a tu perro o gato según su edad y pedí turno.">
+<meta name="theme-color" content="#fff6ea">
+<link rel="stylesheet" href="../_fx/fuentes/veterinaria.css">
+<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="../_fx/base.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VeterinaryCare","name":"Bigotes Veterinaria","address":{"@type":"PostalAddress","streetAddress":"Federico Lacroze 2650","addressLocality":"Colegiales, CABA","addressCountry":"AR"},"telephone":"+5491100000000","openingHours":"Mo-Sa 09:00-20:00"}</script>
+</head>
+<body>
+<script>if(top!==self)document.documentElement.classList.add("embed")</script><div class="demo-ribbon">Proyecto demo · Página Web · datos ficticios <a href="../../">← Volver a Coudexia</a></div>
+<p class="guardia"><span aria-hidden="true">✚</span> Urgencias las 24 h: <a href="tel:+5491100000000">11 0000-0000</a></p>
+<header><div class="wrap">
+  <a class="logo" href="#" aria-label="Bigotes Veterinaria, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="22" r="13"/><path d="M9 14 L12 4 L18 10 Z M31 14 L28 4 L22 10 Z"/><path class="bigote" d="M2 22 h11 M3 27 l10 -2 M38 22 h-11 M37 27 l-10 -2"/></svg>bigotes</a>
+  <nav class="menu" aria-label="Principal"><a href="#servicios">Servicios</a><a href="#toca">¿Qué le toca?</a><a href="#peluqueria">Peluquería</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn btn-coral chico" href="#toca">Pedir turno</a>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap hero-grid">
+  <div>
+    <p class="sello rv">Clínica veterinaria en Colegiales</p>
+    <h1 class="rv">Cuidamos a los que te esperan <span>en la puerta.</span></h1>
+    <p class="bajada rv">Consultas, vacunas, cirugías y peluquería en un mismo lugar. Sin apuro, con paciencia y con la sala de gatos separada de la de perros.</p>
+    <div class="acciones rv"><a class="btn btn-coral" href="#toca">¿Qué le toca a mi mascota?</a><a class="btn btn-linea" href="#servicios">Servicios</a></div>
+  </div>
+  <div class="hero-foto rv">
+    <div class="blob"><img src="https://images.unsplash.com/photo-1630438994394-3deff7a591bf?auto=format&fit=crop&w=900&h=900&q=70" alt="Bulldog francés sentado en la camilla de la veterinaria" fetchpriority="high"></div>
+    <p class="sticker s1">★ 4,8 <small>420 reseñas</small></p>
+    <p class="sticker s2">Perros · Gatos · Exóticos</p>
+  </div>
+</div></section>
+
+<section class="seccion" id="servicios"><div class="wrap">
+  <div class="cab rv"><p class="etq">Servicios</p><h2>Todo lo que necesita,<br>en un solo lugar.</h2></div>
+  <ul class="servicios">
+    <li class="rv"><span class="ico c1" aria-hidden="true">♥</span><h3>Consulta clínica</h3><p>Revisión completa, de cachorro a senior. $22.000.</p></li>
+    <li class="rv"><span class="ico c2" aria-hidden="true">✚</span><h3>Vacunas</h3><p>Plan completo y libreta al día. Te avisamos por WhatsApp cuando toca.</p></li>
+    <li class="rv"><span class="ico c3" aria-hidden="true">✂</span><h3>Castraciones y cirugía</h3><p>Quirófano propio, anestesia inhalatoria y monitoreo.</p></li>
+    <li class="rv"><span class="ico c4" aria-hidden="true">◐</span><h3>Ecografía y rayos</h3><p>Diagnóstico por imágenes en el día, sin derivar.</p></li>
+    <li class="rv"><span class="ico c5" aria-hidden="true">⚗</span><h3>Laboratorio</h3><p>Análisis de sangre y orina con resultados en 24 h.</p></li>
+    <li class="rv"><span class="ico c6" aria-hidden="true">✿</span><h3>Peluquería y baño</h3><p>Con turno, sin jaulas y con secado a mano.</p></li>
+  </ul>
+</div></section>
+
+<section class="seccion toca" id="toca"><div class="wrap">
+  <div class="cab rv"><p class="etq">Plan de salud</p><h2>¿Qué le toca a tu mascota?</h2><p>Elegí si es perro o gato, contanos cuánto tiene y te mostramos qué vacuna o control le corresponde.</p></div>
+  <div class="calc">
+    <div class="calc-datos rv">
+      <div class="especie" role="group" aria-label="Especie">
+        <button type="button" data-e="perro" aria-pressed="true"><img src="https://images.unsplash.com/photo-1654895716780-b4664497420d?auto=format&fit=crop&w=300&h=300&q=70" alt="">Perro</button>
+        <button type="button" data-e="gato" aria-pressed="false"><img src="https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?auto=format&fit=crop&w=300&h=300&q=70" alt="">Gato</button>
+      </div>
+      <label class="campo">¿Cómo se llama? <input id="nombre" type="text" maxlength="20" placeholder="Ej: Pancho" autocomplete="off"></label>
+      <label class="campo" for="edad">¿Cuánto tiene? <output id="edad-txt">3 meses</output></label>
+      <input id="edad" type="range" min="0" max="11" step="1" value="2" aria-describedby="edad-txt">
+      <div class="marcas" aria-hidden="true"><span>1 mes</span><span>1 año</span><span>13 años</span></div>
+    </div>
+    <article class="plan rv" aria-live="polite">
+      <p class="plan-cab" id="p-cab">Con 3 meses, a tu perro le toca:</p>
+      <ul id="p-lista"></ul>
+      <p class="prox"><span>Próxima visita</span><b id="p-prox">En 21 días</b></p>
+      <a class="btn btn-coral ancho" id="p-cta" href="https://wa.me/5491100000000">Pedir turno</a>
+      <p class="aviso">Es una guía general. En la consulta armamos el plan según su salud y su historia.</p>
+    </article>
+  </div>
+</div></section>
+
+<section class="seccion peluqueria" id="peluqueria"><div class="wrap pelu-grid">
+  <img class="rv" src="https://images.unsplash.com/photo-1577175889968-f551f5944abd?auto=format&fit=crop&w=900&h=1000&q=70" alt="Caniche marrón en brazos después del baño" loading="lazy">
+  <div class="rv">
+    <p class="etq">Peluquería canina</p>
+    <h2>Sale más contento<br>de lo que entró.</h2>
+    <div class="tamanos" role="group" aria-label="Tamaño del perro">
+      <button type="button" data-k="0" aria-pressed="true">Chico</button>
+      <button type="button" data-k="1" aria-pressed="false">Mediano</button>
+      <button type="button" data-k="2" aria-pressed="false">Grande</button>
+    </div>
+    <ul class="precios-p">
+      <li><span>Baño y secado</span><b data-p="14000,18000,24000">$14.000</b></li>
+      <li><span>Baño y corte</span><b data-p="20000,26000,34000">$20.000</b></li>
+      <li><span>Deslanado</span><b data-p="18000,24000,32000">$18.000</b></li>
+      <li><span>Corte de uñas</span><b data-p="4000,4000,5000">$4.000</b></li>
+    </ul>
+    <a class="btn btn-coral" href="https://wa.me/5491100000000?text=Hola%20Bigotes!%20Quiero%20turno%20de%20peluquer%C3%ADa.">Pedir turno de peluquería</a>
+  </div>
+</div></section>
+
+<section class="seccion equipo"><div class="wrap equipo-grid">
+  <div class="rv">
+    <p class="etq">El equipo</p>
+    <h2>Veterinarios que se acuerdan del nombre de tu perro.</h2>
+    <p>La Dra. Sofía Arce (M.P. 4.512) y el Dr. Martín Ledesma (M.P. 5.087) atienden en Colegiales desde 2014. Gatos con manejo amigable y sala de espera separada.</p>
+    <blockquote>"Llevé a Oliva con miedo y salió moviendo la cola. Te explican todo y te mandan fotos después de la cirugía." <cite>— Carla, mamá de Oliva</cite></blockquote>
+  </div>
+  <img class="rv" src="https://images.unsplash.com/photo-1700665537650-1bf37979aae0?auto=format&fit=crop&w=900&h=760&q=70" alt="Veterinario sosteniendo a un perro pequeño en el consultorio" loading="lazy">
+</div></section>
+
+<section class="seccion contacto" id="contacto"><div class="wrap">
+  <div class="tarjeta rv">
+    <div>
+      <h2>Te esperamos con galletitas.</h2>
+      <p>Federico Lacroze 2650, Colegiales<br>Lunes a sábado de 9 a 20 h · Urgencias las 24 h</p>
+    </div>
+    <div class="acciones"><a class="btn btn-tinta" href="#toca">Pedir turno</a><a class="btn btn-linea" href="https://wa.me/5491100000000">WhatsApp</a></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <p>© 2026 Bigotes Veterinaria · Colegiales, CABA · Sitio de demostración hecho por Coudexia.</p>
+</div></footer>
+
+<a class="flotante" href="#toca">Pedir turno</a>
+
+<script src="../_fx/base.js"></script>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const EDADES = [[1, '1 mes'], [2, '2 meses'], [3, '3 meses'], [4, '4 meses'], [6, '6 meses'], [9, '9 meses'], [12, '1 año'], [24, '2 años'], [48, '4 años'], [84, '7 años'], [120, '10 años'], [156, '13 años']];
+  // Guía orientativa por especie y edad en meses: [hasta, lista, próxima visita]
+  const PLAN = {
+    perro: [
+      [1.5, ['Primera desparasitación', 'Control de peso y alimentación'], 'A los 45 días, para la primera vacuna'],
+      [2.5, ['Primera dosis de vacuna séxtuple', 'Desparasitación'], 'En 21 días, para el refuerzo'],
+      [3.5, ['Refuerzo de vacuna séxtuple', 'Desparasitación'], 'En 21 días, para la antirrábica'],
+      [5, ['Vacuna antirrábica (obligatoria)', 'Último refuerzo de séxtuple', 'Desde ahora ya puede salir a pasear'], 'A los 6 meses, para hablar de castración'],
+      [11, ['Charla sobre castración', 'Desparasitación cada 3 meses', 'Control de crecimiento'], 'Al año, para los refuerzos anuales'],
+      [83, ['Refuerzo anual de séxtuple y antirrábica', 'Control clínico anual', 'Revisión de dientes'], 'Una vez por año'],
+      [999, ['Chequeo senior con análisis de sangre', 'Refuerzos anuales de vacunas', 'Control de articulaciones y corazón'], 'Cada 6 meses'],
+    ],
+    gato: [
+      [1.5, ['Primera desparasitación', 'Control de peso y alimentación'], 'A los 2 meses, para la primera vacuna'],
+      [2.5, ['Primera dosis de vacuna triple felina', 'Desparasitación'], 'En 21 días, para el refuerzo'],
+      [3.5, ['Refuerzo de triple felina', 'Desparasitación'], 'En 21 días, para la antirrábica'],
+      [5, ['Vacuna antirrábica (obligatoria)', 'Revisión general'], 'A los 6 meses, para hablar de castración'],
+      [11, ['Castración (desde los 5 o 6 meses)', 'Desparasitación cada 3 meses'], 'Al año, para los refuerzos anuales'],
+      [83, ['Refuerzo anual de triple felina y antirrábica', 'Control clínico anual'], 'Una vez por año'],
+      [999, ['Chequeo senior: riñón, tiroides y presión', 'Refuerzos anuales de vacunas'], 'Cada 6 meses'],
+    ],
+  };
+  let especie = 'perro';
+  const pintar = () => {
+    const [meses, txt] = EDADES[$('#edad').value];
+    const nombre = $('#nombre').value.trim();
+    const quien = nombre || (especie === 'perro' ? 'tu perro' : 'tu gato');
+    const [, lista, prox] = PLAN[especie].find(([hasta]) => meses <= hasta);
+    $('#edad-txt').textContent = txt;
+    $('#p-cab').textContent = `Con ${txt}, a ${quien} le toca:`;
+    $('#p-lista').innerHTML = lista.map((x) => `<li>${x}</li>`).join('');
+    $('#p-prox').textContent = prox;
+    $('#p-cta').textContent = `Pedir turno para ${quien}`;
+    $('#p-cta').href = 'https://wa.me/5491100000000?text=' + encodeURIComponent(`Hola Bigotes! Quiero pedir turno para ${nombre || 'mi ' + especie}, que tiene ${txt}. Le toca: ${lista[0].toLowerCase()}.`);
+    $('#edad').style.setProperty('--k', $('#edad').value / 11);
+  };
+  document.querySelectorAll('.especie button').forEach((b) => b.addEventListener('click', () => {
+    especie = b.dataset.e;
+    document.querySelectorAll('.especie button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    pintar();
+  }));
+  $('#edad').addEventListener('input', pintar);
+  $('#nombre').addEventListener('input', pintar);
+  pintar();
+
+  // Peluquería: precios según tamaño
+  const peso = (n) => '$' + Number(n).toLocaleString('es-AR');
+  document.querySelectorAll('.tamanos button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.tamanos button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.querySelectorAll('.precios-p b').forEach((p) => { p.textContent = peso(p.dataset.p.split(',')[b.dataset.k]); p.animate([{ transform: 'translateY(6px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)' }); });
+  }));
+})();
+</script>
+</body>
+</html>

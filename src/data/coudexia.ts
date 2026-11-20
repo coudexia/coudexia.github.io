@@ -22,10 +22,10 @@ export const wa = (texto = 'Hola Coudexia! Quiero consultar por una web para mi 
   `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent(texto)}`;
 
 // Rubros que se muestran en la cinta debajo del hero
-export const RUBROS = ['Centros de estética', 'Barberías', 'Peluquerías', 'Uñas y pestañas', 'Depilación', 'Masajistas', 'Profesionales independientes'];
+export const RUBROS = ['Barberías', 'Peluquerías', 'Kinesiología', 'Canchas de pádel', 'Veterinarias', 'Consultorios', 'Centros de estética', 'Uñas y pestañas', 'Depilación', 'Masajistas'];
 
 // Opciones del formulario de contacto
-export const IDEAS = ['Estética o depilación', 'Barbería o peluquería', 'Uñas o pestañas', 'Masajes', 'Otro rubro'];
+export const IDEAS = ['Barbería o peluquería', 'Kinesiología o consultorio', 'Canchas o deportes', 'Veterinaria', 'Estética o depilación', 'Uñas o pestañas', 'Masajes', 'Otro rubro'];
 export const PLAZOS = ['Lo antes posible', 'En el próximo mes', 'En 2 o 3 meses', 'Sin apuro, estoy averiguando'];
 
 export const SERVICIOS = [
@@ -74,6 +74,10 @@ export const RESERVA = [
 
 // Proyectos demostrativos: marcas y datos ficticios. "img" = nombre de las capturas en /public/proyectos/
 export const PROYECTOS = [
+  { rubro: 'Barbería', nombre: 'Filo Barber Club', tipo: 'Página Web · Reserva en 3 pasos', demo: 'barberia', desc: 'Pizarra de precios y reserva en 3 pasos: el cliente elige barbero, servicio y horario libre, y le queda armado el ticket del turno.' },
+  { rubro: 'Kinesiología', nombre: 'Eje Kinesiología', tipo: 'Página Web · Mapa del dolor', demo: 'kinesiologia', desc: 'El paciente toca en el cuerpo dónde le duele y ve qué suele ser, cómo se trata y cuántas sesiones lleva, con la evaluación lista para reservar.' },
+  { rubro: 'Canchas de pádel', nombre: 'Vidrio Pádel Club', tipo: 'Página Web · Grilla de canchas', demo: 'padel', desc: 'Grilla de canchas por horario con precio valle y pico: se toca el turno libre y se reserva, con el costo dividido entre los 4.' },
+  { rubro: 'Veterinaria', nombre: 'Bigotes Veterinaria', tipo: 'Página Web · Plan de salud', demo: 'veterinaria', desc: 'Según si es perro o gato y su edad, muestra qué vacuna o control le toca. Peluquería con precios por tamaño.' },
   { rubro: 'Odontología', nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
   { rubro: 'Uñas y pestañas', nombre: 'Lúa Studio', tipo: 'Sitio profesional · Armado de turno', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
   { rubro: 'Estética', nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
