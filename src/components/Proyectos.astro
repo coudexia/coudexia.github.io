@@ -1,5 +1,5 @@
 ---
-import { PROYECTOS } from '../data/coudexia';
+import { PROYECTOS, wa } from '../data/coudexia';
 const url = (demo: string) => `/demos/${demo}/index.html`;
 ---
 <section class="seccion proyectos" id="proyectos">
@@ -9,12 +9,19 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
         <p class="etiqueta rv">Proyectos</p>
         <h2 class="rv palabras">Webs listas para recorrer, no capturas.</h2>
       </div>
-      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio con turnos. Pasá el mouse para recorrerlos o abrí la vista previa y alterná entre <b>escritorio y celular</b>: cada una está diseñada primero para el teléfono, que es desde donde entra la mayoría de tus clientes.</p>
+      <p class="bajada rv">Proyectos demostrativos con marcas y datos ficticios: muestran cómo quedaría la web de un negocio con turnos. Elegí un rubro y abrí la vista previa para verla en <b>escritorio y celular</b>: cada una está diseñada primero para el teléfono, que es desde donde entra la mayoría de tus clientes.</p>
     </div>
 
-    <ul class="grilla">
+    <div class="rubros rv" role="group" aria-label="Elegí un rubro">
       {PROYECTOS.map((p, i) => (
-        <li class="proyecto rv" style={`--d:${(i % 2) * .12}s`}>
+        <button type="button" aria-pressed={String(i === 0)} aria-controls={`demo-${p.demo}`}>{p.rubro}</button>
+      ))}
+      <a class="otro" href={wa('Hola Coudexia! Mi rubro no está entre las demos y quiero ver cómo quedaría mi web.')} target="_blank" rel="noopener">¿Tu rubro no está? <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <ul class="grilla rv">
+      {PROYECTOS.map((p, i) => (
+        <li class="proyecto" id={`demo-${p.demo}`} hidden={i !== 0}>
           <button type="button" class="mock" data-url={url(p.demo)} data-nombre={p.nombre} aria-label={`Ver vista previa en vivo de ${p.nombre}`}>
             <span class="ventana">
               <span class="barra-mini" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -55,6 +62,18 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
     document.querySelectorAll('.mock').forEach((m) => io.observe(m));
   }
 
+  // Selector de rubro: muestra una sola demo por vez; #demo-<carpeta> en la URL abre esa directo
+  const rubros = [...document.querySelectorAll<HTMLButtonElement>('.rubros button')];
+  const elegir = (b: HTMLButtonElement) => rubros.forEach((x) => {
+    x.setAttribute('aria-pressed', String(x === b));
+    document.getElementById(x.getAttribute('aria-controls')!)!.hidden = x !== b;
+  });
+  // En celular la fila se desliza para dejar a la vista el rubro elegido
+  const centrar = (b: HTMLButtonElement, behavior: ScrollBehavior = 'smooth') => b.parentElement!.scrollTo({ left: b.offsetLeft - (b.parentElement!.clientWidth - b.offsetWidth) / 2, behavior });
+  rubros.forEach((b) => b.addEventListener('click', () => { elegir(b); centrar(b); }));
+  const inicial = rubros.find((b) => `#${b.getAttribute('aria-controls')}` === location.hash);
+  if (inicial) { elegir(inicial); centrar(inicial, 'instant'); document.getElementById('proyectos')!.scrollIntoView(); }
+
   // Visor con el sitio en vivo
   const visor = document.querySelector<HTMLDialogElement>('.visor')!;
   const frame = visor.querySelector('iframe')!;
@@ -89,9 +108,20 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
 
   .proyectos :focus-visible { outline-color: var(--rosa); }
 
-  .grilla { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(48px, 6vw, 80px) clamp(24px, 3vw, 40px); }
-  /* Las tarjetas de la derecha bajan un poco: ritmo editorial */
-  @media (min-width: 861px) { .proyecto:nth-child(even) { margin-top: 72px; } }
+  /* Rubros: en celular una fila que se desliza de costado */
+  .rubros { position: relative; display: flex; gap: 8px; margin-bottom: 32px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; padding-bottom: 4px; }
+  .rubros::-webkit-scrollbar { display: none; }
+  .rubros > * { flex: none; scroll-snap-align: start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--linea-oscura); border-radius: 999px; background: transparent; color: var(--marfil); font: inherit; font-weight: 600; font-size: .92rem; white-space: nowrap; cursor: pointer; text-decoration: none; transition: background-color .2s, border-color .2s, color .2s, transform .16s var(--ease); }
+  .rubros > *:active { transform: scale(.97); }
+  .rubros button[aria-pressed="true"] { background: var(--marfil); border-color: var(--marfil); color: var(--vino); }
+  .rubros .otro { border-style: dashed; color: var(--rosa); }
+  @media (hover: hover) { .rubros button[aria-pressed="false"]:hover, .rubros .otro:hover { border-color: var(--rosa); } }
+  @media (min-width: 861px) { .rubros { flex-wrap: wrap; overflow: visible; } }
+
+  .grilla { list-style: none; }
+  .proyecto { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 72px); align-items: center; animation: aparece .5s var(--ease); }
+  .proyecto[hidden] { display: none; }
+  @keyframes aparece { from { opacity: 0; transform: translateY(12px); } }
 
   .mock { position: relative; display: block; width: 100%; padding: 7% 17% 0 6%; border: 0; border-radius: 22px; background: #5E2441; cursor: pointer; overflow: hidden; text-align: left; font: inherit; color: inherit; aspect-ratio: 1 / .8; }
   .ventana { display: block; height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; background: var(--marfil); box-shadow: 0 24px 48px -18px #12030bcc; transition: transform .6s var(--ease); }
@@ -115,7 +145,6 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
   .mock:hover .ver, .mock:focus-visible .ver { opacity: 1; transform: none; }
   @media (hover: none) { .ver { opacity: 1; transform: none; } }
 
-  .info { padding-top: 24px; }
   .tipo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rosa); }
   .demo { padding: 3px 9px; border: 1px solid var(--linea-oscura); border-radius: 999px; font-size: .68rem; color: #D9C3CC; letter-spacing: .08em; }
   .info h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: 10px 0 10px; }
@@ -143,11 +172,11 @@ const url = (demo: string) => `/demos/${demo}/index.html`;
   .visor[data-disp="cel"] iframe { width: min(390px, 100%); }
 
   @media (max-width: 860px) {
-    .cabecera, .grilla { grid-template-columns: 1fr; }
+    .cabecera, .proyecto { grid-template-columns: 1fr; }
   }
   @media (max-width: 700px) {
     .dispositivos { display: none; }
     .visor { width: 100%; height: 100dvh; border-radius: 0; }
   }
-  @media (prefers-reduced-motion: reduce) { .full { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .full { transition: none; } .proyecto { animation: none; } }
 </style>

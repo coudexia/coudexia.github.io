@@ -74,10 +74,10 @@ export const RESERVA = [
 
 // Proyectos demostrativos: marcas y datos ficticios. "img" = nombre de las capturas en /public/proyectos/
 export const PROYECTOS = [
-  { nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
-  { nombre: 'Lúa Studio', tipo: 'Sitio profesional · Armado de turno', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
-  { nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
-  { nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', demo: 'depilacion', desc: 'Armado de zonas con total por sesión, packs con ahorro, preguntas frecuentes y reserva de evaluación.' },
+  { rubro: 'Odontología', nombre: 'Prisma Dental', tipo: 'Sitio profesional · 5 páginas', demo: 'odontologo', desc: 'Consultorio de 5 páginas con tratamientos interactivos, turnos online, galería ampliable y formulario que llega por WhatsApp.' },
+  { rubro: 'Uñas y pestañas', nombre: 'Lúa Studio', tipo: 'Sitio profesional · Armado de turno', demo: 'estetica-integral', desc: 'Catálogo con filtros y buscador: la clienta arma su turno en un panel, ve el total y la duración, y lo reserva por WhatsApp.' },
+  { rubro: 'Estética', nombre: 'Nácar Estética', tipo: 'Sitio profesional · 5 páginas', demo: 'estetica', desc: 'Identidad editorial: carta de precios con fotos que aparecen al pasar el mouse, packs, galería y reservas.' },
+  { rubro: 'Depilación láser', nombre: 'Aura Láser', tipo: 'Sitio profesional · 5 páginas', demo: 'depilacion', desc: 'Armado de zonas con total por sesión, packs con ahorro, preguntas frecuentes y reserva de evaluación.' },
 ];
 
 // Precios en pesos argentinos. "desde" = pago único inicial; "mensual" = mantenimiento.
@@ -86,8 +86,8 @@ export const PLANES = [
     nombre: 'Página Web',
     para: 'Para profesionales y negocios que necesitan una página clara para mostrar sus servicios y recibir reservas.',
     desde: '$189.000',
-    mensual: '$45.000',
-    nota: 'El mensual cubre hosting, mantenimiento y soporte. Sin permanencia mínima.',
+    mensual: '$30.000',
+    nota: 'El mensual es opcional: cubre hosting, mantenimiento y soporte. Sin permanencia mínima.',
     incluye: ['Landing de una página, diseñada a medida de tu marca', 'Adaptada a celular, tablet y escritorio', 'Botón de WhatsApp, ubicación con Google Maps y SEO básico', 'Botón "Reservar turno" que abre tu calendario de turnos', 'Reservas sincronizadas con tu Google Calendar', 'Hasta 2 cambios chicos por mes: precios, textos, fotos o promos'],
     mensaje: 'Hola Coudexia! Me interesa el plan Página Web.',
   },
@@ -95,9 +95,9 @@ export const PLANES = [
     nombre: 'Web Pro',
     para: 'Para negocios con varios servicios que quieren un sitio completo, con el calendario de turnos integrado.',
     desde: '$349.000',
-    mensual: '$45.000',
+    mensual: '$30.000',
     destacado: true,
-    nota: 'El mensual cubre hosting, mantenimiento y soporte. Sin permanencia mínima.',
+    nota: 'El mensual es opcional: cubre hosting, mantenimiento y soporte. Sin permanencia mínima.',
     incluye: ['Todo lo del plan Página Web', 'Sitio de hasta 5 páginas (en vez de una)', 'Servicios y precios, galería, nosotros y preguntas frecuentes', 'Calendario de turnos integrado en la web, con un tipo de turno por servicio', 'Hasta 4 cambios chicos por mes'],
     mensaje: 'Hola Coudexia! Me interesa el plan Web Pro.',
   },
@@ -119,12 +119,12 @@ export const PROCESO = [
 
 export const FAQ = [
   { p: '¿Cuánto tarda en estar lista mi web?', r: 'Una landing suele estar lista en 1 a 2 semanas y un sitio de 5 páginas en 2 a 4, contando desde que tenemos tus textos, precios y fotos.' },
-  { p: '¿Cómo se paga?', r: 'La instalación se paga 50% al confirmar y 50% en la entrega. El mensual arranca cuando la web queda publicada. Por transferencia o Mercado Pago.' },
+  { p: '¿Cómo se paga?', r: 'La instalación se paga 50% al confirmar y 50% en la entrega. Si contratás el mensual, arranca cuando la web queda publicada. Por transferencia o Mercado Pago.' },
   { p: '¿Qué incluye el mensual?', r: 'El hosting, el certificado de seguridad, la supervisión de que la web y las reservas funcionen, el soporte por WhatsApp y los cambios chicos de tu plan (precios, textos, fotos o promos): hasta 2 por mes en Página Web y hasta 4 en Web Pro. Las secciones nuevas y los rediseños se presupuestan aparte.' },
   { p: '¿Cómo funcionan las reservas online?', r: 'Tu cliente entra a la web, elige el servicio y ve los horarios libres. Cuando confirma, el turno queda agendado y a los dos les llega la confirmación por email. Usamos Cal.com, una herramienta de turnos, integrada en tu web.' },
   { p: '¿Necesito Google Calendar?', r: 'Sí, alcanza con una cuenta de Google. Los turnos aparecen en tu Google Calendar, y si bloqueás un horario ahí, la web deja de ofrecerlo. Las cuentas de Google y de Cal.com son tuyas: las configuramos con vos y quedan a tu nombre.' },
   { p: '¿Las reservas tienen algún costo extra?', r: 'Para una persona con una agenda alcanza el plan gratuito de Cal.com, que muestra su marca en el calendario. Si necesitás funciones de sus planes pagos, como varios profesionales o quitar esa marca, se contratan a tu nombre y lo vemos antes de empezar.' },
   { p: '¿Qué pasa con el dominio?', r: 'El dominio (por ejemplo, tunegocio.com.ar) se registra a tu nombre y su costo anual lo pagás vos; te ayudamos a registrarlo y conectarlo.' },
   { p: '¿La web es mía?', r: 'Sí. El dominio, los textos, las fotos y las cuentas de reservas quedan a tu nombre. Si das de baja el mantenimiento, te entregamos los archivos de tu web para que la alojes donde quieras.' },
-  { p: '¿Puedo dar de baja el mensual?', r: 'Sí, no tiene permanencia mínima: nos avisás y se corta al terminar el mes que ya pagaste. Desde ese momento dejamos de alojar y mantener la web; el dominio y tus cuentas siguen siendo tuyos.' },
+  { p: '¿El mensual es obligatorio?', r: 'No, es opcional. Si no lo contratás, te entregamos los archivos de tu web para que la alojes donde quieras. Si lo contratás, no tiene permanencia mínima: nos avisás y se corta al terminar el mes que ya pagaste. Desde ese momento dejamos de alojar y mantener la web; el dominio y tus cuentas siguen siendo tuyos.' },
 ];
